@@ -1,6 +1,7 @@
 {
   "name": "yt-player",
-  "version": "0.0.0",
+  "license": "MIT",
+  "version": "0.1.0",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
