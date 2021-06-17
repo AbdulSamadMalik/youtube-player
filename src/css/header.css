@@ -1,0 +1,251 @@
+.header {
+   background: var(--header-bg-color);
+   position: fixed;
+   width: 100%;
+   top: 0px;
+   z-index: 10;
+   height: 56px;
+   display: flex;
+   align-items: center;
+}
+.header .header-inner-container {
+   width: 100%;
+   padding: 0 16px;
+   display: -ms-flexbox;
+   display: -webkit-flex;
+   display: flex;
+   -ms-flex-direction: row;
+   -webkit-flex-direction: row;
+   flex-direction: row;
+   -ms-flex-align: center;
+   -webkit-align-items: center;
+   align-items: center;
+   -ms-flex-pack: justify;
+   -webkit-justify-content: space-between;
+   justify-content: space-between;
+   -webkit-user-select: none;
+   user-select: none;
+}
+.header .header-inner-container .start {
+   display: flex;
+   flex-direction: row;
+   flex-wrap: nowrap;
+}
+.header .header-inner-container .start .menu-btn {
+   margin: 0 16px 0 0;
+}
+.header .header-inner-container .start .youtube-icon {
+   position: relative;
+   display: -ms-flexbox;
+   display: -webkit-flex;
+   display: flex;
+   -ms-flex-direction: row;
+   -webkit-flex-direction: row;
+   flex-direction: row;
+   margin-right: 37px;
+}
+.header .header-inner-container .start .youtube-icon a {
+   display: flex;
+   align-items: center;
+}
+.header .header-inner-container .start .youtube-icon .country-code {
+   font-size: 1rem;
+   font-family: Roboto, Arial, sans-serif;
+   color: var(--secondary-text-color);
+   margin: 4px 0 0 4px;
+}
+.header .header-inner-container .center {
+   display: -ms-flexbox;
+   display: -webkit-flex;
+   display: flex;
+   -ms-flex-direction: row;
+   -webkit-flex-direction: row;
+   flex-direction: row;
+   -ms-flex-align: center;
+   -webkit-align-items: center;
+   align-items: center;
+   -ms-flex: 0 1 728px;
+   -webkit-flex: 0 1 728px;
+   flex: 0 1 728px;
+   min-width: 0px;
+}
+.header .header-inner-container .center .search-container {
+   margin: 0 40px 0 40px;
+   padding: 0 4px;
+   -ms-flex: 1 1 0.90625e;
+   -webkit-flex: 1;
+   flex: 1;
+   -webkit-flex-basis: 0.90625e;
+   flex-basis: 0.90625e;
+}
+.header .search-container[has-focus]:not([has-focus='false']) .container {
+   border: 1px solid #1c62b9;
+   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+.header .search-form {
+   height: 32px;
+   -ms-flex: 1 1 0.90625;
+   -webkit-flex: 1;
+   flex: 1;
+   -webkit-flex-basis: 0.90625;
+   flex-basis: 0.90625;
+   display: -ms-flexbox;
+   display: -webkit-flex;
+   display: flex;
+   -ms-flex-direction: row;
+   -webkit-flex-direction: row;
+   flex-direction: row;
+}
+.header .search-form button {
+   padding-left: 2px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   cursor: pointer;
+   width: 65px;
+   border: 1px solid var(--searchbox-border-color);
+   background-color: var(--searchbox-button-bg-color);
+   border-radius: 0 2px 2px 0;
+   margin: 0;
+   border-left: none;
+}
+.header .search-form button svg {
+   width: 20px;
+   height: 20px;
+   opacity: 0.6;
+   fill: var(--searchbox-icon-color);
+}
+.header .search-form .container {
+   width: 100%;
+   position: relative;
+   align-items: center;
+   background-color: var(--searchbox-bg-color);
+   border: 1px solid var(--searchbox-border-color);
+   border-radius: 2px 0 0 2px;
+   box-shadow: inset 0 1px 2px var(--ytd-searchbox-legacy-border-shadow-color);
+   color: var(--searchbox-text-color);
+   padding: 2px 6px;
+   -ms-flex: 1 1 0.90625e;
+   -webkit-flex: 1;
+   flex: 1;
+   -webkit-flex-basis: 0.90625e;
+   flex-basis: 0.90625e;
+   display: -ms-flexbox;
+   display: -webkit-flex;
+   display: flex;
+   -ms-flex-direction: row;
+   -webkit-flex-direction: row;
+   flex-direction: row;
+}
+.header .search-form .search-input {
+   width: 100%;
+}
+
+.header .search-form .search-input input {
+   color: var(--ytd-searchbox-text-color);
+   -webkit-appearance: none;
+   -webkit-font-smoothing: antialiased;
+   background-color: #0000;
+   border: none;
+   box-shadow: none;
+   font-family: 'Roboto', 'Noto', sans-serif;
+   font-size: 16px;
+   font-weight: 400;
+   line-height: 24px;
+   margin-left: 4px;
+   max-width: 100%;
+   outline: none;
+   text-align: inherit;
+   width: 100%;
+   -ms-flex: 1 1 0.000000001px;
+   -webkit-flex: 1;
+   flex: 1;
+   -webkit-flex-basis: 0.000000001px;
+   flex-basis: 0.000000001px;
+}
+.header .header-inner-container .end {
+   min-width: 225px;
+   -ms-flex-align: center;
+   -webkit-align-items: center;
+   align-items: center;
+   -ms-flex-pack: end;
+   -webkit-justify-content: flex-end;
+   justify-content: flex-end;
+   -ms-flex: none;
+   -webkit-flex: none;
+   flex: none;
+   display: -webkit-flex;
+   display: flex;
+   -ms-flex-direction: row;
+   -webkit-flex-direction: row;
+   flex-direction: row;
+}
+.header .header-inner-container .end .buttons {
+   padding: 1px 0;
+   align-items: center;
+   display: -ms-flexbox;
+   display: -webkit-flex;
+   display: flex;
+   -ms-flex-direction: row;
+   -webkit-flex-direction: row;
+   flex-direction: row;
+}
+.header .header-inner-container .end .buttons button {
+   margin-right: 8px;
+}
+.header .header-inner-container .end .buttons .avatar-btn {
+   padding: 1px 6px;
+   width: 60px;
+   height: 40px;
+   margin-right: 0;
+}
+.header .header-inner-container .end .buttons .avatar-btn:focus img {
+   box-shadow: 0 0 0 1px #0055a0;
+}
+.header .header-inner-container .end .buttons .avatar-btn img {
+   height: 32px;
+   width: 32px;
+   border-radius: 50%;
+}
+.header .header-inner-container .end .signin-button {
+   border: 1px solid var(--yt-spec-call-to-action);
+   padding: 5px 12px 5px 8px;
+   border-radius: 2px;
+   background-color: transparent;
+   color: var(--yt-spec-call-to-action);
+}
+.header .header-inner-container .end .signin-button .MuiSvgIcon-root {
+   font-size: 2.8rem;
+   margin-right: 8px;
+}
+
+.header .icon-button {
+   height: 40px;
+   width: 40px;
+   vertical-align: middle;
+   color: inherit;
+   outline: 0;
+   background: 0 0;
+   margin: 0;
+   border: none;
+   padding: 0;
+   line-height: 0;
+   cursor: pointer;
+   -webkit-tap-highlight-color: transparent;
+   -webkit-tap-highlight-color: transparent;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+.header .icon-button svg {
+   height: 24px;
+   width: 24px;
+   fill: var(--primary-icon-color);
+}
+
+@media (max-width: 680px) {
+   .header .header-inner-container .center {
+      display: none;
+   }
+}
