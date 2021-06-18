@@ -1,57 +1,57 @@
 #video-info.video-info {
-   display: block;
-   width: 100%;
+    display: block;
+    width: 100%;
 }
 
 #container.video-info {
-   display: block;
-   border-bottom: 1px solid var(--yt-spec-10-percent-layer);
-   padding: 20px 0 8px;
+    display: block;
+    border-bottom: 1px solid var(--yt-spec-10-percent-layer);
+    padding: 20px 0 8px;
 }
 
 #video-title.video-info {
-   display: block;
-   max-height: 4.8rem;
-   overflow: hidden;
-   font-size: 1.8rem;
-   font-weight: 400;
-   line-height: 2.4rem;
-   color: var(--primary-text-color);
-   font-family: inherit;
+    display: block;
+    max-height: 4.8rem;
+    overflow: hidden;
+    font-size: 1.8rem;
+    font-weight: 400;
+    line-height: 2.4rem;
+    color: var(--primary-text-color);
+    font-family: inherit;
 }
 
 #info-text.video-info {
-   display: flex;
-   align-items: center;
-   overflow: hidden;
-   font-size: 1.4rem;
-   font-weight: 400;
-   line-height: 2.1rem;
-   letter-spacing: normal;
-   display: flex;
-   color: var(--secondary-text-color);
-   height: 43px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    font-size: 1.4rem;
+    font-weight: 400;
+    line-height: 2.1rem;
+    letter-spacing: normal;
+    display: flex;
+    color: var(--secondary-text-color);
+    height: 43px;
 }
 
 #count.video-info {
-   color: inherit;
-   display: inline-block;
-   font-size: inherit;
-   font-weight: inherit;
-   line-height: inherit;
-   letter-spacing: normal;
+    color: inherit;
+    display: inline-block;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    letter-spacing: normal;
 }
 
 #date.video-info {
-   color: inherit;
-   display: inline-block;
-   font-size: inherit;
-   font-weight: inherit;
-   line-height: inherit;
-   letter-spacing: normal;
+    color: inherit;
+    display: inline-block;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    letter-spacing: normal;
 }
 
 #dot.video-info {
-   margin: 0 4px;
-   color: inherit;
+    margin: 0 4px;
+    color: inherit;
 }

@@ -14,14 +14,14 @@ export const conditionalAttribute = (
    element: HTMLElement | null | undefined,
    condition: boolean | null | undefined,
    attrName: string,
-   attrValue = '',
+   attrValue: any = ''
 ) => {
    if (!element || !attrName || condition === undefined || condition === null) {
       return false;
    }
 
    if (areEqual(condition, true)) {
-      element.setAttribute(attrName, attrValue);
+      element.setAttribute(attrName, attrValue.toString());
    } else if (areEqual(condition, false)) {
       element.removeAttribute(attrName);
    }

@@ -1,5 +1,5 @@
-import { fromEvent, merge } from 'rxjs';
 import Hotkeys from './hotkeys';
+import { fromEvent, merge } from 'rxjs';
 import { $, areEqual, conditionalAttribute } from './utils';
 
 const searchForm = $<HTMLFormElement>('#search-form'),
