@@ -3,9 +3,8 @@ html {
    --min-player-width: 426px;
 }
 
-#watch-page.watch-page {
-   margin-top: 55px;
-   min-height: calc(100vh - 55px);
+body {
+   padding-top: 55px;
 }
 
 #columns.watch-page {
@@ -60,6 +59,12 @@ video-player#video-player {
    width: 426px;
    padding-top: 24px;
    padding-right: 24px;
+}
+
+@media (min-width: 1135px) {
+   html {
+      --max-player-width: 854px;
+   }
 }
 
 @media (max-width: 1016px) {

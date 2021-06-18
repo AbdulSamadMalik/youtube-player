@@ -17,8 +17,9 @@
 
     <link rel="stylesheet" href="/src/css/theme.css" />
     <link rel="stylesheet" href="/src/css/style.css" />
-    <link rel="stylesheet" href="/src/css/watch.css" />
     <link rel="stylesheet" href="/src/css/header.css" />
+    <link rel="stylesheet" href="/src/css/watch.css" />
+    <link rel="stylesheet" href="/src/css/videoinfo.css" />
     <link rel="stylesheet" href="/src/css/skeleton.css" />
   </head>
 
@@ -170,6 +171,7 @@
     <main id="watch-page" class="watch-page">
       <div id="columns" class="watch-page">
         <div id="primary" class="watch-page">
+          <!-- Video Player Starts -->
           <video-player id="video-player">
             <div id="player" class="video-player">
               <div id="player-container" class="video-player">
@@ -177,6 +179,19 @@
               </div>
             </div>
           </video-player>
+          <!-- Video Player Ends -->
+          <!-- Video Info Starts -->
+          <div id="video-info" class="video-info">
+            <div id="container" class="video-info">
+              <h1 id="video-title" class="video-info">YouTube Video Player</h1>
+              <div id="info-text" class="video-info">
+                <div id="count" class="video-info">No views</div>
+                <span id="dot" class="video-info">•</span>
+                <div id="video-date" class="video-info">18 Jun 2021</div>
+              </div>
+            </div>
+          </div>
+          <!-- Video Info Ends -->
         </div>
 
         <!-- Secondary Section Starts -->
