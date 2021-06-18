@@ -17,7 +17,10 @@ html {
 
 html,
 body {
+   width: 100%;
    height: 100%;
+   overflow-x: hidden;
+   min-width: 200px;
 }
 
 ::-webkit-scrollbar {
@@ -36,13 +39,11 @@ body {
    background-color: var(--scrollbar-thumb-bg-active);
 }
 
-body {
-   overflow-x: hidden;
-}
-
 img {
    height: 100%;
    width: 100%;
+   user-select: none;
+   -webkit-user-drag: none;
 }
 
 svg {
@@ -57,7 +58,7 @@ svg {
    cursor: pointer !important;
 }
 
-.flex {
+.flexy {
    display: flex !important;
    align-items: center !important;
    justify-content: center !important;
