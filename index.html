@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="/src/css/style.css" />
     <link rel="stylesheet" href="/src/css/header.css" />
     <link rel="stylesheet" href="/src/css/watch.css" />
+    <link rel="stylesheet" href="/src/css/videoplayer.css" />
     <link rel="stylesheet" href="/src/css/videoinfo.css" />
     <link rel="stylesheet" href="/src/css/skeleton.css" />
   </head>
@@ -155,8 +156,9 @@
                 <path
                   d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"
                 ></path>
-              </svg></button
-            ><button class="icon-button">
+              </svg>
+            </button>
+            <button class="icon-button">
               <svg focusable="false" viewBox="0 0 24 24" aria-hidden="true">
                 <path
                   d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"
@@ -175,7 +177,21 @@
           <video-player id="video-player">
             <div id="player" class="video-player">
               <div id="player-container" class="video-player">
-                <video controls class="video-stream html5-main-video"></video>
+                <video class="video-stream html5-main-video"></video>
+                <div id="initial-player-container">
+                  <div id="initial-player-container-inner">
+                    <button id="large-play-button" tabindex="-1">
+                      <svg height="100%" version="1.1" viewBox="0 0 68 48" width="100%">
+                        <path
+                          class="ytp-large-play-button-bg"
+                          d="M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z"
+                          fill="#232222"
+                        ></path>
+                        <path d="M 45,24 27,14 27,34" fill="#fff"></path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </video-player>
