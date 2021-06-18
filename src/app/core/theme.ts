@@ -9,19 +9,19 @@ export const isDarkTheme = new BehaviorSubject(false);
 const html = $('html');
 
 const toggleDarkTheme = (isDark?: boolean) => {
-  isDark = isDark ?? !html?.hasAttribute('dark');
-  conditionalAttribute(html, isDark, 'dark');
-  saveToLocalStorage('isDarkTheme', isDark);
-  isDarkTheme.next(isDark);
+   isDark = isDark ?? !html?.hasAttribute('dark');
+   conditionalAttribute(html, isDark, 'dark');
+   saveToLocalStorage('isDarkTheme', isDark);
+   isDarkTheme.next(isDark);
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  const isDark = getFromLocalStorage('isDarkTheme');
-  toggleDarkTheme(Boolean(isDark));
+   const isDark = getFromLocalStorage('isDarkTheme');
+   toggleDarkTheme(Boolean(isDark));
 });
 
 Hotkeys.registerHotkey({
-  eventCode: 'KeyX',
-  ctrlKey: true,
-  handler: () => toggleDarkTheme(),
+   eventCode: 'KeyX',
+   ctrlKey: true,
+   handler: () => toggleDarkTheme(),
 });

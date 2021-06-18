@@ -1,6 +1,7 @@
-import Hotkeys from './hotkeys';
+import Hotkeys from '../../core/hotkeys';
 import { fromEvent, merge } from 'rxjs';
-import { $, areEqual, conditionalAttribute } from './utils';
+import { $, areEqual, conditionalAttribute } from '../../core/utils';
+import './header.css';
 
 const searchForm = $<HTMLFormElement>('#search-form'),
    searchInput = $<HTMLInputElement>('#search-input'),
@@ -17,7 +18,7 @@ searchForm?.addEventListener('submit', (ev) => {
 
 merge(
    fromEvent<FocusEvent>(searchInput!, 'focus'),
-   fromEvent<FocusEvent>(searchInput!, 'blur'),
+   fromEvent<FocusEvent>(searchInput!, 'blur')
 ).subscribe(() => {
    const searchBarFocused = areEqual(document.activeElement, searchInput);
    conditionalAttribute(searchContainer, searchBarFocused, 'has-focus', 'true');
