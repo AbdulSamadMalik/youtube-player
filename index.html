@@ -14,11 +14,12 @@
          href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap"
          rel="stylesheet"
       />
+      <script defer type="module" src="/src/app/main.ts"></script>
    </head>
 
    <body>
-      <file-picker class="file-picker" hidden>
-         <input type="file" id="input" class="file-picker" multiple tabindex="-1" />
+      <div class="file-picker-backdrop" hidden>
+         <input type="file" id="file-picker" class="file-picker" multiple tabindex="-1" />
          <div id="container" class="file-picker">
             <div id="icon" class="file-picker">
                <svg
@@ -35,7 +36,7 @@
             </div>
             <h1 id="label" class="file-picker">Drop files anywhere to play</h1>
          </div>
-      </file-picker>
+      </div>
 
       <header class="header">
          <div class="header-inner-container">
@@ -297,7 +298,5 @@
             <!-- Secondary Section Ends -->
          </div>
       </main>
-
-      <script type="module" src="/src/app/main.ts"></script>
    </body>
 </html>

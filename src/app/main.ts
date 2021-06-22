@@ -1,3 +1,4 @@
 import './core/theme';
-import './components/header/header';
+import './components/header';
+import './components/filepicker';
 import './styles';
