@@ -2,6 +2,7 @@ lockfileVersion: 5.3
 
 specifiers:
   '@types/lodash-es': ^4.17.4
+  '@vitejs/plugin-legacy': ^1.4.2
   localforage: ^1.9.0
   lodash-es: ^4.17.21
   rxjs: ^7.1.0
@@ -16,11 +17,17 @@ dependencies:
 
 devDependencies:
   '@types/lodash-es': 4.17.4
+  '@vitejs/plugin-legacy': 1.4.2_vite@2.3.7
   sass: 1.35.1
   typescript: 4.3.2
   vite: 2.3.7
 
 packages:
+
+  /@babel/standalone/7.14.7:
+    resolution: {integrity: sha512-7RlfMPR4604SbYpj5zvs2ZK587hVhixgU9Pd9Vs8lB8KYtT3U0apXSf0vZXhy8XRh549eUmJOHXhWKTO3ObzOQ==}
+    engines: {node: '>=6.9.0'}
+    dev: true
 
   /@types/lodash-es/4.17.4:
     resolution: {integrity: sha512-BBz79DCJbD2CVYZH67MBeHZRX++HF+5p8Mo5MzjZi64Wac39S3diedJYHZtScbRVf4DjZyN6LzA0SB0zy+HSSQ==}
@@ -30,6 +37,20 @@ packages:
 
   /@types/lodash/4.14.170:
     resolution: {integrity: sha512-bpcvu/MKHHeYX+qeEN8GE7DIravODWdACVA1ctevD8CN24RhPZIKMn9ntfAsrvLfSX3cR5RrBKAbYm9bGs0A+Q==}
+    dev: true
+
+  /@vitejs/plugin-legacy/1.4.2_vite@2.3.7:
+    resolution: {integrity: sha512-D2ADBSpImP0QT8w9Eo+8KKOLg3I8OQhFwuBXGM8WQCRrEs55E3bCf9PTkL8S+tgliyLbJM+gjemxpRuoTTwphA==}
+    engines: {node: '>=12.0.0'}
+    peerDependencies:
+      vite: ^2.0.0
+    dependencies:
+      '@babel/standalone': 7.14.7
+      core-js: 3.15.0
+      magic-string: 0.25.7
+      regenerator-runtime: 0.13.7
+      systemjs: 6.10.1
+      vite: 2.3.7
     dev: true
 
   /anymatch/3.1.2:
@@ -69,6 +90,11 @@ packages:
 
   /colorette/1.2.2:
     resolution: {integrity: sha512-MKGMzyfeuutC/ZJ1cba9NqcNpfeqMUcYmyF1ZFY6/Cn7CNSAKx6a+s48sqLqyAiZuaP2TcqMhoo+dlwFnVxT9w==}
+    dev: true
+
+  /core-js/3.15.0:
+    resolution: {integrity: sha512-GUbtPllXMYRzIgHNZ4dTYTcUemls2cni83Q4Q/TrFONHfhcg9oEGOtaGHfb0cpzec60P96UKPvMkjX1jET8rUw==}
+    requiresBuild: true
     dev: true
 
   /esbuild/0.12.9:
@@ -159,6 +185,12 @@ packages:
     resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
     dev: false
 
+  /magic-string/0.25.7:
+    resolution: {integrity: sha512-4CrMT5DOHTDk4HYDlzmwu4FVCcIYI8gauveasrdCu2IKIFOJ3f0v/8MDGJCDL9oD2ppz/Av1b0Nj345H9M+XIA==}
+    dependencies:
+      sourcemap-codec: 1.4.8
+    dev: true
+
   /nanoid/3.1.23:
     resolution: {integrity: sha512-FiB0kzdP0FFVGDKlRLEQ1BgDzU87dy5NnzjeW9YZNt+/c3+q82EQDUwniSAUxp/F0gFNI1ZhKU1FqYsMuqZVnw==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
@@ -195,6 +227,10 @@ packages:
       picomatch: 2.3.0
     dev: true
 
+  /regenerator-runtime/0.13.7:
+    resolution: {integrity: sha512-a54FxoJDIr27pgf7IgeQGxmqUNYrcV338lf/6gH456HZ/PhX+5BcwHXG9ajESmwe6WRO0tAzRUrRmNONWgkrew==}
+    dev: true
+
   /resolve/1.20.0:
     resolution: {integrity: sha512-wENBPt4ySzg4ybFQW2TT1zMQucPK95HSh/nq2CFTZVOGut2+pQvSsgtda4d26YrYcr067wjbmzOG8byDPBX63A==}
     dependencies:
@@ -227,6 +263,14 @@ packages:
   /source-map-js/0.6.2:
     resolution: {integrity: sha512-/3GptzWzu0+0MBQFrDKzw/DvvMTUORvgY6k6jd/VS6iCR4RDTKWH6v6WPwQoUO8667uQEf9Oe38DxAYWY5F/Ug==}
     engines: {node: '>=0.10.0'}
+    dev: true
+
+  /sourcemap-codec/1.4.8:
+    resolution: {integrity: sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==}
+    dev: true
+
+  /systemjs/6.10.1:
+    resolution: {integrity: sha512-i2HiBOTIsm4GpjpiDHqTscZ/78htyTtdhpcbY2XPbIpsaNDIBA9vtxwIl8kSSnIRO0Zn7SHqvvILu3cMoXQuYw==}
     dev: true
 
   /to-regex-range/5.0.1:
