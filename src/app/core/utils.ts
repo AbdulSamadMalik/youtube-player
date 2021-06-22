@@ -60,6 +60,13 @@ export const getFromLocalStorage = (name: string) => {
    }
 };
 
+export const createObjectURL = (file: File | Blob) => {
+   if (!file) throw new Error('No file or blob object');
+
+   const windowURL = window.URL || window.webkitURL;
+   return windowURL.createObjectURL(file);
+};
+
 /** Prevents default behaviour for an `Event` */
 export const preventDefault = (
    event: Event,

@@ -1,4 +1,5 @@
 import { $, conditionalAttribute, preventDefault } from '../../core/utils';
+import { playVideo } from '../player';
 import './filepicker.css';
 
 // Refs
@@ -31,6 +32,10 @@ fileBackdrop.addEventListener('dragleave', (e) => {
    console.log('%c dragleave', 'color: red');
 });
 
-fileInput.addEventListener('change', () => {
+fileInput.addEventListener('change', (e) => {
    fileBackdropHidden(true);
+   const target = e.target as HTMLInputElement;
+   if (target.files?.length) {
+      playVideo(target.files[0]);
+   }
 });
