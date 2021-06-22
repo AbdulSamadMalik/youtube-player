@@ -1,10 +1,10 @@
-import { $, conditionalAttribute, preventDefault } from '../../core/utils';
+import { Select, conditionalAttribute, preventDefault } from '../../core/utils';
 import { playVideo } from '../player';
 import './filepicker.css';
 
 // Refs
-const fileInput = $<HTMLInputElement>('input#file-picker'),
-   fileBackdrop = $<HTMLDivElement>('.file-picker-backdrop');
+const fileInput = Select<HTMLInputElement>('input#file-picker'),
+   fileBackdrop = Select<HTMLDivElement>('.file-picker-backdrop');
 
 // Methods
 const fileBackdropHidden = (condition: boolean) => {

@@ -1,8 +1,8 @@
-import { $, addAttribute, createObjectURL } from '../../core/utils';
+import { Select, addAttribute, createObjectURL } from '../../core/utils';
 import { chooseFiles } from '../filepicker';
 
-const initialPlayerContainer = $('#initial-player-container'),
-   videoNode = $<HTMLVideoElement>('.html5-main-video');
+const initialPlayerContainer = Select('#initial-player-container'),
+   videoNode = Select<HTMLVideoElement>('.html5-main-video');
 
 const hideInitialPlayer = () => {
    addAttribute(initialPlayerContainer, 'hidden');

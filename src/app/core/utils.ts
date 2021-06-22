@@ -2,12 +2,12 @@ export const areEqual = (...args: any) => {
    return new Set(args).size === 1;
 };
 
-export const $ = <T extends HTMLElement>(selector: string): T => {
-   return document.querySelector(selector)!;
+export const Select = <T extends HTMLElement>(selector: string): T => {
+   return document.querySelector<T>(selector)!;
 };
 
-export const $$ = (selector: string): HTMLElement[] => {
-   return Array.from(document.querySelectorAll(selector)!);
+export const SelectAll = <T extends HTMLElement>(selector: string): T[] => {
+   return Array.from(document.querySelectorAll<T>(selector)!);
 };
 
 export const addAttribute = (element: HTMLElement, attrName: string, attrVal = '') => {
@@ -43,20 +43,23 @@ export const conditionalAttribute = (
    }
 };
 
-export const saveToLocalStorage = (name: string, value: any) => {
+export const saveToLocalStorage = (
+   name: string,
+   value: string | number | boolean | object | Array<any>
+) => {
    localStorage.setItem(name, JSON.stringify({ value }));
 };
 
-export const getFromLocalStorage = (name: string) => {
+export const getFromLocalStorage = (name: string, defaultValue: any) => {
    const stored = localStorage.getItem(name);
    if (stored === null) {
-      return { value: null };
+      return defaultValue;
    }
 
    try {
-      return { value: JSON.parse(stored).value };
+      return JSON.parse(stored).value;
    } catch (error) {
-      return { value: null };
+      return defaultValue;
    }
 };
 
@@ -76,4 +79,18 @@ export const preventDefault = (
    event.preventDefault();
    stopPropagation && event.stopPropagation();
    stopImmediatePropagation && event.stopImmediatePropagation();
+};
+
+export const prefersDarkTheme = () => {
+   if (!window.matchMedia) {
+      return false;
+   }
+   return window.matchMedia('(prefers-color-scheme: dark)').matches;
+};
+
+export const preventAnchorReload = (event: MouseEvent) => {
+   if (!event.shiftKey && !event.ctrlKey && !event.metaKey && !event.altKey) {
+      event.preventDefault();
+      event.stopPropagation();
+   }
 };
