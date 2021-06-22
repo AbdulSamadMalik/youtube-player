@@ -8,6 +8,7 @@
     display: flex;
     align-items: center;
 }
+
 .header .header-inner-container {
     width: 100%;
     padding: 0 16px;
@@ -26,14 +27,18 @@
     -webkit-user-select: none;
     user-select: none;
 }
+
 .header .header-inner-container .start {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
 }
+
 .header .header-inner-container .start .menu-btn {
     margin: 0 16px 0 0;
+    cursor: default;
 }
+
 .header .header-inner-container .start .youtube-icon {
     position: relative;
     display: -ms-flexbox;
@@ -44,16 +49,19 @@
     flex-direction: row;
     margin-right: 37px;
 }
+
 .header .header-inner-container .start .youtube-icon a {
     display: flex;
     align-items: center;
 }
+
 .header .header-inner-container .start .youtube-icon .country-code {
     font-size: 1rem;
     font-family: Roboto, Arial, sans-serif;
     color: var(--secondary-text-color);
     margin: 4px 0 0 4px;
 }
+
 .header .header-inner-container .center {
     display: -ms-flexbox;
     display: -webkit-flex;
@@ -69,6 +77,7 @@
     flex: 0 1 728px;
     min-width: 0px;
 }
+
 .header .header-inner-container .center .search-container {
     margin: 0 40px 0 40px;
     padding: 0 4px;
@@ -78,10 +87,12 @@
     -webkit-flex-basis: 0.90625e;
     flex-basis: 0.90625e;
 }
+
 .header .search-container[has-focus]:not([has-focus='false']) .container {
     border: 1px solid #1c62b9;
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
 }
+
 .header .search-form {
     height: 32px;
     -ms-flex: 1 1 0.90625;
@@ -96,7 +107,8 @@
     -webkit-flex-direction: row;
     flex-direction: row;
 }
-.header .search-form button {
+
+.header .search-form .search-button {
     padding-left: 2px;
     display: flex;
     align-items: center;
@@ -109,12 +121,19 @@
     margin: 0;
     border-left: none;
 }
+
+.header .search-form .search-button:hover svg {
+    opacity: 1;
+}
+
 .header .search-form button svg {
     width: 20px;
     height: 20px;
     opacity: 0.6;
     fill: var(--searchbox-icon-color);
+    transition: 40ms linear;
 }
+
 .header .search-form .container {
     width: 100%;
     position: relative;
@@ -137,6 +156,7 @@
     -webkit-flex-direction: row;
     flex-direction: row;
 }
+
 .header .search-form .search-input {
     width: 100%;
 }
@@ -163,6 +183,7 @@
     -webkit-flex-basis: 0.000000001px;
     flex-basis: 0.000000001px;
 }
+
 .header .header-inner-container .end {
     min-width: 225px;
     -ms-flex-align: center;
@@ -180,6 +201,7 @@
     -webkit-flex-direction: row;
     flex-direction: row;
 }
+
 .header .header-inner-container .end .buttons {
     padding: 1px 0;
     align-items: center;
@@ -190,23 +212,32 @@
     -webkit-flex-direction: row;
     flex-direction: row;
 }
+
 .header .header-inner-container .end .buttons button {
     margin-right: 8px;
 }
+
+.header .header-inner-container .end .buttons button:not(#choose-file-button) {
+    cursor: default;
+}
+
 .header .header-inner-container .end .buttons .avatar-btn {
     padding: 1px 6px;
     width: 60px;
     height: 40px;
     margin-right: 0;
 }
+
 .header .header-inner-container .end .buttons .avatar-btn:focus img {
     box-shadow: 0 0 0 1px #0055a0;
 }
+
 .header .header-inner-container .end .buttons .avatar-btn img {
     height: 32px;
     width: 32px;
     border-radius: 50%;
 }
+
 .header .header-inner-container .end .signin-button {
     border: 1px solid var(--yt-spec-call-to-action);
     padding: 5px 12px 5px 8px;
@@ -214,6 +245,7 @@
     background-color: transparent;
     color: var(--yt-spec-call-to-action);
 }
+
 .header .header-inner-container .end .signin-button .MuiSvgIcon-root {
     font-size: 2.8rem;
     margin-right: 8px;
