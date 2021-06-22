@@ -50,16 +50,16 @@ export const saveToLocalStorage = (
    localStorage.setItem(name, JSON.stringify({ value }));
 };
 
-export const getFromLocalStorage = (name: string, defaultValue: any) => {
+export const getFromLocalStorage = (name: string, defaultValue: any = null) => {
    const stored = localStorage.getItem(name);
    if (stored === null) {
-      return defaultValue;
+      return !isFunction(defaultValue) ? defaultValue : defaultValue();
    }
 
    try {
       return JSON.parse(stored).value;
    } catch (error) {
-      return defaultValue;
+      return !isFunction(defaultValue) ? defaultValue : defaultValue();
    }
 };
 
@@ -93,4 +93,8 @@ export const preventAnchorReload = (event: MouseEvent) => {
       event.preventDefault();
       event.stopPropagation();
    }
+};
+
+export const isFunction = (fn: any) => {
+   return typeof fn === 'function';
 };

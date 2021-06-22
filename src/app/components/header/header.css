@@ -3,10 +3,10 @@
     position: fixed;
     width: 100%;
     top: 0px;
-    z-index: 10;
     height: 56px;
     display: flex;
     align-items: center;
+    z-index: 1000000;
 }
 
 .header .header-inner-container {
