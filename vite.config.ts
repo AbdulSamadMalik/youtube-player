@@ -3,9 +3,6 @@ import legacy from '@vitejs/plugin-legacy';
 
 const ViteConfig = defineConfig({
    server: {
-      port: 4000,
-      open: true,
-      cors: false,
       strictPort: true,
    },
    plugins: [
