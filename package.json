@@ -2,6 +2,13 @@
    "name": "yt-player",
    "license": "MIT",
    "version": "0.1.0",
+   "description": "Video player similar to YouTube's player for playing videos",
+   "homepage": "https://youtubeplayer.vercel.app",
+   "author": {
+      "name": "Abdul Samad",
+      "email": "asmalik.dev@gmail.com",
+      "url": "https://asmalik.site"
+   },
    "scripts": {
       "dev": "vite",
       "build": "tsc && vite build",
