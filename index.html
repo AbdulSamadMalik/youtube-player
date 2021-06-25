@@ -227,7 +227,7 @@
                         </div>
                         <button
                            class="icon-button choose-video"
-                           id="playlist-header-button"
+                           id="add-to-playlist"
                            aria-label="Choose videos"
                            title="Choose videos"
                         >
@@ -245,7 +245,7 @@
                   </div>
 
                   <div id="playlist-panel-items">
-                     <div id="playlist-empty">
+                     <div id="playlist-placeholder">
                         <span
                            >Choose videos to create a Playlist for this session, You can choose one
                            or multiple videos at once.</span
@@ -257,7 +257,8 @@
          </div>
       </main>
 
-      <!-- Templates -->
+      <!-------- Templates -------->
+      <!-- Skeleton Video Tile -->
       <template id="watch-skeleton-tile">
          <article class="watch-skeleton">
             <div class="video-skeleton">
@@ -270,6 +271,29 @@
                </div>
             </div>
          </article>
+      </template>
+      <!-- Playlist video tile -->
+      <template id="playlist-tile">
+         <!-- <playlist-tile id="video-tile"> -->
+         <a id="video-link">
+            <div id="container">
+               <div id="index-container">
+                  <svg viewBox="0 0 48 48" preserveAspectRatio="xMidYMid meet">
+                     <path d="M0 18H10v4h24v-4zM8 30h26v-4H10v4z"></path>
+                  </svg>
+                  <span>▶</span>
+               </div>
+               <div id="thumbnail-container">
+                  <img id="thumbnail" />
+                  <span id="time-box"></span>
+               </div>
+               <div id="meta">
+                  <h4 id="video-title"></h4>
+                  <p id="channel-name" title="Your Videos">Your Videos</p>
+               </div>
+            </div>
+         </a>
+         <!-- </playlist-tile> -->
       </template>
    </body>
 </html>

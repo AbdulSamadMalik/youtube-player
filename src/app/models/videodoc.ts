@@ -1,7 +1,7 @@
 export interface VideoDoc {
    videoId: string;
    url: string;
-   fileURL: string;
+   blobURL: string;
    durationText: string;
    dateText: string;
    title: string;

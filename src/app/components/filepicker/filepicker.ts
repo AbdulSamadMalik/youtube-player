@@ -1,5 +1,5 @@
 import { Select, conditionalAttribute, preventDefault } from '../../utils';
-import { setVideoSource } from '../player';
+import { addVideosToPlaylist } from '../playlist';
 import './filepicker.css';
 
 // Refs
@@ -35,7 +35,10 @@ fileBackdrop.addEventListener('dragleave', (e) => {
 fileInput.addEventListener('change', (e) => {
    fileBackdropHidden(true);
    const target = e.target as HTMLInputElement;
-   if (target.files?.length) {
-      setVideoSource(target.files[0]);
+
+   if (!target.files || !target.files.length) {
+      return;
    }
+
+   addVideosToPlaylist(Array.from(target.files));
 });

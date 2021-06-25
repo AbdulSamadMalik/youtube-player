@@ -51,3 +51,13 @@ export const preventAnchorReload = (event: MouseEvent) => {
       event.stopPropagation();
    }
 };
+
+export const generateVideoId = (length = 11) => {
+   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-';
+   const charactersArray = Array.from(characters);
+
+   return Array(length)
+      .fill(0)
+      .map(() => charactersArray[Math.round(Math.random() * charactersArray.length)])
+      .join('');
+};

@@ -1,16 +1,19 @@
-import { random } from 'lodash-es';
-import { setVideoSource } from '../components/player';
+import { addVideosToPlaylist } from '../components/playlist';
 
-const randomVideo = () => {
-   const videos = ['1.mp4', '2.mp4'];
-   const url = `videos/${videos[random(0, videos.length - 1, false)]}`;
-   return url;
-};
+const videoNames = ['1.mp4', '2.mp4'];
 
-const Development = () => {
-   setVideoSource(randomVideo()).then((video) => {
-      video.volume = 0.1;
-   });
+const Development = async () => {
+   for (let i = 0; i < videoNames.length; i++) {
+      console.log(videoNames[i]);
+      await fetch('videos/' + videoNames[i])
+         .then((r) => r.blob())
+         .then((blob) => {
+            const file = new File([blob], videoNames[i], {
+               type: 'video/mp4',
+            });
+            addVideosToPlaylist([file]);
+         });
+   }
 };
 
 export default Development;

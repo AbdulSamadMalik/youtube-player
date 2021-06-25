@@ -1,4 +1,4 @@
-const str = (value: any) => {
+export const str = (value: any): string => {
    if (!value) return '';
    return value.toString();
 };
@@ -22,8 +22,8 @@ export const formatTime = (seconds: number, minPad = 2, secPad = 2) => {
    return formattedTime;
 };
 
-export const formatDate = (time: Date) => {
-   if (!time) time = new Date();
+export const formatDate = (time: number) => {
+   if (!time) time = new Date().getTime();
 
    const dt = new Date(time),
       date = dt.getDate(),
@@ -31,4 +31,34 @@ export const formatDate = (time: Date) => {
       year = dt.getFullYear(),
       months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
    return `${date} ${months[month]} ${year}`;
+};
+
+export const removeFileExtension = (fileName: string) => {
+   if ([2, 3, 4, 5].includes(fileName.length - fileName.lastIndexOf('.'))) {
+      return fileName.slice(0, fileName.lastIndexOf('.'));
+   }
+   return fileName;
+};
+
+export const removeLetters = (string: string, letters: string) => {
+   for (let letter of letters.split('')) {
+      while (string.includes(letter)) {
+         string = string.replace(letter, ' ');
+      }
+   }
+   return string;
+};
+
+export const formatFilename = (filename: string) => {
+   filename = removeFileExtension(filename);
+   filename = removeLetters(filename, '[](){}_=+');
+   filename = filename.replace(/  +/g, ' ').trim();
+   return filename;
+};
+
+export const megabyte = (bytes: number) => {
+   if (typeof bytes !== 'number') {
+      bytes = isNaN(parseInt(bytes)) ? 0 : parseInt(bytes);
+   }
+   return bytes / Math.pow(1024, 2);
 };
