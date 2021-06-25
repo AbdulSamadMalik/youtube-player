@@ -1,5 +1,5 @@
 import { Select, conditionalAttribute, preventDefault } from '../../core/utils';
-import { playVideo } from '../player';
+import { setVideoSource } from '../player';
 import './filepicker.css';
 
 // Refs
@@ -36,6 +36,6 @@ fileInput.addEventListener('change', (e) => {
    fileBackdropHidden(true);
    const target = e.target as HTMLInputElement;
    if (target.files?.length) {
-      playVideo(target.files[0]);
+      setVideoSource(target.files[0]);
    }
 });

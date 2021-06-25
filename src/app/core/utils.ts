@@ -95,6 +95,12 @@ export const preventAnchorReload = (event: MouseEvent) => {
    }
 };
 
-export const isFunction = (fn: any) => {
-   return typeof fn === 'function';
+export const type = (val: any) => {
+   return typeof val;
 };
+
+export const isFunction = (fn: any): fn is Function => {
+   return type(fn) === 'function';
+};
+
+export const isString = (val: any): val is string => type(val) === 'string';

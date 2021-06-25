@@ -1,7 +1,7 @@
 import { ajax } from 'rxjs/ajax';
 import { chooseFiles } from '../filepicker';
 import { registerHotkey } from '../../core/hotkeys';
-import { IpInfo } from '../../models/keycode.model';
+import { IpInfo } from '../../models/ipinfo.model';
 import {
    Select,
    addAttribute,
