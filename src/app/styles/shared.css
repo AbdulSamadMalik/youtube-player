@@ -1,0 +1,23 @@
+.icon-button {
+    height: 48px;
+    width: 48px;
+    vertical-align: middle;
+    color: inherit;
+    outline: 0;
+    background: transparent;
+    margin: 0;
+    border: none;
+    padding: 0;
+    line-height: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.icon-button svg {
+    height: 24px;
+    width: 24px;
+    fill: var(--primary-icon-color);
+}

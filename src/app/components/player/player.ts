@@ -1,5 +1,6 @@
-import { Select, addAttribute, createObjectURL, isString, type } from '../../core/utils';
+import { Select, addAttribute, createObjectURL, isString, type } from '../../utils';
 import { chooseFiles } from '../filepicker';
+import './player.css';
 
 const initialPlayerContainer = Select('#initial-player-container'),
    videoNode = Select<HTMLVideoElement>('.html5-main-video');

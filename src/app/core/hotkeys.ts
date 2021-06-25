@@ -1,5 +1,5 @@
-import { areEqual } from './utils';
-import { EventCode } from '../models/keycode.model';
+import { areEqual } from '../utils';
+import { EventCode } from '../models';
 import { filter } from 'lodash-es';
 
 interface Hotkey {
@@ -31,10 +31,10 @@ document.addEventListener('keydown', (ev: KeyboardEvent) => {
    hotkeysInEvent.forEach((hotkey) => {
       if (
          areEqual(ev.code, hotkey.eventCode) &&
-         areEqual(ev.shiftKey, hotkey.shiftKey ?? false) &&
-         areEqual(ev.ctrlKey, hotkey.ctrlKey ?? false) &&
-         areEqual(ev.altKey, hotkey.altKey ?? false) &&
-         areEqual(ev.metaKey, hotkey.metaKey ?? false)
+         areEqual(ev.shiftKey, hotkey.shiftKey || false) &&
+         areEqual(ev.ctrlKey, hotkey.ctrlKey || false) &&
+         areEqual(ev.altKey, hotkey.altKey || false) &&
+         areEqual(ev.metaKey, hotkey.metaKey || false)
       ) {
          if (hotkey.disableOn && areEqual(document.activeElement, hotkey.disableOn)) {
             hotkey.handler(ev);
@@ -46,5 +46,3 @@ document.addEventListener('keydown', (ev: KeyboardEvent) => {
       }
    });
 });
-
-export default { registerHotkey };

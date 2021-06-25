@@ -1,7 +1,7 @@
 import { ajax } from 'rxjs/ajax';
 import { chooseFiles } from '../filepicker';
 import { registerHotkey } from '../../core/hotkeys';
-import { IpInfo } from '../../models/ipinfo.model';
+import { IpInfo } from '../../models';
 import {
    Select,
    addAttribute,
@@ -10,7 +10,7 @@ import {
    preventDefault,
    getFromLocalStorage,
    saveToLocalStorage,
-} from '../../core/utils';
+} from '../../utils';
 import './header.css';
 
 // Refs

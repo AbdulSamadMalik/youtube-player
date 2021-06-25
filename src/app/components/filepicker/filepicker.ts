@@ -1,4 +1,4 @@
-import { Select, conditionalAttribute, preventDefault } from '../../core/utils';
+import { Select, conditionalAttribute, preventDefault } from '../../utils';
 import { setVideoSource } from '../player';
 import './filepicker.css';
 

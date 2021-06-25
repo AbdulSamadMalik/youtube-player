@@ -254,26 +254,11 @@
 .header .icon-button {
     height: 40px;
     width: 40px;
-    vertical-align: middle;
-    color: inherit;
-    outline: 0;
-    background: 0 0;
-    margin: 0;
-    border: none;
-    padding: 0;
-    line-height: 0;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    -webkit-tap-highlight-color: transparent;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .header .icon-button svg {
     height: 24px;
     width: 24px;
-    fill: var(--primary-icon-color);
 }
 
 @media (max-width: 680px) {

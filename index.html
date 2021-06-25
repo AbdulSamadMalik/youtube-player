@@ -208,78 +208,68 @@
 
             <!-- Secondary Section Starts -->
             <div id="secondary" class="watch-page">
-               <div class="watch-skeleton">
+               <!-- Watch Skeleton -->
+               <div class="watch-skeleton" hidden>
                   <div id="upnext" class="skeleton-bg-color"></div>
-                  <article class="watch-skeleton">
-                     <div class="video-skeleton">
-                        <div class="video-details">
-                           <div class="thumbnail skeleton-bg-color"></div>
-                           <div class="details flex-1">
-                              <div class="video-title text-shell skeleton-bg-color"></div>
-                              <div class="video-meta text-shell skeleton-bg-color"></div>
+               </div>
+
+               <!-- Playlist Panel -->
+               <div class="playlist-panel">
+                  <div id="playlist-panel-header">
+                     <div id="header-contents">
+                        <div id="playlist-header-details">
+                           <h3 id="playlist-header-title">Playlist</h3>
+                           <div id="playlist-header-subtitle">
+                              <span id="current-playlist-item">0</span>
+                              <span>&nbsp;/&nbsp;</span>
+                              <span id="playlist-item-count">0</span>
                            </div>
                         </div>
+                        <button
+                           class="icon-button choose-video"
+                           id="playlist-header-button"
+                           aria-label="Choose videos"
+                           title="Choose videos"
+                        >
+                           <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              enable-background="new 0 0 24 24"
+                              viewBox="0 0 24 24"
+                           >
+                              <path
+                                 d="M14,10H3v2h11V10z M14,6H3v2h11V6z M18,14v-4h-2v4h-4v2h4v4h2v-4h4v-2H18z M3,16h7v-2H3V16z"
+                              />
+                           </svg>
+                        </button>
                      </div>
-                  </article>
-                  <article class="watch-skeleton">
-                     <div class="video-skeleton">
-                        <div class="video-details">
-                           <div class="thumbnail skeleton-bg-color"></div>
-                           <div class="details flex-1">
-                              <div class="video-title text-shell skeleton-bg-color"></div>
-                              <div class="video-meta text-shell skeleton-bg-color"></div>
-                           </div>
-                        </div>
+                  </div>
+
+                  <div id="playlist-panel-items">
+                     <div id="playlist-empty">
+                        <span
+                           >Choose videos to create a Playlist for this session, You can choose one
+                           or multiple videos at once.</span
+                        >
                      </div>
-                  </article>
-                  <article class="watch-skeleton">
-                     <div class="video-skeleton">
-                        <div class="video-details">
-                           <div class="thumbnail skeleton-bg-color"></div>
-                           <div class="details flex-1">
-                              <div class="video-title text-shell skeleton-bg-color"></div>
-                              <div class="video-meta text-shell skeleton-bg-color"></div>
-                           </div>
-                        </div>
-                     </div>
-                  </article>
-                  <article class="watch-skeleton">
-                     <div class="video-skeleton">
-                        <div class="video-details">
-                           <div class="thumbnail skeleton-bg-color"></div>
-                           <div class="details flex-1">
-                              <div class="video-title text-shell skeleton-bg-color"></div>
-                              <div class="video-meta text-shell skeleton-bg-color"></div>
-                           </div>
-                        </div>
-                     </div>
-                  </article>
-                  <article class="watch-skeleton">
-                     <div class="video-skeleton">
-                        <div class="video-details">
-                           <div class="thumbnail skeleton-bg-color"></div>
-                           <div class="details flex-1">
-                              <div class="video-title text-shell skeleton-bg-color"></div>
-                              <div class="video-meta text-shell skeleton-bg-color"></div>
-                           </div>
-                        </div>
-                     </div>
-                  </article>
-                  <article class="watch-skeleton">
-                     <div class="video-skeleton">
-                        <div class="video-details">
-                           <div class="thumbnail skeleton-bg-color"></div>
-                           <div class="details flex-1">
-                              <div class="video-title text-shell skeleton-bg-color"></div>
-                              <div class="video-meta text-shell skeleton-bg-color"></div>
-                           </div>
-                        </div>
-                     </div>
-                  </article>
+                  </div>
                </div>
             </div>
-            <!-- Secondary Section Ends -->
          </div>
       </main>
+
+      <!-- Templates -->
+      <template id="watch-skeleton-tile">
+         <article class="watch-skeleton">
+            <div class="video-skeleton">
+               <div class="video-details">
+                  <div class="thumbnail skeleton-bg-color"></div>
+                  <div class="details flex-1">
+                     <div class="video-title text-shell skeleton-bg-color"></div>
+                     <div class="video-meta text-shell skeleton-bg-color"></div>
+                  </div>
+               </div>
+            </div>
+         </article>
+      </template>
    </body>
 </html>
