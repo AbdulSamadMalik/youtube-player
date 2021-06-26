@@ -1,6 +1,5 @@
 import { Select, addAttribute, createObjectURL, isString } from '../../utils';
 import { chooseFiles } from '../filepicker';
-import './player.css';
 
 const playerPlaceholder = Select('#initial-player-container'),
    videoNode = Select<HTMLVideoElement>('.html5-main-video');

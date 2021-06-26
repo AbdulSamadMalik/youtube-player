@@ -5,10 +5,7 @@
     outline: none;
     position: relative;
     -webkit-tap-highlight-color: transparent;
-    -webkit-user-select: text;
-    user-select: text;
     -webkit-user-drag: none !important;
-    font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 html {
@@ -20,6 +17,7 @@ body {
     width: 100%;
     overflow-x: hidden;
     min-width: 200px;
+    font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 ::-webkit-scrollbar {

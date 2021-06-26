@@ -1,0 +1,133 @@
+/* Video controls */
+
+.video-controls-container {
+    position: absolute;
+    bottom: 0;
+    min-height: 40px;
+    z-index: 60;
+    padding-top: 3px;
+    text-align: left;
+    direction: ltr;
+    transition: opacity 0.25s cubic-bezier(0, 0, 0.2, 1);
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+    width: calc(100% - 24px);
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.progress-bar-container {
+    display: block;
+    position: absolute;
+    width: 100%;
+    bottom: 39px;
+    height: 5px;
+    cursor: pointer;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 3px;
+    background: red;
+    margin-top: 1px;
+}
+
+.video-controls {
+    height: 40px;
+    line-height: 40px;
+    font-size: 109%;
+    text-align: left;
+    direction: ltr;
+    display: flex;
+}
+
+.video-controls * {
+    user-select: none;
+}
+
+.video-controls-left {
+    display: flex;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    float: left;
+}
+
+.video-controls-right {
+    float: right;
+    height: 100%;
+}
+
+.video-controls .control-button {
+    height: 1em;
+    width: 1em;
+    font-size: 40px;
+    outline: none;
+    border: none;
+    background: transparent;
+    appearance: none;
+    opacity: 0.9;
+    will-change: opacity;
+    display: inline-block;
+    position: relative;
+    transition: opacity 0.1s cubic-bezier(0.4, 0, 1, 1);
+}
+
+.video-controls .control-button:not([disabled]) {
+    cursor: pointer;
+}
+
+.video-controls .control-button:hover {
+    opacity: 1;
+}
+
+.video-controls .control-button svg {
+    fill: #fff;
+    height: 100%;
+    width: 100%;
+}
+
+.control-button.play-button {
+    width: 46px;
+}
+
+.play-pause-icon {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    max-width: 40px;
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.play-pause-path {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    top: 0px;
+    background: #fff;
+    transition: clip-path 0.4s ease;
+}
+
+.play-pause-path.start {
+    left: 0px;
+    clip-path: polygon(67% 28%, 105% 40%, 107% 60%, 67% 72%);
+}
+.play-pause-path.end {
+    right: 0px;
+    clip-path: polygon(0% 38.4%, 39% 50%, 39% 50%, 0% 62.1%);
+}
+
+.video-controls .time-display {
+    font-size: 13px;
+    display: inline-block;
+    vertical-align: top;
+    padding: 0 5px;
+    white-space: nowrap;
+    line-height: 39px;
+    color: #ddd;
+    text-shadow: rgba(0, 0, 0, 0.5) 0px 0px 2px;
+}

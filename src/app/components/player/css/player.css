@@ -35,6 +35,23 @@ video-player#video-player {
     left: 0;
 }
 
+.player-gradient {
+    width: 100%;
+    position: absolute;
+    background-repeat: repeat-x;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAACQCAYAAADJLwFvAAAAAXNSR0IArs4c6QAAAPNJREFUKFNlyOlHGAAcxvHuY93H1n1fW1v3fbej+zAmI5PIRGYiM5JEEkkiiSSRRPoj83nze9Pz4uPrSUh4tURPEpKDFJWKNKQHGSoTb4IslY2cIFflIR8FQaEqQnHwVr1DSVCqylCOiqBSVaE6qFG1qAvqVQMa0RQ0qxa8Dz6oVnzEp6BNtaMj6FRd6A56VC/60B8MqEEMBcNqBKPBmBrHBCaDz+oLvgbf1BSmgxk1iznMBwtqEUtYxnf8wAp+YhW/sIZ1bOA3NrGFP/iLbezgH/5jF3vYxwEOcYRjnOAUZzjHBS5xhWvc4BZ3uMcDHvGE5xdEHCONWqEHVAAAAABJRU5ErkJggg==);
+    transition: opacity 0.25s cubic-bezier(0, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+.player-gradient.bottom {
+    height: 144px;
+    padding-top: 45px;
+    bottom: 0px;
+    z-index: 24;
+    background-position: bottom;
+}
+
 #initial-player-container {
     position: absolute;
     top: 0px;
@@ -77,6 +94,6 @@ video-player#video-player {
 
 @media (min-width: 1135px) {
     html {
-        --max-player-width: 854px;
+        --max-player-width: 880px;
     }
 }
