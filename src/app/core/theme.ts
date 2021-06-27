@@ -1,5 +1,5 @@
 import {
-   Select,
+   $,
    conditionalAttribute,
    getFromLocalStorage,
    saveToLocalStorage,
@@ -12,7 +12,7 @@ import { BehaviorSubject } from 'rxjs';
 export const isDarkTheme = new BehaviorSubject(false);
 
 // Constants
-const html = Select('html');
+const html = $('html');
 
 const toggleDarkTheme = (isDark?: boolean) => {
    isDark = isDark ?? !html?.hasAttribute('dark');

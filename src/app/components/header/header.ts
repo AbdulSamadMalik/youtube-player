@@ -3,7 +3,7 @@ import { chooseFiles } from '../filepicker';
 import { registerHotkey } from '../../core/hotkeys';
 import { IpInfo } from '../../models';
 import {
-   Select,
+   $,
    addAttribute,
    removeAttribute,
    preventAnchorReload,
@@ -14,12 +14,12 @@ import {
 import './header.css';
 
 // Refs
-const searchForm = Select<HTMLFormElement>('#search-form'),
-   searchInput = Select<HTMLInputElement>('#search-input'),
-   searchContainer = Select<HTMLDivElement>('.search-container'),
-   chooseFileButton = Select<HTMLButtonElement>('#choose-file-button'),
-   headerHomeLink = Select<HTMLAnchorElement>('.youtube-icon a'),
-   countryCode = Select('.country-code');
+const searchForm = $<HTMLFormElement>('#search-form'),
+   searchInput = $<HTMLInputElement>('#search-input'),
+   searchContainer = $<HTMLDivElement>('.search-container'),
+   chooseFileButton = $<HTMLButtonElement>('#choose-file-button'),
+   headerHomeLink = $<HTMLAnchorElement>('.youtube-icon a'),
+   countryCode = $('.country-code');
 
 // Methods
 const focusSearchBar = () => {

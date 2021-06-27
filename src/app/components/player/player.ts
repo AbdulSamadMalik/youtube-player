@@ -1,11 +1,21 @@
-import { Select, addAttribute, createObjectURL, isString } from '../../utils';
+import { $, addAttribute, createObjectURL, isString } from '../../utils';
+import { BehaviorSubject } from 'rxjs';
 import { chooseFiles } from '../filepicker';
+import { initializeControls } from '../controls';
 
-const playerPlaceholder = Select('#initial-player-container'),
-   videoNode = Select<HTMLVideoElement>('.html5-main-video');
+const playerPlaceholder = $('#initial-player-container'),
+   videoNode = $<HTMLVideoElement>('.html5-main-video'),
+   videoPlayer = $('video-player');
+
+const initialized = new BehaviorSubject<boolean>(false),
+   videoState = new BehaviorSubject<VideoState>('paused');
 
 export const initializePlayer = (): HTMLVideoElement => {
-   addAttribute(playerPlaceholder, 'hidden');
+   if (!initialized.value) {
+      initializeControls();
+      addAttribute(playerPlaceholder, 'hidden');
+      initialized.next(true);
+   }
    return videoNode;
 };
 
@@ -23,4 +33,10 @@ export const setVideoSource = (source: Blob | File | string): Promise<HTMLVideoE
    });
 };
 
+videoNode.addEventListener('play', () => videoState.next('playing'));
+videoNode.addEventListener('pause', () => videoState.next('paused'));
+videoNode.addEventListener('ended', () => videoState.next('completed'));
+
 playerPlaceholder.addEventListener('click', chooseFiles);
+
+export { videoNode, videoState, videoPlayer };

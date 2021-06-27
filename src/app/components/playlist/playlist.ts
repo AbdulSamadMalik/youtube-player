@@ -1,5 +1,5 @@
 import { newVideoDoc } from './canvas';
-import { addAttribute, megabyte, removeAttribute, Select, str } from '../../utils';
+import { addAttribute, megabyte, removeAttribute, $, str } from '../../utils';
 import { initializePlayer } from '../player';
 import { VideoDoc } from '../../models';
 import { chooseFiles } from '../filepicker';
@@ -16,11 +16,11 @@ const supportedFileTypes = ['video/mp4', 'video/webm', 'video/x-matroska', 'vide
    allFileNames: Array<string> = [],
    videoDocs: Array<VideoDoc> = [];
 
-const listItemCount = Select('#playlist-item-count'),
-   listItemsContainer = Select('#playlist-panel-items'),
-   currentListItemIndex = Select('#current-playlist-item'),
-   addToPlayListButton = Select('#add-to-playlist'),
-   videoTileTemplate = Select('template#playlist-tile');
+const listItemCount = $('#playlist-item-count'),
+   listItemsContainer = $('#playlist-panel-items'),
+   currentListItemIndex = $('#current-playlist-item'),
+   addToPlayListButton = $('#add-to-playlist'),
+   videoTileTemplate = $('template#playlist-tile');
 
 const removePlaceholder = () => {
    const placeholder = document.querySelector('#playlist-placeholder');
@@ -94,7 +94,6 @@ const addVideoToPlaylist = async (file: File) => {
       videoNode = initializePlayer();
       changeVideo(videoDoc, newVideoTile);
       playerInitialized = true;
-      videoNode.controls = true;
    }
 };
 
