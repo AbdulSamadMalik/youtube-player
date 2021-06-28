@@ -1,4 +1,4 @@
-export interface IpInfo {
+declare interface IpInfo {
    ip: string;
    city: string;
    region: string;

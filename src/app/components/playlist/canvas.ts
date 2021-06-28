@@ -1,11 +1,5 @@
-import { VideoDoc } from '../../models';
-import {
-   createObjectURL,
-   formatDate,
-   formatFilename,
-   formatTime,
-   generateVideoId,
-} from '../../utils';
+import { createObjectURL, generateVideoId } from '../../utils/common';
+import { formatDate, formatFilename, formatTime } from '../../utils/format';
 
 const canvasRef = document.createElement('canvas'),
    ctx = canvasRef.getContext('2d')!;

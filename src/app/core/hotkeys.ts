@@ -1,5 +1,4 @@
 import { areEqual } from '../utils';
-import { EventCode } from '../models';
 import { filter } from 'lodash-es';
 
 interface Hotkey {

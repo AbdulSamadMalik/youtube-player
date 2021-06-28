@@ -1,16 +1,13 @@
 import { ajax } from 'rxjs/ajax';
 import { chooseFiles } from '../filepicker';
 import { registerHotkey } from '../../core/hotkeys';
-import { IpInfo } from '../../models';
+import { $, addAttribute, removeAttribute } from '../../utils/dom';
 import {
-   $,
-   addAttribute,
-   removeAttribute,
    preventAnchorReload,
    preventDefault,
    getFromLocalStorage,
    saveToLocalStorage,
-} from '../../utils';
+} from '../../utils/common';
 import './header.css';
 
 // Refs

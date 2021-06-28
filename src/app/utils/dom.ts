@@ -1,4 +1,3 @@
-import { ImageType } from '../models';
 import { isBool, isNull, isString } from './operator';
 import { Observable } from 'rxjs';
 

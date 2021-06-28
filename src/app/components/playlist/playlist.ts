@@ -1,7 +1,6 @@
 import { newVideoDoc } from './canvas';
 import { addAttribute, megabyte, removeAttribute, $, str } from '../../utils';
 import { initializePlayer } from '../player';
-import { VideoDoc } from '../../models';
 import { chooseFiles } from '../filepicker';
 import './playlist.css';
 

@@ -1,4 +1,4 @@
-export interface VideoDoc {
+declare interface VideoDoc {
    videoId: string;
    url: string;
    blobURL: string;
