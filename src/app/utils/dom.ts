@@ -36,6 +36,18 @@ export const conditionalAttribute = (
    }
 };
 
+export const conditionalClass = (element: HTMLElement, condition: boolean, className: string) => {
+   if (!(element instanceof HTMLElement) || isNull(className) || !isBool(condition)) {
+      throw new Error(JSON.stringify({ element, className, condition }));
+   }
+
+   if (condition === true) {
+      element.classList.add(className);
+   } else if (condition === false) {
+      element.classList.remove(className);
+   }
+};
+
 // This function should be fast
 export const setStyle = (element: HTMLElement, style: keyof CSSStyleDeclaration, value: string) => {
    if (element == undefined || value == undefined || typeof style !== 'string') {

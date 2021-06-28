@@ -1,10 +1,11 @@
 import { addVideosToPlaylist } from '../components/playlist';
 import { initializePlayer } from '../components/player';
-import { videoNode } from '../components/player';
+import { setVideoSource, videoNode } from '../components/player';
 
-const videoNames = ['1.mp4', '2.mp4'];
+// const videoNames = ['1.mp4', '2.mp4'];
+const videoNames = ['link2.mp4'];
 
-const setToWindow = (prop: any, value: any) => {
+export const setToWindow = (prop: any, value: any) => {
    window[prop] = value;
 };
 
@@ -20,10 +21,11 @@ const Development = async () => {
    //       });
    // }
    initializePlayer();
-   videoNode.src = '/videos/white.mp4';
-   videoNode.autoplay = true;
+   // videoNode.src = '/videos/link2.mp4';
+   setVideoSource('/videos/white.mp4');
+   // videoNode.autoplay = true;
    setToWindow('videoNode', videoNode);
-   videoNode.volume = 0;
+   videoNode.volume = 0.5;
 };
 
 export default Development;

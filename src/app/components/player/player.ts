@@ -5,6 +5,7 @@ import { initializeControls } from '../controls';
 
 const playerPlaceholder = $('#initial-player-container'),
    videoNode = $<HTMLVideoElement>('.html5-main-video'),
+   videoPreview = $<HTMLVideoElement>('.video-preview#video'),
    videoPlayer = $('video-player');
 
 const initialized = new BehaviorSubject<boolean>(false),
@@ -23,8 +24,10 @@ export const setVideoSource = (source: Blob | File | string): Promise<HTMLVideoE
    return new Promise((resolve) => {
       if (source instanceof File || source instanceof Blob) {
          videoNode.src = createObjectURL(source);
+         videoPreview.src = videoNode.src;
       } else if (isString(source)) {
          videoNode.src = source;
+         videoPreview.src = source;
       } else {
          throw new Error('Not a valid video source.');
       }
@@ -39,4 +42,4 @@ videoNode.addEventListener('ended', () => videoState.next('completed'));
 
 playerPlaceholder.addEventListener('click', chooseFiles);
 
-export { videoNode, videoState, videoPlayer };
+export { videoNode, videoState, videoPlayer, videoPreview };

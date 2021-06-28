@@ -135,13 +135,23 @@
       <div id="columns" class="watch-page">
          <div id="primary" class="watch-page">
             <!-- Video Player Starts -->
-            <video-player id="video-player">
+            <video-player class="paused" id="video-player">
                <div id="player" class="video-player">
                   <div id="player-container" class="video-player">
                      <video class="video-stream html5-main-video"></video>
                      <!-- <img src="./videos/1.png" class="video-stream html5-main-video" alt="" /> -->
                      <!-- Player Gridients -->
                      <div class="player-gradient bottom"></div>
+                     <!-- Vidoe preview -->
+                     <div class="video-preview" id="main">
+                        <div class="video-preview hidden" id="container">
+                           <div id="video-container" class="video-preview">
+                              <!-- <img src="images/thumbnail.png" id="video" class="video-preview" /> -->
+                              <video id="video" class="video-preview"></video>
+                           </div>
+                           <div id="text" class="video-preview">34:43</div>
+                        </div>
+                     </div>
                      <!-- Player Controls -->
                      <div class="video-controls-container">
                         <div class="progress-bar-container">
@@ -152,7 +162,7 @@
                         </div>
                         <div class="video-controls">
                            <div class="video-controls-left">
-                              <button class="control-button play-button">
+                              <button class="control-button play-button" id="paused">
                                  <div class="play-pause-icon">
                                     <span class="play-pause-path start"></span>
                                     <span class="play-pause-path middle"></span>

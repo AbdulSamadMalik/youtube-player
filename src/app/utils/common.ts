@@ -61,3 +61,7 @@ export const generateVideoId = (length = 11) => {
       .map(() => charactersArray[Math.round(Math.random() * charactersArray.length)])
       .join('');
 };
+
+export const clamp = (number: number, min: number, max: number) => {
+   return Math.max(min, Math.min(number, max));
+};
