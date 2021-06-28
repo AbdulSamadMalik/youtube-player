@@ -1,4 +1,4 @@
-import { $, conditionalAttribute, setStyle, conditionalClass } from '../../utils/dom';
+import { $, conditionalAttribute, conditionalClass } from '../../utils/dom';
 import { formatTime, elementToRange, clamp } from '../../utils';
 import { fromEvent, merge, of } from 'rxjs';
 import { delay, mapTo, switchMap, tap } from 'rxjs/operators';
@@ -23,16 +23,17 @@ const seekbarContainer = $('.progress-bar-container'),
 
 const setSeekbarScrubberPosition = (time: number) => {
    const percent = (time / videoNode.duration) * 100;
-   setStyle(videoPlayedBar, 'width', percent + '%');
-   setStyle(videoScrubber, 'left', percent + '%');
+   videoPlayedBar.style.width = percent + '%';
+   videoScrubber.style.left = percent + '%';
 };
 
 const updateVolumeScrubberPosition = (e: Event) => {
    const target = e.target as HTMLInputElement,
       volume = target.valueAsNumber / 20;
-   setStyle(volumeScrubber, 'left', volume * 80 + '%');
-   setStyle(voulumeDisplayBar, 'width', volume * 100 + '%');
+
    videoNode.volume = volume;
+   volumeScrubber.style.left = volume * 80 + '%';
+   voulumeDisplayBar.style.width = volume * 100 + '%';
 };
 
 const volumeAdjusterHidden = (value: boolean) => () => {
@@ -62,18 +63,12 @@ const onSeekbarMouseMove = (e: MouseEvent) => {
    }
 };
 
-// const onSeekbarMouseMove = (e: MouseEvent) => {
-//    const target = e.target as HTMLElement,
-//       percent = (e.offsetX / target.offsetWidth) * 100;
-//    showVideoPreview(percent);
-// };
-
 const onSeekbarChange = (percent: number) => {
    const time = videoNode.duration * (percent / 100);
    setSeekbarScrubberPosition(time);
-   setStyle(videoHoverBar, 'width', percent + '%');
-   currentTimeDisplay.innerHTML = formatTime(time);
    videoNode.currentTime = time;
+   videoHoverBar.style.width = percent + '%';
+   currentTimeDisplay.innerHTML = formatTime(time);
 };
 
 const onVideoTimeUpdate = () => {
@@ -107,8 +102,8 @@ const setVolumeByMouseWheel = (ev: WheelEvent) => {
 
 const onVideoVolumeChange = () => {
    const volume = videoNode.volume;
-   setStyle(volumeScrubber, 'left', volume * 80 + '%');
-   setStyle(voulumeDisplayBar, 'width', volume * 100 + '%');
+   volumeScrubber.style.left = volume * 80 + '%';
+   voulumeDisplayBar.style.width = volume * 100 + '%';
 };
 
 const initializeVideoPreview = () => {

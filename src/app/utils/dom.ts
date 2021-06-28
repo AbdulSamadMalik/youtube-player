@@ -48,14 +48,6 @@ export const conditionalClass = (element: HTMLElement, condition: boolean, class
    }
 };
 
-// This function should be fast
-export const setStyle = (element: HTMLElement, style: keyof CSSStyleDeclaration, value: string) => {
-   if (element == undefined || value == undefined || typeof style !== 'string') {
-      throw new Error(JSON.stringify({ element, value, style }));
-   }
-   element.style.setProperty(style, value);
-};
-
 export const canvasToBlob = (
    canvas: HTMLCanvasElement,
    type: ImageType,
