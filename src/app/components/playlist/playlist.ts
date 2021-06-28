@@ -1,6 +1,6 @@
 import { newVideoDoc } from './canvas';
 import { addAttribute, megabyte, removeAttribute, $, str } from '../../utils';
-import { initializePlayer } from '../player';
+import { initializePlayer, setVideoSource } from '../player';
 import { chooseFiles } from '../filepicker';
 import './playlist.css';
 
@@ -47,8 +47,8 @@ const changeVideo = async (videoDoc: VideoDoc, playListItemElement: HTMLElement)
       addAttribute(playListItemElement, 'active');
    }
 
+   setVideoSource(videoDoc.blobURL);
    videoNode.autoplay = true;
-   videoNode.src = videoDoc.blobURL;
    switchingVideo = false;
 };
 

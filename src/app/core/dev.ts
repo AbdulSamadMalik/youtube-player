@@ -25,7 +25,7 @@ const Development = async () => {
    setVideoSource('/videos/white.mp4');
    // videoNode.autoplay = true;
    setToWindow('videoNode', videoNode);
-   videoNode.volume = 0.5;
+   videoNode.volume = 0;
 };
 
 export default Development;

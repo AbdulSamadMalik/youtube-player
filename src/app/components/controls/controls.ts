@@ -77,10 +77,6 @@ const onVideoTimeUpdate = () => {
    currentTimeDisplay.innerHTML = formatTime(time);
 };
 
-const onVideoMetadataLoad = () => {
-   durationTimeDisplay.innerHTML = formatTime(videoNode.duration);
-};
-
 const togglePlayPause = () => {
    videoNode.paused ? videoNode.play() : videoNode.pause();
 };
@@ -100,10 +96,14 @@ const setVolumeByMouseWheel = (ev: WheelEvent) => {
    ev.deltaY < 0 ? changeVolume(+0.1) : changeVolume(-0.1);
 };
 
-const onVideoVolumeChange = () => {
+const checkForVolumeChange = () => {
    const volume = videoNode.volume;
    volumeScrubber.style.left = volume * 80 + '%';
    voulumeDisplayBar.style.width = volume * 100 + '%';
+};
+
+const onVideoMetadataLoad = () => {
+   durationTimeDisplay.innerHTML = formatTime(videoNode.duration);
 };
 
 const initializeVideoPreview = () => {
@@ -134,6 +134,7 @@ export const initializeControls = () => {
    videoState.subscribe(onVideoStateChange);
 
    // Video preview
+   checkForVolumeChange();
    initializeVideoPreview();
 
    // Video seekbar related
@@ -155,5 +156,5 @@ export const initializeControls = () => {
    videoNode.addEventListener('click', togglePlayPause);
    videoNode.addEventListener('timeupdate', onVideoTimeUpdate);
    videoNode.addEventListener('loadedmetadata', onVideoMetadataLoad);
-   videoNode.addEventListener('volumechange', onVideoVolumeChange);
+   videoNode.addEventListener('volumechange', checkForVolumeChange);
 };
