@@ -4,7 +4,7 @@ import {
    getFromLocalStorage,
    saveToLocalStorage,
    prefersDarkTheme,
-} from '../utils';
+} from './utils';
 import { registerHotkey } from './hotkeys';
 import { BehaviorSubject } from 'rxjs';
 

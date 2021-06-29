@@ -161,6 +161,29 @@
     font-size: 12px;
 }
 
+.mute-button g {
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.mute-button[id='unset'] #full,
+.mute-button[id='unset'] #half {
+    opacity: 1 !important;
+}
+
+.mute-button#zero #zero {
+    opacity: 1;
+}
+
+.mute-button#half #half {
+    opacity: 1;
+}
+
+.mute-button#full #half,
+.mute-button#full #full {
+    opacity: 1;
+}
+
 /* Controls */
 .video-controls {
     height: 40px;

@@ -1,8 +1,8 @@
 import { $, conditionalAttribute, conditionalClass } from '../../utils/dom';
-import { formatTime, elementToRange, clamp } from '../../utils';
+import { formatTime, elementToRange, clamp, isNull } from '../../utils';
 import { fromEvent, merge, of } from 'rxjs';
 import { delay, mapTo, switchMap, tap } from 'rxjs/operators';
-import { videoNode, videoState, videoPlayer, videoPreview } from '../player';
+import { videoNode, videoState, videoPlayer, videoPreview, volumeState } from '../player';
 import './controls.css';
 
 const seekbarContainer = $('.progress-bar-container'),
@@ -27,21 +27,18 @@ const setSeekbarScrubberPosition = (time: number) => {
    videoScrubber.style.left = percent + '%';
 };
 
-const updateVolumeScrubberPosition = (e: Event) => {
+const onVolumeInputChange = (e: Event) => {
    const target = e.target as HTMLInputElement,
       volume = target.valueAsNumber / 20;
-
-   videoNode.volume = volume;
-   volumeScrubber.style.left = volume * 80 + '%';
-   voulumeDisplayBar.style.width = volume * 100 + '%';
+   changeVolume(volume);
 };
 
-const volumeAdjusterHidden = (value: boolean) => () => {
-   conditionalAttribute(volumeAdjust, !value, 'aria-expanded');
+const volumeAdjusterHidden = (isHidden: boolean) => () => {
+   conditionalAttribute(volumeAdjust, !isHidden, 'aria-expanded');
 };
 
-const videoPreviewHidden = (value: boolean) => {
-   conditionalClass(videoPreviewContainer, value, 'hidden');
+const videoPreviewHidden = (isHidden: boolean) => {
+   conditionalClass(videoPreviewContainer, isHidden, 'hidden');
 };
 
 const onSeekbarMouseMove = (e: MouseEvent) => {
@@ -86,20 +83,51 @@ const onVideoStateChange = (state: VideoState) => {
    videoPlayer.className = state;
 };
 
-const changeVolume = (difference: number) => {
-   const clampedVolume = clamp(videoNode.volume + difference, 0, 1);
+const onVolumeStateChange = (state: VolumeState) => {
+   muteButton.id = state;
+};
+
+const toggleMute = () => {
+   if (videoNode.volume > 0) {
+      sessionStorage.setItem('volume', videoNode.volume.toString());
+      videoNode.volume = 0;
+      return;
+   }
+
+   const storedVolume = sessionStorage.getItem('volume');
+   videoNode.volume = storedVolume ? parseFloat(storedVolume) : 1;
+};
+
+/** Detect the change in volume and updates the UI */
+const detectVolumeChange = (volume?: number) => {
+   volume = volume ?? videoNode.volume;
+   volumeScrubber.style.left = volume * 80 + '%';
+   voulumeDisplayBar.style.width = volume * 100 + '%';
+
+   if (volume === 0 || videoNode.muted) {
+      volumeState.next('zero');
+   } else if (volume < 0.5) {
+      volumeState.next('half');
+   } else {
+      volumeState.next('full');
+   }
+};
+
+/** Changes video volume to given value */
+const changeVolume = (value: number) => {
+   const clampedVolume = clamp(value, 0, 1);
    videoNode.volume = Math.round(clampedVolume * 100) / 100;
+   detectVolumeChange(clampedVolume);
+};
+
+/** Changes video volume relative to current video volume */
+const changeVolumeRelative = (difference: number) => {
+   changeVolume(videoNode.volume + difference);
 };
 
 const setVolumeByMouseWheel = (ev: WheelEvent) => {
    ev.preventDefault();
-   ev.deltaY < 0 ? changeVolume(+0.1) : changeVolume(-0.1);
-};
-
-const checkForVolumeChange = () => {
-   const volume = videoNode.volume;
-   volumeScrubber.style.left = volume * 80 + '%';
-   voulumeDisplayBar.style.width = volume * 100 + '%';
+   ev.deltaY < 0 ? changeVolumeRelative(+0.1) : changeVolumeRelative(-0.1);
 };
 
 const onVideoMetadataLoad = () => {
@@ -132,9 +160,10 @@ const initializeVideoPreview = () => {
 export const initializeControls = () => {
    // Video playback state
    videoState.subscribe(onVideoStateChange);
+   volumeState.subscribe(onVolumeStateChange);
 
    // Video preview
-   checkForVolumeChange();
+   detectVolumeChange();
    initializeVideoPreview();
 
    // Video seekbar related
@@ -145,16 +174,19 @@ export const initializeControls = () => {
    playPauseButton.addEventListener('click', togglePlayPause);
 
    //  Volume related
+   muteButton.addEventListener('click', toggleMute);
    muteButton.addEventListener('wheel', setVolumeByMouseWheel);
    volumeAdjust.addEventListener('wheel', setVolumeByMouseWheel);
    muteButton.addEventListener('mouseenter', volumeAdjusterHidden(false));
    leftControls.addEventListener('mouseleave', volumeAdjusterHidden(true));
    volumeAdjust.addEventListener('mouseenter', volumeAdjusterHidden(false));
-   volumeControlInput.addEventListener('input', updateVolumeScrubberPosition);
+   volumeControlInput.addEventListener('input', onVolumeInputChange);
 
    //  Video events
    videoNode.addEventListener('click', togglePlayPause);
    videoNode.addEventListener('timeupdate', onVideoTimeUpdate);
    videoNode.addEventListener('loadedmetadata', onVideoMetadataLoad);
-   videoNode.addEventListener('volumechange', checkForVolumeChange);
+   videoNode.addEventListener('volumechange', () => detectVolumeChange());
 };
+
+export { changeVolume, changeVolumeRelative };

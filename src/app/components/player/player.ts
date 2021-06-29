@@ -9,7 +9,8 @@ const playerPlaceholder = $('#initial-player-container'),
    videoPlayer = $('video-player');
 
 const initialized = new BehaviorSubject<boolean>(false),
-   videoState = new BehaviorSubject<VideoState>('paused');
+   videoState = new BehaviorSubject<VideoState>('paused'),
+   volumeState = new BehaviorSubject<VolumeState>('full');
 
 export const initializePlayer = (): HTMLVideoElement => {
    if (!initialized.value) {
@@ -36,10 +37,14 @@ export const setVideoSource = (source: Blob | File | string): Promise<HTMLVideoE
    });
 };
 
-videoNode.addEventListener('play', () => videoState.next('playing'));
-videoNode.addEventListener('pause', () => videoState.next('paused'));
-videoNode.addEventListener('ended', () => videoState.next('completed'));
+const changeVideoStateFn = (state: VideoState) => () => {
+   videoState.next(state);
+};
+
+videoNode.addEventListener('play', changeVideoStateFn('playing'));
+videoNode.addEventListener('pause', changeVideoStateFn('paused'));
+videoNode.addEventListener('ended', changeVideoStateFn('completed'));
 
 playerPlaceholder.addEventListener('click', chooseFiles);
 
-export { videoNode, videoState, videoPlayer, videoPreview };
+export { videoNode, videoState, videoPlayer, videoPreview, volumeState };

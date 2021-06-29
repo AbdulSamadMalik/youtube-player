@@ -1,6 +1,6 @@
 import { ajax } from 'rxjs/ajax';
 import { chooseFiles } from '../filepicker';
-import { registerHotkey } from '../../core/hotkeys';
+import { registerHotkey } from '../../hotkeys';
 import { $, addAttribute, removeAttribute } from '../../utils/dom';
 import {
    preventAnchorReload,

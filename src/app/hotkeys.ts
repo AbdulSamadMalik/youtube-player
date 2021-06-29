@@ -1,4 +1,4 @@
-import { areEqual } from '../utils';
+import { areEqual } from './utils';
 import { filter } from 'lodash-es';
 
 interface Hotkey {

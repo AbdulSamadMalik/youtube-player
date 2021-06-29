@@ -1,11 +1,11 @@
-import { addVideosToPlaylist } from '../components/playlist';
-import { initializePlayer } from '../components/player';
-import { setVideoSource, videoNode } from '../components/player';
+import { addVideosToPlaylist } from './components/playlist';
+import { initializePlayer } from './components/player';
+import { setVideoSource, videoNode } from './components/player';
 
 // const videoNames = ['1.mp4', '2.mp4'];
 const videoNames = ['link2.mp4'];
 
-export const setToWindow = (prop: any, value: any) => {
+export const addToWindow = (prop: any, value: any) => {
    window[prop] = value;
 };
 
@@ -22,9 +22,9 @@ const Development = async () => {
    // }
    initializePlayer();
    // videoNode.src = '/videos/link2.mp4';
-   setVideoSource('/videos/white.mp4');
+   setVideoSource('/videos/disney.mp4');
    // videoNode.autoplay = true;
-   setToWindow('videoNode', videoNode);
+   addToWindow('video', videoNode);
    videoNode.volume = 0;
 };
 
