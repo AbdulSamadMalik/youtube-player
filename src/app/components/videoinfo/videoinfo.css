@@ -5,8 +5,14 @@
 
 #container.video-info {
     display: block;
-    border-bottom: 1px solid var(--yt-spec-10-percent-layer);
     padding: 20px 0 8px;
+}
+
+#divider.video-info {
+    margin-top: 8px;
+    height: 1px;
+    width: 100%;
+    background-color: var(--yt-spec-10-percent-layer);
 }
 
 #video-title.video-info {

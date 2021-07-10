@@ -3,18 +3,16 @@ html {
     --min-player-width: 426px;
 }
 
-video-player#video-player {
+#video-player {
+    position: relative;
     display: block;
     width: 100%;
     user-select: none;
     -webkit-user-drag: none;
+    overflow: hidden;
 }
 
-#video-player.video-player {
-    position: relative;
-}
-
-#player-container.video-player {
+#container.video-player {
     position: relative;
     margin: 0 auto;
     width: 100%;
@@ -135,7 +133,7 @@ video-player#video-player {
     /* max-height: 488px; */
     height: 100%;
     width: 100%;
-    max-height: 74.5vh;
+    // max-height: 74.5vh;
     padding-bottom: 0px;
 }
 
@@ -155,5 +153,55 @@ video-player#video-player {
 @media (min-width: 1135px) {
     html {
         --max-player-width: 880px;
+    }
+}
+
+// Cinema mode
+$theatreHeight: 74vh;
+
+.watch-page#watch-page {
+    // Icons
+    .icon-normal-mode {
+        display: none;
+    }
+}
+
+.watch-page#watch-page[cinema] {
+    // Icons
+    .icon-normal-mode {
+        display: block;
+    }
+    .icon-cinema-mode {
+        display: none;
+    }
+
+    #columns,
+    #primary {
+        padding: 0;
+        margin: 0;
+    }
+
+    #secondary {
+        position: absolute;
+        right: 0;
+        top: $theatreHeight;
+    }
+
+    #video-player {
+        width: 100%;
+        background-color: #000;
+    }
+
+    .video-player#container {
+        width: 100%;
+        height: 100%;
+        height: $theatreHeight;
+        padding: 0px;
+        max-width: 100%;
+    }
+
+    .video-info#container {
+        padding: 22px 12px 0 24px;
+        margin-right: 436px;
     }
 }

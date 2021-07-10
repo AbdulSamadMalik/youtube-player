@@ -1,2 +1,2 @@
 export * from './player';
-import './player.css';
+import './player.scss';

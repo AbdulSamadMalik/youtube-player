@@ -2,8 +2,14 @@ import { $, conditionalAttribute, conditionalClass } from '../../utils/dom';
 import { formatTime, elementToRange, clamp } from '../../utils';
 import { fromEvent, merge, of } from 'rxjs';
 import { delay, mapTo, switchMap, tap } from 'rxjs/operators';
-import { videoNode, videoState, videoPlayer, videoPreview, volumeState } from '../player';
-import './controls.css';
+import {
+   videoNode,
+   videoState,
+   videoPlayer,
+   videoPreview,
+   volumeState,
+   toggleCinemaMode,
+} from '../player';
 
 const seekbarContainer = $('.progress-bar-container'),
    videoHoverBar = $('.progress-bar#hover'),
@@ -17,6 +23,7 @@ const seekbarContainer = $('.progress-bar-container'),
    leftControls = $('.video-controls-left'),
    muteButton = $('.control-button.mute-button'),
    miniPlayerButton = $('.control-button.miniplayer-button'),
+   cinemaButton = $('.control-button.cinema-button'),
    playPauseButton = $('.control-button.play-button'),
    volumeControlInput = $('.volume-adjust #range'),
    videoPreviewContainer = $('.video-preview#container'),
@@ -184,6 +191,7 @@ export const initializeControls = () => {
    // Control listeners
    miniPlayerButton.addEventListener('click', toggleMiniPlayer);
    playPauseButton.addEventListener('click', togglePlayPause);
+   cinemaButton.addEventListener('click', toggleCinemaMode);
 
    //  Volume related
    muteButton.addEventListener('click', toggleMute);
