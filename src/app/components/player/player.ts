@@ -10,7 +10,8 @@ const playerPlaceholder = $('#initial-player-container'),
 
 const initialized = new BehaviorSubject<boolean>(false),
    videoState = new BehaviorSubject<VideoState>('paused'),
-   volumeState = new BehaviorSubject<VolumeState>('full');
+   volumeState = new BehaviorSubject<VolumeState>('full'),
+   isMiniplayer = new BehaviorSubject<boolean>(false);
 
 export const initializePlayer = (): HTMLVideoElement => {
    if (!initialized.value) {
@@ -47,4 +48,4 @@ videoNode.addEventListener('ended', changeVideoStateFn('completed'));
 
 playerPlaceholder.addEventListener('click', chooseFiles);
 
-export { videoNode, videoState, videoPlayer, videoPreview, volumeState };
+export { videoNode, videoState, videoPlayer, videoPreview, volumeState, isMiniplayer };

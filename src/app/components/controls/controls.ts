@@ -1,5 +1,5 @@
 import { $, conditionalAttribute, conditionalClass } from '../../utils/dom';
-import { formatTime, elementToRange, clamp, isNull } from '../../utils';
+import { formatTime, elementToRange, clamp } from '../../utils';
 import { fromEvent, merge, of } from 'rxjs';
 import { delay, mapTo, switchMap, tap } from 'rxjs/operators';
 import { videoNode, videoState, videoPlayer, videoPreview, volumeState } from '../player';
@@ -16,6 +16,7 @@ const seekbarContainer = $('.progress-bar-container'),
    volumeAdjust = $('#volume-adjust'),
    leftControls = $('.video-controls-left'),
    muteButton = $('.control-button.mute-button'),
+   miniPlayerButton = $('.control-button.miniplayer-button'),
    playPauseButton = $('.control-button.play-button'),
    volumeControlInput = $('.volume-adjust #range'),
    videoPreviewContainer = $('.video-preview#container'),
@@ -134,6 +135,16 @@ const onVideoMetadataLoad = () => {
    durationTimeDisplay.innerHTML = formatTime(videoNode.duration);
 };
 
+const toggleMiniPlayer = () => {
+   if (document.pictureInPictureElement) {
+      document.exitPictureInPicture();
+   } else if (document.pictureInPictureEnabled) {
+      videoNode.requestPictureInPicture();
+   } else {
+      alert("Your Browser doesn't support this feature.");
+   }
+};
+
 const initializeVideoPreview = () => {
    const delayer = {
       value: 15,
@@ -171,6 +182,7 @@ export const initializeControls = () => {
    seekbarContainer.addEventListener('mousemove', onSeekbarMouseMove);
 
    // Control listeners
+   miniPlayerButton.addEventListener('click', toggleMiniPlayer);
    playPauseButton.addEventListener('click', togglePlayPause);
 
    //  Volume related
