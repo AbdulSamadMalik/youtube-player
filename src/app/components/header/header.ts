@@ -8,7 +8,6 @@ import {
    getFromLocalStorage,
    saveToLocalStorage,
 } from '../../utils/common';
-import './header.css';
 
 // Refs
 const searchForm = $<HTMLFormElement>('#search-form'),
@@ -16,7 +15,8 @@ const searchForm = $<HTMLFormElement>('#search-form'),
    searchContainer = $<HTMLDivElement>('.search-container'),
    chooseFileButton = $<HTMLButtonElement>('#choose-file-button'),
    headerHomeLink = $<HTMLAnchorElement>('.youtube-icon a'),
-   countryCode = $('.country-code');
+   countryCode = $('.country-code'),
+   header = $('header.header');
 
 // Methods
 const focusSearchBar = () => {
@@ -65,3 +65,5 @@ chooseFileButton.addEventListener('click', chooseFiles);
 registerHotkey({ eventCode: 'KeyC', handler: chooseFiles });
 registerHotkey({ eventCode: 'Escape', handler: blurSearchBar });
 registerHotkey({ eventCode: 'Slash', handler: focusSearchBar, disableOn: searchInput });
+
+export { header };

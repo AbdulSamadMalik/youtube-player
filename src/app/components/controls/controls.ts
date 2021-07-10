@@ -9,6 +9,7 @@ import {
    videoPreview,
    volumeState,
    toggleCinemaMode,
+   toggleFullScreenMode,
 } from '../player';
 
 const seekbarContainer = $('.progress-bar-container'),
@@ -24,6 +25,7 @@ const seekbarContainer = $('.progress-bar-container'),
    muteButton = $('.control-button.mute-button'),
    miniPlayerButton = $('.control-button.miniplayer-button'),
    cinemaButton = $('.control-button.cinema-button'),
+   fullScreenButton = $('.control-button.fullscreen-button'),
    playPauseButton = $('.control-button.play-button'),
    volumeControlInput = $('.volume-adjust #range'),
    videoPreviewContainer = $('.video-preview#container'),
@@ -153,25 +155,19 @@ const toggleMiniPlayer = () => {
 };
 
 const initializeVideoPreview = () => {
-   const delayer = {
-      value: 15,
-      defaultValue: 15,
-      off: () => (delayer.value = 0),
-      on: () => (delayer.value = delayer.defaultValue),
-   };
+   let delayValue = 15;
 
-   const mouseEnter = fromEvent(seekbarContainer, 'mouseenter').pipe(mapTo(false));
-   const mouseMove = fromEvent(seekbarContainer, 'mousemove').pipe(mapTo(false));
-   const mouseLeave = fromEvent(seekbarContainer, 'mouseleave').pipe(tap(delayer.on), mapTo(true));
-   const mouseClick = fromEvent(seekbarContainer, 'click').pipe(tap(delayer.off), mapTo(true));
+   const defaultDelay = delayValue,
+      delayOff = () => (delayValue = 0),
+      delayOn = () => (delayValue = defaultDelay);
 
-   merge(mouseEnter, mouseMove, mouseLeave, mouseClick)
-      .pipe(
-         switchMap((value) => {
-            if (value) return of(value);
-            return of(value).pipe(delay(delayer.value));
-         })
-      )
+   const click = fromEvent(seekbarContainer, 'click').pipe(tap(delayOff), mapTo(true)),
+      mouseEnter = fromEvent(seekbarContainer, 'mouseenter').pipe(mapTo(false)),
+      mouseMove = fromEvent(seekbarContainer, 'mousemove').pipe(mapTo(false)),
+      mouseLeave = fromEvent(seekbarContainer, 'mouseleave').pipe(tap(delayOn), mapTo(true));
+
+   merge(mouseEnter, mouseMove, mouseLeave, click)
+      .pipe(switchMap((bool) => of(bool).pipe(delay(!bool ? delayValue : 0))))
       .subscribe(videoPreviewHidden);
 };
 
@@ -189,18 +185,19 @@ export const initializeControls = () => {
    seekbarContainer.addEventListener('mousemove', onSeekbarMouseMove);
 
    // Control listeners
-   miniPlayerButton.addEventListener('click', toggleMiniPlayer);
-   playPauseButton.addEventListener('click', togglePlayPause);
    cinemaButton.addEventListener('click', toggleCinemaMode);
+   playPauseButton.addEventListener('click', togglePlayPause);
+   miniPlayerButton.addEventListener('click', toggleMiniPlayer);
+   fullScreenButton.addEventListener('click', toggleFullScreenMode);
 
    //  Volume related
    muteButton.addEventListener('click', toggleMute);
    muteButton.addEventListener('wheel', setVolumeByMouseWheel);
    volumeAdjust.addEventListener('wheel', setVolumeByMouseWheel);
+   volumeControlInput.addEventListener('input', onVolumeInputChange);
    muteButton.addEventListener('mouseenter', volumeAdjusterHidden(false));
    leftControls.addEventListener('mouseleave', volumeAdjusterHidden(true));
    volumeAdjust.addEventListener('mouseenter', volumeAdjusterHidden(false));
-   volumeControlInput.addEventListener('input', onVolumeInputChange);
 
    //  Video events
    videoNode.addEventListener('click', togglePlayPause);

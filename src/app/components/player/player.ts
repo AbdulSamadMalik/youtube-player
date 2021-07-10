@@ -1,8 +1,9 @@
-import { $, createObjectURL, isString } from '../../utils';
+import { $, conditionalAttribute, createObjectURL, isString } from '../../utils';
 import { BehaviorSubject } from 'rxjs';
 import { chooseFiles } from '../filepicker';
 import { initializeControls } from '../controls';
 import { registerHotkey } from '../../hotkeys';
+import { header } from '../header';
 
 const playerPlaceholder = $('#initial-player-container'),
    videoNode = $<HTMLVideoElement>('.html5-main-video'),
@@ -45,16 +46,34 @@ const toggleCinemaMode = () => {
    videoPlayer.toggleAttribute('cinema');
 };
 
+const toggleFullScreen = async (isFullScreen: boolean) => {
+   if (isFullScreen) return await document.exitFullscreen();
+   return await document.body.requestFullscreen();
+};
+
+const toggleFullScreenMode = async () => {
+   const isFullScreen = Boolean(document.fullscreenElement);
+
+   toggleFullScreen(isFullScreen);
+   conditionalAttribute(document.body, !isFullScreen, 'fullscreen');
+   conditionalAttribute(watchPage, !isFullScreen, 'fullscreen');
+   conditionalAttribute(videoPlayer, !isFullScreen, 'fullscreen');
+   conditionalAttribute(header, !isFullScreen, 'hidden');
+};
+
 const changeVideoState = (state: VideoState) => () => {
    videoState.next(state);
 };
 
-registerHotkey({ eventCode: 'KeyT', handler: toggleCinemaMode });
 playerPlaceholder.addEventListener('click', chooseFiles);
 
 videoNode.addEventListener('play', changeVideoState('playing'));
 videoNode.addEventListener('pause', changeVideoState('paused'));
 videoNode.addEventListener('ended', changeVideoState('completed'));
+
+// HotKeys
+registerHotkey({ eventCode: 'KeyT', handler: toggleCinemaMode });
+registerHotkey({ eventCode: 'KeyF', handler: toggleFullScreenMode });
 
 export {
    videoNode,
@@ -64,4 +83,5 @@ export {
    volumeState,
    isMiniplayer,
    toggleCinemaMode,
+   toggleFullScreenMode,
 };
