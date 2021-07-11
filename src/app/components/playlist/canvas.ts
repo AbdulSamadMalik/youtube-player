@@ -43,7 +43,7 @@ const snapShot = async (width = 160, height = 90) => {
    return canvasRef.toDataURL('image/jpg', 1);
 };
 
-export const newVideoDoc = (file: File): Promise<VideoDoc> => {
+export const newVideoDoc = (file: File): Promise<VideoDocument> => {
    return new Promise(async (resolve, reject) => {
       try {
          const blobURL = createObjectURL(file),
@@ -56,14 +56,12 @@ export const newVideoDoc = (file: File): Promise<VideoDoc> => {
          };
 
          videoRef.onseeked = async () => {
-            const videoDoc: VideoDoc = {
-               videoId: videoId,
-               blobURL: blobURL,
+            const videoDoc: VideoDocument = {
+               id: videoId,
                fileName: file.name,
-               url: `/watch?v=${videoId}`,
-               title: formatFilename(file.name),
-               dateText: formatDate(file.lastModified),
-               durationText: formatTime(videoRef.duration, 2, 2),
+               blobLocation: blobURL,
+               duration: videoRef.duration,
+               dateAsNumber: file.lastModified,
                thumbnails: {
                   small: await snapShot(104, 60),
                },

@@ -1,43 +1,63 @@
-import { $, conditionalAttribute, createObjectURL, isString } from '../../utils';
-import { BehaviorSubject, catchError, of } from 'rxjs';
-import { chooseFiles } from '../filepicker';
-import { initializeControls } from '../controls';
-import { registerHotkey } from '../../hotkeys';
 import { header } from '../header';
-import { ajax, AjaxResponse } from 'rxjs/ajax';
+import { BehaviorSubject } from 'rxjs';
+import { chooseFiles } from '../filepicker';
+import { registerHotkey } from '../../hotkeys';
+import { initializeControls } from '../controls';
+import { $, conditionalAttribute, createObjectURL, isString } from '../../utils';
+import { formatDate, formatFilename, formatVideoViews } from '../../utils/format';
 
 const playerPlaceholder = $('#initial-player-container'),
    videoNode = $<HTMLVideoElement>('.html5-main-video'),
    videoPreview = $<HTMLVideoElement>('.video-preview#video'),
    videoPlayer = $('#video-player'),
-   watchPage = $('.watch-page#watch-page');
+   watchPage = $('.watch-page#watch-page'),
+   videoTitle = $('.video-info#video-title'),
+   videoDate = $('.video-info#video-date'),
+   videoViewCount = $('.video-info#count');
 
-const PlayerInitialized = new BehaviorSubject<boolean>(false),
+const isInitialized = new BehaviorSubject<boolean>(false),
    videoState = new BehaviorSubject<VideoState>('paused'),
    volumeState = new BehaviorSubject<VolumeState>('full'),
    isMiniplayer = new BehaviorSubject<boolean>(false);
 
 export const initializePlayer = (): HTMLVideoElement => {
-   if (!PlayerInitialized.value) {
+   if (!isInitialized.value) {
       initializeControls();
       playerPlaceholder.parentElement?.removeChild(playerPlaceholder);
-      PlayerInitialized.next(true);
+      isInitialized.next(true);
    }
    return videoNode;
 };
 
-export const setVideoSource = (source: Blob | File | string): Promise<HTMLVideoElement> => {
+export const setVideoSource = (videoInput: VideoInput): Promise<HTMLVideoElement> => {
    return new Promise((resolve, reject) => {
-      if (source instanceof File || source instanceof Blob) {
-         videoNode.src = createObjectURL(source);
-         videoPreview.src = videoNode.src;
-      } else if (isString(source)) {
-         videoNode.src = source;
-         videoPreview.src = source;
+      const setSource = (src: string) => {
+         videoNode.src = src;
+         videoPreview.src = src;
+
+         if (videoInput.fileName) {
+            const baseTitle = 'YouTube Video Player',
+               title = formatFilename(videoInput.fileName);
+            document.title = `${title} - ${baseTitle}`;
+            videoTitle.innerHTML = title;
+         }
+
+         if (videoInput.lastModified) {
+            videoDate.innerHTML = formatDate(videoInput.lastModified);
+         }
+
+         if (videoInput.views) {
+            videoViewCount.innerHTML = formatVideoViews(videoInput.views);
+         }
+      };
+
+      if (videoInput.source instanceof File || videoInput.source instanceof Blob) {
+         setSource(createObjectURL(videoInput.source));
+      } else if (isString(videoInput.source)) {
+         setSource(videoInput.source);
       } else {
          reject('Not a valid video source.');
       }
-
       resolve(videoNode);
    });
 };
@@ -47,24 +67,32 @@ const toggleCinemaMode = () => {
    videoPlayer.toggleAttribute('cinema');
 };
 
-const toggleFullScreen = async (isFullScreen: boolean) => {
-   if (isFullScreen) return await document.exitFullscreen();
-   return await document.body.requestFullscreen();
+const toggleFullScreen = (isFullScreen: boolean) => {
+   if (isFullScreen) return document.exitFullscreen();
+   return document.body.requestFullscreen();
 };
 
 const toggleFullScreenMode = async () => {
    const isFullScreen = Boolean(document.fullscreenElement);
 
-   toggleFullScreen(isFullScreen);
+   await toggleFullScreen(isFullScreen);
    conditionalAttribute(document.body, !isFullScreen, 'fullscreen');
    conditionalAttribute(watchPage, !isFullScreen, 'fullscreen');
    conditionalAttribute(videoPlayer, !isFullScreen, 'fullscreen');
    conditionalAttribute(header, !isFullScreen, 'hidden');
 };
 
-const changeVideoState = (state: VideoState) => () => {
-   videoState.next(state);
+const toggleMiniPlayerMode = () => {
+   if (document.pictureInPictureElement) {
+      document.exitPictureInPicture();
+   } else if (document.pictureInPictureEnabled) {
+      videoNode.requestPictureInPicture();
+   } else {
+      alert("Your Browser doesn't support this feature.");
+   }
 };
+
+const changeVideoState = (state: VideoState) => () => videoState.next(state);
 
 playerPlaceholder.addEventListener('click', chooseFiles);
 
@@ -75,6 +103,7 @@ videoNode.addEventListener('ended', changeVideoState('completed'));
 // HotKeys
 registerHotkey({ eventCode: 'KeyT', handler: toggleCinemaMode });
 registerHotkey({ eventCode: 'KeyF', handler: toggleFullScreenMode });
+registerHotkey({ eventCode: 'KeyI', handler: toggleMiniPlayerMode });
 
 export {
    videoNode,
@@ -85,4 +114,5 @@ export {
    isMiniplayer,
    toggleCinemaMode,
    toggleFullScreenMode,
+   toggleMiniPlayerMode,
 };

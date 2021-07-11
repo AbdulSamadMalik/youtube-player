@@ -1,8 +1,8 @@
 import { newVideoDoc } from './canvas';
-import { addAttribute, megabyte, removeAttribute, $, str } from '../../utils';
-import { initializePlayer, setVideoSource } from '../player';
 import { chooseFiles } from '../filepicker';
-import './playlist.css';
+import { initializePlayer, setVideoSource } from '../player';
+import { $, addAttribute, removeAttribute } from '../../utils/dom';
+import { formatTime, formatFilename, megabyte, str } from '../../utils/format';
 
 let currentVideoId: string,
    playerInitialized: boolean,
@@ -13,7 +13,7 @@ let currentVideoId: string,
 
 const supportedFileTypes = ['video/mp4', 'video/webm', 'video/x-matroska', 'video/quicktime'],
    allFileNames: Array<string> = [],
-   videoDocs: Array<VideoDoc> = [];
+   videoDocs: Array<VideoDocument> = [];
 
 const listItemCount = $('#playlist-item-count'),
    listItemsContainer = $('#playlist-panel-items'),
@@ -26,15 +26,14 @@ const removePlaceholder = () => {
    placeholder && placeholder.parentElement!.removeChild(placeholder);
 };
 
-const changeVideo = async (videoDoc: VideoDoc, playListItemElement: HTMLElement) => {
-   if (currentVideoId && currentVideoId === videoDoc.videoId) {
+const changeVideo = async (videoDoc: VideoDocument, playListItemElement: HTMLElement) => {
+   if (currentVideoId && currentVideoId === videoDoc.id) {
       return;
    }
 
    switchingVideo = true;
    videoNode.pause();
    videoNode.currentTime = 0;
-   window.scrollTo(0, 0);
 
    currentVideoFileName = videoDoc.fileName;
 
@@ -47,29 +46,35 @@ const changeVideo = async (videoDoc: VideoDoc, playListItemElement: HTMLElement)
       addAttribute(playListItemElement, 'active');
    }
 
-   setVideoSource(videoDoc.blobURL);
+   setVideoSource({
+      source: videoDoc.blobLocation,
+      lastModified: videoDoc.dateAsNumber,
+      fileName: videoDoc.fileName,
+   });
+
+   window.scrollTo(0, 0);
    videoNode.autoplay = true;
    switchingVideo = false;
 };
 
-const appendVideoTile = (videoDoc: VideoDoc) => {
+const appendVideoTile = (videoDoc: VideoDocument) => {
    const newVideoTile = document.createElement('video-tile');
    newVideoTile.innerHTML = videoTileTemplate.innerHTML;
    newVideoTile.id = 'video-tile';
 
    const videoAnchor = newVideoTile.querySelector('a')!;
-   videoAnchor.href = videoDoc.url;
+   videoAnchor.href = `/watch?v=${videoDoc.id}`;
    videoAnchor.id = 'video-link';
 
    const thumbnail = videoAnchor.querySelector('img')!;
    thumbnail.src = videoDoc.thumbnails.small;
 
-   const timeBox = videoAnchor.querySelector('#time-box')!;
-   timeBox.innerHTML = videoDoc.durationText;
+   const duration = videoAnchor.querySelector('#duration')!;
+   duration.innerHTML = formatTime(videoDoc.duration, 2, 2);
 
    const title = videoAnchor.querySelector('#video-title')!;
-   title.innerHTML = videoDoc.title;
-   title.setAttribute('title', videoDoc.title);
+   title.innerHTML = formatFilename(videoDoc.fileName);
+   title.setAttribute('title', title.innerHTML);
 
    listItemsContainer.appendChild(newVideoTile);
 

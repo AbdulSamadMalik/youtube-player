@@ -1,0 +1,54 @@
+// Cinema mode
+$cinemaHeight: 74.5vh;
+
+.watch-page#watch-page {
+    // Icons
+    .cinema-off-icon,
+    .fullscreen-off-icon {
+        display: none;
+    }
+}
+
+.watch-page#watch-page[cinema] {
+    // Icons
+    .cinema-off-icon {
+        display: block;
+    }
+    .cinema-on-icon {
+        display: none;
+    }
+
+    #columns {
+        max-width: 100%;
+    }
+
+    #columns,
+    #primary {
+        padding: 0;
+        margin: 0;
+    }
+
+    #secondary {
+        position: absolute;
+        right: 0;
+        top: $cinemaHeight;
+    }
+
+    #video-player {
+        width: 100%;
+        background-color: #000;
+    }
+
+    .video-player#container {
+        width: 100%;
+        height: 100%;
+        height: $cinemaHeight;
+        padding: 0px;
+        max-width: 100%;
+    }
+
+    .video-info#container {
+        padding: 22px 12px 0 32px;
+        margin-right: 436px;
+    }
+}

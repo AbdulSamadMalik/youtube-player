@@ -1,6 +1,6 @@
 import { $, conditionalAttribute, conditionalClass } from '../../utils/dom';
 import { formatTime, elementToRange, clamp } from '../../utils';
-import { fromEvent, merge, of } from 'rxjs';
+import { fromEvent, interval, merge, of } from 'rxjs';
 import { delay, mapTo, switchMap, tap } from 'rxjs/operators';
 import {
    videoNode,
@@ -10,7 +10,9 @@ import {
    volumeState,
    toggleCinemaMode,
    toggleFullScreenMode,
+   toggleMiniPlayerMode,
 } from '../player';
+import { registerHotkey } from '../../hotkeys';
 
 const seekbarContainer = $('.progress-bar-container'),
    videoHoverBar = $('.progress-bar#hover'),
@@ -78,11 +80,12 @@ const onSeekbarChange = (percent: number) => {
    currentTimeDisplay.innerHTML = formatTime(time);
 };
 
-const onVideoTimeUpdate = () => {
-   const time = videoNode.currentTime;
-   setSeekbarScrubberPosition(time);
-   currentTimeDisplay.innerHTML = formatTime(time);
+const detectVideoTimeUpdate = (newTime: number) => {
+   setSeekbarScrubberPosition(newTime);
+   currentTimeDisplay.innerHTML = formatTime(newTime, 2, 2);
 };
+
+const onVideoTimeUpdate = () => detectVideoTimeUpdate(videoNode.currentTime);
 
 const togglePlayPause = () => {
    videoNode.paused ? videoNode.play() : videoNode.pause();
@@ -135,6 +138,18 @@ const changeVolumeRelative = (difference: number) => {
    changeVolume(videoNode.volume + difference);
 };
 
+const seekVideo = (newTime: number) => {
+   detectVideoTimeUpdate(newTime);
+   videoNode.currentTime = clamp(newTime, 0, videoNode.duration);
+};
+
+const seekVideoRelative = (difference: number) => {
+   const newTime = videoNode.currentTime + difference,
+      clampedTime = clamp(newTime, 0, videoNode.duration);
+   detectVideoTimeUpdate(clampedTime);
+   videoNode.currentTime = clampedTime;
+};
+
 const setVolumeByMouseWheel = (ev: WheelEvent) => {
    ev.preventDefault();
    ev.deltaY < 0 ? changeVolumeRelative(+0.1) : changeVolumeRelative(-0.1);
@@ -144,14 +159,14 @@ const onVideoMetadataLoad = () => {
    durationTimeDisplay.innerHTML = formatTime(videoNode.duration);
 };
 
-const toggleMiniPlayer = () => {
-   if (document.pictureInPictureElement) {
-      document.exitPictureInPicture();
-   } else if (document.pictureInPictureEnabled) {
-      videoNode.requestPictureInPicture();
-   } else {
-      alert("Your Browser doesn't support this feature.");
-   }
+const initializeHotkeys = () => {
+   // Hotkeys
+   registerHotkey({ eventCode: 'KeyM', handler: toggleMute });
+   registerHotkey({ eventCode: 'Space', handler: togglePlayPause });
+   registerHotkey({ eventCode: 'ArrowUp', handler: () => changeVolumeRelative(+0.05) });
+   registerHotkey({ eventCode: 'ArrowDown', handler: () => changeVolumeRelative(-0.05) });
+   registerHotkey({ eventCode: 'ArrowLeft', handler: () => seekVideoRelative(-5) });
+   registerHotkey({ eventCode: 'ArrowRight', handler: () => seekVideoRelative(+5) });
 };
 
 const initializeVideoPreview = () => {
@@ -177,6 +192,7 @@ export const initializeControls = () => {
    volumeState.subscribe(onVolumeStateChange);
 
    // Video preview
+   initializeHotkeys();
    detectVolumeChange();
    initializeVideoPreview();
 
@@ -187,8 +203,8 @@ export const initializeControls = () => {
    // Control listeners
    cinemaButton.addEventListener('click', toggleCinemaMode);
    playPauseButton.addEventListener('click', togglePlayPause);
-   miniPlayerButton.addEventListener('click', toggleMiniPlayer);
    fullScreenButton.addEventListener('click', toggleFullScreenMode);
+   miniPlayerButton.addEventListener('click', toggleMiniPlayerMode);
 
    //  Volume related
    muteButton.addEventListener('click', toggleMute);
@@ -200,10 +216,11 @@ export const initializeControls = () => {
    volumeAdjust.addEventListener('mouseenter', volumeAdjusterHidden(false));
 
    //  Video events
+   interval(15).subscribe(onVideoTimeUpdate); // Interval for smooth seekbar
    videoNode.addEventListener('click', togglePlayPause);
-   videoNode.addEventListener('timeupdate', onVideoTimeUpdate);
    videoNode.addEventListener('loadedmetadata', onVideoMetadataLoad);
    videoNode.addEventListener('volumechange', () => detectVolumeChange());
 };
 
+// Exports
 export { changeVolume, changeVolumeRelative };

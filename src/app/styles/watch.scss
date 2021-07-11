@@ -1,0 +1,108 @@
+.watch-page#watch-page {
+    padding-top: 55px;
+    position: relative;
+}
+
+#columns.watch-page {
+    padding: 0 8px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    max-width: 1780px;
+}
+
+#primary.watch-page {
+    padding-top: 24px;
+    padding-right: 24px;
+    margin-left: 24px;
+    width: 100%;
+    min-width: 426px;
+}
+
+#secondary.watch-page {
+    margin-left: auto;
+    flex-shrink: 0;
+    width: 426px;
+    padding-top: 24px;
+    padding-right: 24px;
+}
+
+.video-info {
+    &#video-info {
+        display: block;
+        width: 100%;
+    }
+
+    &#container {
+        display: block;
+        padding: 20px 0 8px;
+    }
+
+    &#divider {
+        margin-top: 8px;
+        height: 1px;
+        width: 100%;
+        background-color: var(--yt-spec-10-percent-layer);
+    }
+
+    &#video-title {
+        display: block;
+        max-height: 4.8rem;
+        overflow: hidden;
+        font-size: 1.8rem;
+        font-weight: 400;
+        line-height: 2.4rem;
+        color: var(--primary-text-color);
+        font-family: inherit;
+    }
+
+    &#info-text {
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        font-size: 1.4rem;
+        font-weight: 400;
+        line-height: 2.1rem;
+        letter-spacing: normal;
+        display: flex;
+        color: var(--secondary-text-color);
+        height: 43px;
+    }
+
+    &#count {
+        color: inherit;
+        display: inline-block;
+        font-size: inherit;
+        font-weight: inherit;
+        line-height: inherit;
+        letter-spacing: normal;
+    }
+
+    &#date {
+        color: inherit;
+        display: inline-block;
+        font-size: inherit;
+        font-weight: inherit;
+        line-height: inherit;
+        letter-spacing: normal;
+    }
+
+    &#dot {
+        margin: 0 4px;
+        color: inherit;
+    }
+}
+
+// Small Tablet View
+@media (max-width: 860px) {
+    .watch-page {
+        #secondary {
+            display: none;
+        }
+
+        #video-info #container {
+            margin-right: 0px !important;
+        }
+    }
+}

@@ -1,2 +1,2 @@
 export * from './header';
-import './header.css';
+import './header.scss';

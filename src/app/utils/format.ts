@@ -7,8 +7,15 @@ export const padStart = (value: string, maxLength = 2, fillString = '0') => {
    return value.padStart(maxLength, fillString);
 };
 
+export const formatVideoViews = (count: number) => {
+   if (count > 0 && !isNaN(count)) {
+      return `${count} views`;
+   }
+   return 'No Views';
+};
+
 export const formatTime = (seconds: number, minPad = 2, secPad = 2) => {
-   if (!seconds) return '0:00';
+   if (isNaN(seconds)) seconds = 0;
 
    const hours = Math.floor(seconds / 3600),
       mins = Math.floor((seconds - hours * 3600) / 60),

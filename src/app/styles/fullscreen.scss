@@ -1,0 +1,132 @@
+// Fullscreen mode
+body[fullscreen] {
+    padding-top: 0px;
+}
+
+.watch-page#watch-page[fullscreen] {
+    padding-top: 0px;
+
+    // Icons
+    .fullscreen-on-icon {
+        display: none;
+    }
+
+    .fullscreen-off-icon {
+        display: block;
+    }
+
+    #columns,
+    #primary {
+        padding: 0;
+        margin: 0;
+    }
+
+    #secondary {
+        position: absolute;
+        right: 0;
+        top: 100vh;
+    }
+
+    #video-player {
+        width: 100%;
+        background-color: #000;
+    }
+
+    .video-player#container {
+        width: 100vw;
+        height: 100vh;
+        padding: 0px;
+        max-width: 100%;
+    }
+
+    .video-preview {
+        &#main {
+            bottom: 80px;
+        }
+
+        &#container {
+            width: 243px;
+        }
+
+        &#video-container {
+            height: 141px;
+        }
+
+        &#text {
+            font-size: 18px;
+            padding-top: 24px;
+        }
+    }
+
+    .progress-bar-container {
+        bottom: 48px;
+
+        #played,
+        #hover,
+        #background {
+            height: 5px;
+        }
+
+        &:hover {
+            #scrubber {
+                font-size: 20px;
+            }
+
+            #played,
+            #hover,
+            #background {
+                height: 8px;
+            }
+        }
+    }
+
+    .video-controls {
+        height: 54px;
+
+        .control-button {
+            font-size: 54px;
+
+            &.play-button {
+                // width: 69px;
+                width: 64px;
+                height: 54px;
+
+                .play-pause-icon {
+                    height: 56px;
+                    width: 56px;
+                    max-width: unset;
+                }
+            }
+
+            &.miniplayer-button,
+            &.cinema-button {
+                display: none;
+            }
+        }
+
+        .volume-adjust {
+            &[aria-expanded]:not([aria-expanded='false']) {
+                width: 81px;
+            }
+
+            #background,
+            #volume {
+                height: 5px;
+            }
+
+            #scrubber {
+                font-size: 16px;
+            }
+        }
+
+        .time-display {
+            font-size: 20px;
+            line-height: 55px;
+        }
+    }
+
+    .video-info#container {
+        padding: 22px 12px 0 24px;
+        margin-right: 436px;
+    }
+}
