@@ -22,7 +22,7 @@ const Development = async () => {
    // }
    initializePlayer();
    // videoNode.src = '/videos/link2.mp4';
-   setVideoSource('/videos/disney.mp4');
+   setVideoSource('/local/videos/disney.mp4');
    // videoNode.autoplay = true;
    addToWindow('video', videoNode);
    videoNode.volume = 0;

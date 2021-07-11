@@ -8,23 +8,24 @@ export const saveToLocalStorage = (
 };
 
 export const getFromLocalStorage = (name: string, defaultValue: any = null) => {
-   const stored = localStorage.getItem(name);
+   const stored = localStorage.getItem(name),
+      getDefaultValue = () => (isFunction(defaultValue) ? defaultValue() : defaultValue);
    if (stored === null) {
-      return !isFunction(defaultValue) ? defaultValue : defaultValue();
+      return getDefaultValue();
    }
 
    try {
       return JSON.parse(stored).value;
    } catch (error) {
-      return !isFunction(defaultValue) ? defaultValue : defaultValue();
+      return getDefaultValue();
    }
 };
 
-export const createObjectURL = (file: File | Blob) => {
-   if (!file) throw new Error('No file or blob object');
+export const createObjectURL = (source: File | Blob) => {
+   if (!source) throw new Error('No file or blob object');
 
    const windowURL = window.URL || window.webkitURL;
-   return windowURL.createObjectURL(file);
+   return windowURL.createObjectURL(source);
 };
 
 /** Prevents default behaviour for an `Event` */
