@@ -1,3 +1,5 @@
+$headerTransitionDuration: 300ms;
+
 .header {
     background: var(--header-bg-color);
     position: fixed;
@@ -6,7 +8,21 @@
     height: 56px;
     display: flex;
     align-items: center;
-    z-index: 1000000;
+    z-index: 10000;
+    transform: translateY(0);
+    transition: transform $headerTransitionDuration ease;
+
+    &[hide] {
+        opacity: 0;
+        transition: transform $headerTransitionDuration ease, opacity $headerTransitionDuration;
+        transform: translateY(-60px);
+    }
+
+    &[show] {
+        opacity: 1;
+        transform: translateY(0);
+        transition: transform $headerTransitionDuration ease;
+    }
 }
 
 .header .header-inner-container {

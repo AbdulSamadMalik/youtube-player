@@ -16,7 +16,7 @@
          href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap"
          rel="stylesheet"
       />
-      <link rel="stylesheet" href="/src/app/styles/main.scss">
+      <link rel="stylesheet" href="/src/app/styles/main.scss" />
       <script defer type="module" src="/src/app/main.ts"></script>
    </head>
 
@@ -188,15 +188,15 @@
                         </div>
                      </div>
                      <!-- Player Controls -->
-                     <div class="video-controls-container">
+                     <div id="video-controls" class="video-controls" hidden>
                         <div class="progress-bar-container">
                            <div id="background" class="progress-bar"></div>
                            <div id="played" class="progress-bar"></div>
                            <div id="hover" class="progress-bar"></div>
                            <div id="scrubber" class="progress-bar"></div>
                         </div>
-                        <div class="video-controls">
-                           <div class="video-controls-left">
+                        <div class="video-controls" id="container">
+                           <div class="video-controls left">
                               <button class="control-button play-button" id="paused">
                                  <div class="play-pause-icon">
                                     <span class="play-pause-path start"></span>
@@ -249,12 +249,19 @@
                                  <div id="scrubber" class="volume-adjust"></div>
                               </div>
                               <div class="time-display">
-                                 <span class="time-current">00:00</span>
+                                 <span class="time-current">0:00</span>
                                  <span class="time-separator">/</span>
-                                 <span class="time-duration">00:00</span>
+                                 <span class="time-duration">0:00</span>
                               </div>
+                              <button class="control-button fullscreen-scroll-button">
+                                 <svg viewBox="0 0 24 24">
+                                    <path
+                                       d="M7.41,8.59L12,13.17l4.59-4.58L18,10l-6,6l-6-6L7.41,8.59z"
+                                    ></path>
+                                 </svg>
+                              </button>
                            </div>
-                           <div class="video-controls-right">
+                           <div class="video-controls right">
                               <button class="control-button settings-button">
                                  <svg version="1.1" viewBox="0 0 36 36">
                                     <path

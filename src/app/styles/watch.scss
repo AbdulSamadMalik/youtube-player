@@ -94,9 +94,52 @@
     }
 }
 
-// Small Tablet View
+@media (max-width: 1120px) {
+    .watch-page {
+        #primary {
+            .video-player {
+                &#container {
+                    width: 640px;
+                }
+            }
+        }
+
+        #secondary {
+            width: calc(100vw - 640px - 100px);
+        }
+    }
+}
+
+@media (max-width: 1016px) {
+    .watch-page {
+        #primary {
+            .video-player {
+                &#container {
+                    width: 784px;
+                    height: 441px;
+                    padding-top: 0px;
+                }
+            }
+        }
+
+        #secondary {
+            display: none;
+        }
+    }
+}
+
 @media (max-width: 860px) {
     .watch-page {
+        #primary {
+            .video-player {
+                &#container {
+                    width: 100%;
+                    height: 0px;
+                    padding-top: $player-container-padding-top;
+                }
+            }
+        }
+
         #secondary {
             display: none;
         }

@@ -1,6 +1,16 @@
 // Fullscreen mode
 body[fullscreen] {
     padding-top: 0px;
+    overflow-y: auto;
+    position: static !important;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    @media (max-width: 860px) {
+        overflow-y: hidden !important;
+    }
 }
 
 .watch-page#watch-page[fullscreen] {
@@ -25,6 +35,8 @@ body[fullscreen] {
         position: absolute;
         right: 0;
         top: 100vh;
+        padding-right: 36px;
+        padding-top: 36px;
     }
 
     #video-player {
@@ -55,6 +67,7 @@ body[fullscreen] {
         &#text {
             font-size: 18px;
             padding-top: 24px;
+            padding-bottom: 6px;
         }
     }
 
@@ -80,8 +93,13 @@ body[fullscreen] {
         }
     }
 
-    .video-controls {
-        height: 54px;
+    .video-controls#video-controls {
+        bottom: 6px;
+
+        &,
+        .video-controls {
+            height: 54px;
+        }
 
         .control-button {
             font-size: 54px;
@@ -94,7 +112,6 @@ body[fullscreen] {
                 .play-pause-icon {
                     height: 56px;
                     width: 56px;
-                    max-width: unset;
                 }
             }
 
@@ -125,8 +142,14 @@ body[fullscreen] {
         }
     }
 
-    .video-info#container {
-        padding: 22px 12px 0 24px;
-        margin-right: 436px;
+    .video-info {
+        &#container {
+            padding: 24px 24px 0px 36px;
+            margin-right: 436px;
+        }
+
+        &#divider {
+            margin-top: 16px;
+        }
     }
 }

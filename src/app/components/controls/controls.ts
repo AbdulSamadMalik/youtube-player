@@ -1,6 +1,6 @@
-import { $, conditionalAttribute, conditionalClass } from '../../utils/dom';
+import { $, conditionalAttribute, conditionalClass, removeAttribute } from '../../utils/dom';
 import { formatTime, elementToRange, clamp } from '../../utils';
-import { fromEvent, interval, merge, of } from 'rxjs';
+import { fromEvent, interval, merge, of, asyncScheduler, throttleTime, Subscription } from 'rxjs';
 import { delay, mapTo, switchMap, tap } from 'rxjs/operators';
 import {
    videoNode,
@@ -13,8 +13,10 @@ import {
    toggleMiniPlayerMode,
 } from '../player';
 import { registerHotkey } from '../../hotkeys';
+import { header } from '../header';
 
-const seekbarContainer = $('.progress-bar-container'),
+const videoControls = $('#video-controls.video-controls'),
+   seekbarContainer = $('.progress-bar-container'),
    videoHoverBar = $('.progress-bar#hover'),
    videoPlayedBar = $('.progress-bar#played'),
    videoScrubber = $('.progress-bar#scrubber'),
@@ -23,12 +25,13 @@ const seekbarContainer = $('.progress-bar-container'),
    currentTimeDisplay = $('.time-current'),
    durationTimeDisplay = $('.time-duration'),
    volumeAdjust = $('#volume-adjust'),
-   leftControls = $('.video-controls-left'),
+   leftControls = $('.video-controls.left'),
    muteButton = $('.control-button.mute-button'),
    miniPlayerButton = $('.control-button.miniplayer-button'),
    cinemaButton = $('.control-button.cinema-button'),
    fullScreenButton = $('.control-button.fullscreen-button'),
    playPauseButton = $('.control-button.play-button'),
+   scrollButton = $('.control-button.fullscreen-scroll-button'),
    volumeControlInput = $('.volume-adjust #range'),
    videoPreviewContainer = $('.video-preview#container'),
    videoPreviewText = $('.video-preview#text');
@@ -57,9 +60,9 @@ const onSeekbarMouseMove = (e: MouseEvent) => {
    const target = e.target as HTMLElement,
       percent = (e.offsetX / target.offsetWidth) * 100,
       time = (videoNode.duration * percent) / 100,
-      previewWidth = videoPreviewContainer.offsetWidth / 1.8;
+      previewWidth = videoPreviewContainer.offsetWidth / 1.98;
 
-   videoPreview.currentTime = time;
+   videoPreview.currentTime = clamp(time, 0, videoPreview.duration);
    videoPreviewText.innerHTML = formatTime(time, 1, 2);
    videoHoverBar.style.width = percent + '%';
 
@@ -77,12 +80,12 @@ const onSeekbarChange = (percent: number) => {
    setSeekbarScrubberPosition(time);
    videoNode.currentTime = time;
    videoHoverBar.style.width = percent + '%';
-   currentTimeDisplay.innerHTML = formatTime(time);
+   currentTimeDisplay.innerHTML = formatTime(time, 1, 2);
 };
 
 const detectVideoTimeUpdate = (newTime: number) => {
    setSeekbarScrubberPosition(newTime);
-   currentTimeDisplay.innerHTML = formatTime(newTime, 2, 2);
+   currentTimeDisplay.innerHTML = formatTime(newTime, 1, 2);
 };
 
 const onVideoTimeUpdate = () => detectVideoTimeUpdate(videoNode.currentTime);
@@ -112,8 +115,8 @@ const toggleMute = () => {
 };
 
 /** Detect the change in volume and updates the UI */
-const detectVolumeChange = (volume?: number) => {
-   volume = volume ?? videoNode.volume;
+const detectVolumeChange = (volume?: number | Event) => {
+   volume = volume instanceof Event ? videoNode.volume : volume ?? videoNode.volume;
    volumeScrubber.style.left = volume * 80 + '%';
    voulumeDisplayBar.style.width = volume * 100 + '%';
 
@@ -156,7 +159,22 @@ const setVolumeByMouseWheel = (ev: WheelEvent) => {
 };
 
 const onVideoMetadataLoad = () => {
-   durationTimeDisplay.innerHTML = formatTime(videoNode.duration);
+   durationTimeDisplay.innerHTML = formatTime(videoNode.duration, 1, 2);
+};
+
+/** Body will only scroll if fullscreen mode is on */
+const onBodyScroll = () => {
+   const condition = document.body.scrollTop > 0;
+   conditionalAttribute(scrollButton, condition, 'hide');
+   conditionalAttribute(header, condition, 'show');
+};
+
+const onScrollButtonClick = () => {
+   document.body.scrollTo({
+      left: 0,
+      top: 185,
+      behavior: 'smooth',
+   });
 };
 
 const initializeHotkeys = () => {
@@ -184,10 +202,15 @@ const initializeVideoPreview = () => {
    merge(mouseEnter, mouseMove, mouseLeave, click)
       .pipe(switchMap((bool) => of(bool).pipe(delay(!bool ? delayValue : 0))))
       .subscribe(videoPreviewHidden);
+
+   merge(mouseEnter, mouseLeave)
+      .pipe(switchMap((bool) => of(bool).pipe(delay(!bool ? delayValue : 0))))
+      .subscribe((bool) => conditionalAttribute(seekbarContainer, !bool, 'hover'));
 };
 
 export const initializeControls = () => {
    // Video playback state
+   removeAttribute(videoControls, 'hidden');
    videoState.subscribe(onVideoStateChange);
    volumeState.subscribe(onVolumeStateChange);
 
@@ -203,6 +226,7 @@ export const initializeControls = () => {
    // Control listeners
    cinemaButton.addEventListener('click', toggleCinemaMode);
    playPauseButton.addEventListener('click', togglePlayPause);
+   scrollButton.addEventListener('click', onScrollButtonClick);
    fullScreenButton.addEventListener('click', toggleFullScreenMode);
    miniPlayerButton.addEventListener('click', toggleMiniPlayerMode);
 
@@ -215,12 +239,15 @@ export const initializeControls = () => {
    leftControls.addEventListener('mouseleave', volumeAdjusterHidden(true));
    volumeAdjust.addEventListener('mouseenter', volumeAdjusterHidden(false));
 
-   //  Video events
+   // Subscriptions
+   fromEvent(document.body, 'scroll').subscribe(onBodyScroll);
    interval(15).subscribe(onVideoTimeUpdate); // Interval for smooth seekbar
+
+   //  Video events
    videoNode.addEventListener('click', togglePlayPause);
    videoNode.addEventListener('loadedmetadata', onVideoMetadataLoad);
-   videoNode.addEventListener('volumechange', () => detectVolumeChange());
+   videoNode.addEventListener('volumechange', detectVolumeChange);
 };
 
 // Exports
-export { changeVolume, changeVolumeRelative };
+export { changeVolume, changeVolumeRelative, scrollButton };

@@ -64,5 +64,8 @@ export const generateVideoId = (length = 11) => {
 };
 
 export const clamp = (number: number, min: number, max: number) => {
+   if (isNaN(number) || isNaN(min) || isNaN(max)) {
+      return 0;
+   }
    return Math.max(min, Math.min(number, max));
 };

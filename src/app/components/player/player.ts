@@ -2,11 +2,11 @@ import { header } from '../header';
 import { BehaviorSubject } from 'rxjs';
 import { chooseFiles } from '../filepicker';
 import { registerHotkey } from '../../hotkeys';
-import { initializeControls } from '../controls';
+import { initializeControls, scrollButton } from '../controls';
 import { $, conditionalAttribute, createObjectURL, isString } from '../../utils';
 import { formatDate, formatFilename, formatVideoViews } from '../../utils/format';
 
-const playerPlaceholder = $('#initial-player-container'),
+const initialScreen = $('#initial-player-container'),
    videoNode = $<HTMLVideoElement>('.html5-main-video'),
    videoPreview = $<HTMLVideoElement>('.video-preview#video'),
    videoPlayer = $('#video-player'),
@@ -23,7 +23,7 @@ const isInitialized = new BehaviorSubject<boolean>(false),
 export const initializePlayer = (): HTMLVideoElement => {
    if (!isInitialized.value) {
       initializeControls();
-      playerPlaceholder.parentElement?.removeChild(playerPlaceholder);
+      initialScreen.parentElement?.removeChild(initialScreen);
       isInitialized.next(true);
    }
    return videoNode;
@@ -67,19 +67,19 @@ const toggleCinemaMode = () => {
    videoPlayer.toggleAttribute('cinema');
 };
 
-const toggleFullScreen = (isFullScreen: boolean) => {
-   if (isFullScreen) return document.exitFullscreen();
+const toggleFullScreenMode = () => {
+   if (Boolean(document.fullscreenElement)) return document.exitFullscreen();
    return document.body.requestFullscreen();
 };
 
-const toggleFullScreenMode = async () => {
-   const isFullScreen = Boolean(document.fullscreenElement);
+const onFullScreenChange = () => {
+   const isFullScreen = Boolean(document.fullscreenElement ?? document.fullscreen);
 
-   await toggleFullScreen(isFullScreen);
-   conditionalAttribute(document.body, !isFullScreen, 'fullscreen');
-   conditionalAttribute(watchPage, !isFullScreen, 'fullscreen');
-   conditionalAttribute(videoPlayer, !isFullScreen, 'fullscreen');
-   conditionalAttribute(header, !isFullScreen, 'hidden');
+   conditionalAttribute(scrollButton, isFullScreen, 'show');
+   conditionalAttribute(header, isFullScreen, 'hide');
+   conditionalAttribute(watchPage, isFullScreen, 'fullscreen');
+   conditionalAttribute(videoPlayer, isFullScreen, 'fullscreen');
+   conditionalAttribute(document.body, isFullScreen, 'fullscreen');
 };
 
 const toggleMiniPlayerMode = () => {
@@ -94,7 +94,8 @@ const toggleMiniPlayerMode = () => {
 
 const changeVideoState = (state: VideoState) => () => videoState.next(state);
 
-playerPlaceholder.addEventListener('click', chooseFiles);
+initialScreen.addEventListener('click', chooseFiles);
+document.body.addEventListener('fullscreenchange', onFullScreenChange);
 
 videoNode.addEventListener('play', changeVideoState('playing'));
 videoNode.addEventListener('pause', changeVideoState('paused'));

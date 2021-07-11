@@ -32,6 +32,7 @@ $cinemaHeight: 74.5vh;
         position: absolute;
         right: 0;
         top: $cinemaHeight;
+        width: 426px;
     }
 
     #video-player {
@@ -50,5 +51,17 @@ $cinemaHeight: 74.5vh;
     .video-info#container {
         padding: 22px 12px 0 32px;
         margin-right: 436px;
+    }
+}
+
+@media (max-width: 1016px) {
+    .watch-page {
+        #primary {
+            .video-info {
+                &#container {
+                    width: 100%;
+                }
+            }
+        }
     }
 }
