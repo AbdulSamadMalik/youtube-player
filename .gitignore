@@ -8,3 +8,4 @@ local
 videos
 images
 dev.ts
+*.log
