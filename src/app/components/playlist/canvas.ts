@@ -1,4 +1,4 @@
-import { createObjectURL, generateVideoId } from '../../utils/common';
+import { createObjectURL, base64Id } from '../../utils/common';
 import { formatDate, formatFilename, formatTime } from '../../utils/format';
 
 const canvasRef = document.createElement('canvas'),
@@ -47,7 +47,7 @@ export const newVideoDoc = (file: File): Promise<VideoDocument> => {
    return new Promise(async (resolve, reject) => {
       try {
          const blobURL = createObjectURL(file),
-            videoId = generateVideoId();
+            videoId = base64Id(11);
 
          videoRef.oncanplaythrough = () => {
             if (!isNaN(videoRef.duration)) {

@@ -61,12 +61,12 @@
 }
 
 #playlist-panel-items {
-    background-color: var(--primary-bg-color);
     height: 100%;
-    padding: 4px 0;
-    max-height: calc(100vh - 189px);
+    // padding: 4px 0;
     overflow-y: auto;
     overflow-x: hidden;
+    max-height: calc(100vh - 189px);
+    background-color: var(--primary-bg-color);
 }
 
 #playlist-panel-items #playlist-placeholder {

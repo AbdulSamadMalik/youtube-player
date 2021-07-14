@@ -1,25 +1,4 @@
-import { isFunction } from './operator';
-
-export const saveToLocalStorage = (
-   name: string,
-   value: string | number | boolean | object | Array<any>
-) => {
-   localStorage.setItem(name, JSON.stringify({ value }));
-};
-
-export const getFromLocalStorage = (name: string, defaultValue: any = null) => {
-   const stored = localStorage.getItem(name),
-      getDefaultValue = () => (isFunction(defaultValue) ? defaultValue() : defaultValue);
-   if (stored === null) {
-      return getDefaultValue();
-   }
-
-   try {
-      return JSON.parse(stored).value;
-   } catch (error) {
-      return getDefaultValue();
-   }
-};
+import { random } from 'lodash-es';
 
 export const createObjectURL = (source: File | Blob) => {
    if (!source) throw new Error('No file or blob object');
@@ -49,18 +28,18 @@ export const prefersDarkTheme = () => {
 export const preventAnchorReload = (event: MouseEvent) => {
    if (!event.shiftKey && !event.ctrlKey && !event.metaKey && !event.altKey) {
       event.preventDefault();
-      event.stopPropagation();
+      event.stopImmediatePropagation();
    }
 };
 
-export const generateVideoId = (length = 11) => {
+export const base64Id = (length = 25, base: string = '') => {
    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-';
-   const charactersArray = Array.from(characters);
 
-   return Array(length)
-      .fill(0)
-      .map(() => charactersArray[Math.round(Math.random() * charactersArray.length)])
-      .join('');
+   for (let i = 0; i < length; i++) {
+      base += characters[random(0, characters.length - 1)];
+   }
+
+   return base;
 };
 
 export const clamp = (number: number, min: number, max: number) => {

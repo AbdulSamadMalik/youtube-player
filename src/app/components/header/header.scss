@@ -64,11 +64,23 @@ $headerTransitionDuration: 300ms;
     -webkit-flex-direction: row;
     flex-direction: row;
     margin-right: 37px;
-}
 
-.header .header-inner-container .start .youtube-icon a {
-    display: flex;
-    align-items: center;
+    svg {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    &:focus {
+        outline-width: 2px;
+        outline-color: white;
+        outline-offset: 3px;
+        outline-style: solid;
+
+        & + .country-code {
+            opacity: 0;
+        }
+    }
 }
 
 .header .header-inner-container .start .youtube-icon .country-code {
@@ -136,10 +148,10 @@ $headerTransitionDuration: 300ms;
     border-radius: 0 2px 2px 0;
     margin: 0;
     border-left: none;
-}
 
-.header .search-form .search-button:hover svg {
-    opacity: 1;
+    &:hover svg {
+        opacity: 1;
+    }
 }
 
 .header .search-form button svg {
@@ -231,10 +243,6 @@ $headerTransitionDuration: 300ms;
 
 .header .header-inner-container .end .buttons button {
     margin-right: 8px;
-}
-
-.header .header-inner-container .end .buttons button:not(#choose-file-button) {
-    cursor: default;
 }
 
 .header .header-inner-container .end .buttons .avatar-btn {

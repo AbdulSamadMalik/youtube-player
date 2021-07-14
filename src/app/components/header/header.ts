@@ -1,20 +1,17 @@
-import { ajax } from 'rxjs/ajax';
+import { ajax, AjaxError } from 'rxjs/ajax';
 import { chooseFiles } from '../filepicker';
 import { registerHotkey } from '../../hotkeys';
 import { $, addAttribute, removeAttribute } from '../../utils/dom';
-import {
-   preventAnchorReload,
-   preventDefault,
-   getFromLocalStorage,
-   saveToLocalStorage,
-} from '../../utils/common';
+import { Storage } from '../../classes/Storage';
+import { preventAnchorReload, preventDefault } from '../../utils/common';
+import { catchError, map, Observable, of } from 'rxjs';
 
 // Refs
 const searchForm = $<HTMLFormElement>('#search-form'),
    searchInput = $<HTMLInputElement>('#search-input'),
    searchContainer = $<HTMLDivElement>('.search-container'),
    chooseFileButton = $<HTMLButtonElement>('#choose-file-button'),
-   headerHomeLink = $<HTMLAnchorElement>('.youtube-icon a'),
+   headerHomeLink = $<HTMLAnchorElement>('a.youtube-icon'),
    countryCode = $('.country-code'),
    header = $('header.header');
 
@@ -38,23 +35,30 @@ const handleSearchFormSubmit = (ev: Event) => {
    }
 };
 
-const setCountryCode = () => {
-   const storedCode = getFromLocalStorage('countryCode');
+const getCountryCode = (): Observable<string> => {
+   const stored = Storage.get<string>('countryCode');
 
-   if (storedCode) {
-      countryCode.innerHTML = storedCode;
-      return;
+   if (stored) {
+      return of(stored);
    }
 
-   ajax<IpInfo>('https://ipinfo.io/?token=e7f553952c3125').subscribe(({ response }) => {
-      const { country } = response;
-      countryCode.innerHTML = country;
-      saveToLocalStorage('countryCode', country);
-   });
+   return ajax<IpInfo>('https://ipinfo.io/?token=e7f553952c3125').pipe(
+      map((request) => request.response.country),
+      catchError((error: AjaxError) => {
+         console.error('Error fetching country code', error);
+         Storage.set<string>('countryCode', 'IN');
+         return getCountryCode();
+      })
+   );
 };
 
 // Event Listeners
-document.addEventListener('DOMContentLoaded', setCountryCode);
+document.addEventListener('DOMContentLoaded', () => {
+   getCountryCode().subscribe((code) => {
+      countryCode.innerHTML = code;
+   });
+});
+
 searchInput.addEventListener('focus', focusSearchBar);
 searchInput.addEventListener('blur', blurSearchBar);
 headerHomeLink.addEventListener('click', preventAnchorReload);

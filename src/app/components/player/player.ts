@@ -1,9 +1,10 @@
 import { header } from '../header';
+import { isString } from 'lodash-es';
 import { BehaviorSubject } from 'rxjs';
 import { chooseFiles } from '../filepicker';
 import { registerHotkey } from '../../hotkeys';
 import { initializeControls, scrollButton } from '../controls';
-import { $, conditionalAttribute, createObjectURL, isString } from '../../utils';
+import { $, conditionalAttribute, createObjectURL } from '../../utils';
 import { formatDate, formatFilename, formatVideoViews } from '../../utils/format';
 
 const initialScreen = $('#initial-player-container'),

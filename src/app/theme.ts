@@ -1,10 +1,5 @@
-import {
-   $,
-   conditionalAttribute,
-   getFromLocalStorage,
-   saveToLocalStorage,
-   prefersDarkTheme,
-} from './utils';
+import { $, conditionalAttribute, prefersDarkTheme } from './utils';
+import { Storage } from './classes/Storage';
 import { registerHotkey } from './hotkeys';
 import { BehaviorSubject } from 'rxjs';
 
@@ -17,12 +12,12 @@ const html = $('html');
 const toggleDarkTheme = (isDark?: boolean) => {
    isDark = isDark ?? !html?.hasAttribute('dark');
    conditionalAttribute(html, isDark, 'dark');
-   saveToLocalStorage('isDarkTheme', isDark);
+   Storage.set('isDarkTheme', isDark);
    isDarkTheme.next(isDark);
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-   const isDark = getFromLocalStorage('isDarkTheme', prefersDarkTheme());
+   const isDark = Storage.get('isDarkTheme', prefersDarkTheme());
    toggleDarkTheme(isDark);
 });
 

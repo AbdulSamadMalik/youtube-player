@@ -1,5 +1,5 @@
-import { isBool, isNull, isString } from './operator';
 import { Observable } from 'rxjs';
+import { isBoolean, isNil, isString } from 'lodash-es';
 
 export const $ = <T extends HTMLElement>(selector: string): T => {
    return document.querySelector<T>(selector)!;
@@ -25,7 +25,7 @@ export const conditionalAttribute = (
    attrName: string,
    attrValue = ''
 ) => {
-   if (!(element instanceof HTMLElement) || isNull(attrName) || !isBool(condition)) {
+   if (!(element instanceof HTMLElement) || isNil(attrName) || !isBoolean(condition)) {
       throw new Error(JSON.stringify({ element, attrName, condition }));
    }
 
@@ -37,7 +37,7 @@ export const conditionalAttribute = (
 };
 
 export const conditionalClass = (element: HTMLElement, condition: boolean, className: string) => {
-   if (!(element instanceof HTMLElement) || isNull(className) || !isBool(condition)) {
+   if (!(element instanceof HTMLElement) || isNil(className) || !isBoolean(condition)) {
       throw new Error(JSON.stringify({ element, className, condition }));
    }
 

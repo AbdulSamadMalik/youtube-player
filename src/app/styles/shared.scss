@@ -1,6 +1,7 @@
 .icon-button {
     height: 48px;
     width: 48px;
+    border-radius: 50%;
     vertical-align: middle;
     color: inherit;
     outline: 0;
@@ -9,11 +10,20 @@
     border: none;
     padding: 0;
     line-height: 0;
-    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     -webkit-tap-highlight-color: transparent;
+    transition: background 80ms ease-in-out;
+    cursor: pointer;
+
+    &:disabled {
+        cursor: default;
+    }
+
+    &:focus {
+        background: var(--yt-spec-10-percent-layer);
+    }
 }
 
 .icon-button svg {
