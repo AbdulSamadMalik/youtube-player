@@ -75,11 +75,7 @@ $headerTransitionDuration: 300ms;
         outline-width: 2px;
         outline-color: white;
         outline-offset: 3px;
-        outline-style: solid;
-
-        & + .country-code {
-            opacity: 0;
-        }
+        outline-style: solid
     }
 }
 

@@ -2,12 +2,13 @@ import { $, conditionalAttribute, preventDefault } from '../../utils';
 import { addVideosToPlaylist } from '../playlist';
 
 // Refs
-const fileInput = $<HTMLInputElement>('input#file-picker'),
-   fileBackdrop = $<HTMLDivElement>('.file-picker-backdrop');
+const fileInput = $<HTMLInputElement>('.file-picker#input'),
+   fileBackdrop = $<HTMLDivElement>('.file-picker#backdrop');
 
 // Methods
 const fileBackdropHidden = (condition: boolean) => {
    conditionalAttribute(fileBackdrop, condition, 'hidden');
+   conditionalAttribute(document.body, !condition, 'no-scroll');
 };
 
 export const chooseFiles = () => {
@@ -15,25 +16,20 @@ export const chooseFiles = () => {
 };
 
 // Event Listeners
-window.addEventListener('dragenter', (e) => {
-   preventDefault(e, true);
+document.addEventListener('dragenter', (event) => {
+   preventDefault(event, true);
    fileBackdropHidden(false);
 });
 
-window.addEventListener('drop', (e) => {
-   preventDefault(e, true);
+fileBackdrop.addEventListener('dragleave', (event) => {
+   preventDefault(event, true, true);
    fileBackdropHidden(true);
 });
 
-fileBackdrop.addEventListener('dragleave', (e) => {
-   preventDefault(e, true, true);
+fileInput.addEventListener('change', (event) => {
    fileBackdropHidden(true);
-   console.log('%c dragleave', 'color: red');
-});
 
-fileInput.addEventListener('change', (e) => {
-   fileBackdropHidden(true);
-   const target = e.target as HTMLInputElement;
+   const target = event.target as HTMLInputElement;
 
    if (!target.files || !target.files.length) {
       return;
@@ -41,3 +37,5 @@ fileInput.addEventListener('change', (e) => {
 
    addVideosToPlaylist(Array.from(target.files));
 });
+
+fileInput.addEventListener('drop', () => fileBackdropHidden(true));
