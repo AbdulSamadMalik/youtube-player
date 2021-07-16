@@ -3,7 +3,7 @@ import { isString } from 'lodash-es';
 import { BehaviorSubject } from 'rxjs';
 import { chooseFiles } from '../filepicker';
 import { registerHotkey } from '../../hotkeys';
-import { initializeControls, scrollButton } from '../controls';
+import { hideControls, initializeControls, scrollButton, showControls } from '../controls';
 import { $, conditionalAttribute, createObjectURL } from '../../utils';
 import { formatDate, formatFilename, formatVideoViews } from '../../utils/format';
 
@@ -24,8 +24,12 @@ const isInitialized = new BehaviorSubject<boolean>(false),
 export const initializePlayer = (): HTMLVideoElement => {
    if (!isInitialized.value) {
       initializeControls();
-      initialScreen.parentElement?.removeChild(initialScreen);
       isInitialized.next(true);
+      initialScreen.parentElement?.removeChild(initialScreen);
+
+      videoPlayer.addEventListener('mousemove', () => showControls());
+      videoPlayer.addEventListener('mouseleave', () => hideControls());
+      videoNode.addEventListener('play', () => showControls());
    }
    return videoNode;
 };

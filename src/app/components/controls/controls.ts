@@ -1,7 +1,7 @@
 import { header } from '../header';
 import { registerHotkey } from '../../hotkeys';
-import { fromEvent, interval, merge, of } from 'rxjs';
-import { delay, mapTo, switchMap, tap } from 'rxjs/operators';
+import { fromEvent, interval, merge, of, Subject } from 'rxjs';
+import { debounceTime, delay, mapTo, switchMap, tap } from 'rxjs/operators';
 import { formatTime, elementToRange, clamp } from '../../utils';
 import { $, conditionalAttribute, conditionalClass, removeAttribute } from '../../utils/dom';
 import {
@@ -35,6 +35,24 @@ const videoControls = $('#video-controls.video-controls'),
    volumeControlInput = $('.volume-adjust #range'),
    videoPreviewContainer = $('.video-preview#container'),
    videoPreviewText = $('.video-preview#text');
+
+const hideCtrlSubject = new Subject<null>();
+
+const _controlsHidden = (condition: boolean) => {
+   conditionalAttribute(videoPlayer, condition, 'hide-controls');
+
+   condition && videoPreviewHidden(condition);
+};
+
+const showControls = () => hideCtrlSubject.next(null);
+const hideControls = () => _controlsHidden(true);
+
+hideCtrlSubject
+   .pipe(
+      tap(() => _controlsHidden(false)),
+      debounceTime(3000)
+   )
+   .subscribe(() => _controlsHidden(true));
 
 const setSeekbarScrubberPosition = (time: number) => {
    const percent = (time / videoNode.duration) * 100;
@@ -240,8 +258,12 @@ export const initializeControls = () => {
    volumeAdjust.addEventListener('mouseenter', volumeAdjusterHidden(false));
 
    // Subscriptions
-   fromEvent(document.body, 'scroll').subscribe(onBodyScroll);
+   const $bodyScroll = fromEvent(document.body, 'scroll');
+   const $windowScroll = fromEvent(window, 'scroll');
+
+   $bodyScroll.subscribe(onBodyScroll);
    interval(15).subscribe(onVideoTimeUpdate); // Interval for smooth seekbar
+   merge($bodyScroll, $windowScroll).pipe(delay(100)).subscribe(showControls);
 
    //  Video events
    videoNode.addEventListener('click', togglePlayPause);
@@ -250,4 +272,4 @@ export const initializeControls = () => {
 };
 
 // Exports
-export { changeVolume, changeVolumeRelative, scrollButton };
+export { changeVolume, changeVolumeRelative, showControls, hideControls, scrollButton };
