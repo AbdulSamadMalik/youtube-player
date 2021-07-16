@@ -1,10 +1,10 @@
 import { ajax, AjaxError } from 'rxjs/ajax';
 import { chooseFiles } from '../filepicker';
 import { registerHotkey } from '../../hotkeys';
-import { $, addAttribute, removeAttribute } from '../../utils/dom';
 import { Storage } from '../../classes/Storage';
-import { preventAnchorReload, preventDefault } from '../../utils/common';
 import { catchError, map, Observable, of } from 'rxjs';
+import { $, addAttribute, removeAttribute } from '../../utils/dom';
+import { preventAnchorReload, preventDefault } from '../../utils/common';
 
 // Refs
 const searchForm = $<HTMLFormElement>('#search-form'),
@@ -26,8 +26,9 @@ const blurSearchBar = () => {
    removeAttribute(searchContainer, 'has-focus');
 };
 
-const handleSearchFormSubmit = (ev: Event) => {
-   preventDefault(ev, true, true);
+const handleSearchFormSubmit = (event: Event) => {
+   event.preventDefault();
+
    if (searchInput && searchInput.value) {
       searchInput.blur();
       const query = searchInput.value.replace(/\s+/g, '+');
@@ -64,10 +65,10 @@ searchInput.addEventListener('blur', blurSearchBar);
 headerHomeLink.addEventListener('click', preventAnchorReload);
 searchForm.addEventListener('submit', handleSearchFormSubmit);
 chooseFileButton.addEventListener('click', chooseFiles);
+searchInput.addEventListener('keydown', (e) => e.code === 'Escape' && blurSearchBar());
 
 // Hotkeys
 registerHotkey({ eventCode: 'KeyC', handler: chooseFiles });
-registerHotkey({ eventCode: 'Escape', handler: blurSearchBar });
-registerHotkey({ eventCode: 'Slash', handler: focusSearchBar, disableOn: searchInput });
+registerHotkey({ eventCode: 'Slash', handler: focusSearchBar });
 
 export { header };

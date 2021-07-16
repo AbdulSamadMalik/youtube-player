@@ -1,7 +1,9 @@
-import { $, conditionalAttribute, conditionalClass, removeAttribute } from '../../utils/dom';
-import { formatTime, elementToRange, clamp } from '../../utils';
-import { fromEvent, interval, merge, of, asyncScheduler, throttleTime, Subscription } from 'rxjs';
+import { header } from '../header';
+import { registerHotkey } from '../../hotkeys';
+import { fromEvent, interval, merge, of } from 'rxjs';
 import { delay, mapTo, switchMap, tap } from 'rxjs/operators';
+import { formatTime, elementToRange, clamp } from '../../utils';
+import { $, conditionalAttribute, conditionalClass, removeAttribute } from '../../utils/dom';
 import {
    videoNode,
    videoState,
@@ -12,8 +14,6 @@ import {
    toggleFullScreenMode,
    toggleMiniPlayerMode,
 } from '../player';
-import { registerHotkey } from '../../hotkeys';
-import { header } from '../header';
 
 const videoControls = $('#video-controls.video-controls'),
    seekbarContainer = $('.progress-bar-container'),
@@ -179,12 +179,12 @@ const onScrollButtonClick = () => {
 
 const initializeHotkeys = () => {
    // Hotkeys
-   registerHotkey({ eventCode: 'KeyM', handler: toggleMute });
-   registerHotkey({ eventCode: 'Space', handler: togglePlayPause });
-   registerHotkey({ eventCode: 'ArrowUp', handler: () => changeVolumeRelative(+0.05) });
-   registerHotkey({ eventCode: 'ArrowDown', handler: () => changeVolumeRelative(-0.05) });
-   registerHotkey({ eventCode: 'ArrowLeft', handler: () => seekVideoRelative(-5) });
-   registerHotkey({ eventCode: 'ArrowRight', handler: () => seekVideoRelative(+5) });
+   registerHotkey('KeyM', toggleMute);
+   registerHotkey('Space', togglePlayPause);
+   registerHotkey('ArrowUp', () => changeVolumeRelative(+0.05));
+   registerHotkey('ArrowDown', () => changeVolumeRelative(-0.05));
+   registerHotkey('ArrowLeft', () => seekVideoRelative(-5));
+   registerHotkey('ArrowRight', () => seekVideoRelative(+5));
 };
 
 const initializeVideoPreview = () => {

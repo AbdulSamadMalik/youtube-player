@@ -1,46 +1,64 @@
-import { filter, isEqual } from 'lodash-es';
+import { filter, forEach } from 'lodash-es';
 
 interface Hotkey {
-   eventCode: EventCode;
-   shiftKey?: boolean;
-   ctrlKey?: boolean;
+   keyup?: boolean;
    altKey?: boolean;
    metaKey?: boolean;
-   handler(e: KeyboardEvent): void;
-   /** Disable preventDefault on an Element */
-   disableOn?: HTMLElement | null;
+   ctrlKey?: boolean;
+   shiftKey?: boolean;
+   eventCode: EventCode;
+   handler?(e: KeyboardEvent): void;
 }
 
-const registeredHotkeys: Hotkey[] = [];
+const keydownHotkeys: Hotkey[] = [];
+const keyUpHotkeys: Hotkey[] = [];
 
-export const registerHotkey = (hotkey: Hotkey) => {
-   return registeredHotkeys.push(hotkey);
+export const registerHotkey = (
+   hotkey: Hotkey | EventCode,
+   handler?: (e: KeyboardEvent) => void
+) => {
+   if (typeof hotkey === 'string') {
+      return keydownHotkeys.push({
+         eventCode: hotkey,
+         handler: handler,
+      });
+   }
+   if (hotkey.keyup === true) {
+      return keyUpHotkeys.push(hotkey);
+   }
+   return keydownHotkeys.push(hotkey);
 };
 
-document.addEventListener('keydown', (ev: KeyboardEvent) => {
-   const hotkeysInEvent = filter(registeredHotkeys, (key) => {
-      return isEqual(key.eventCode, ev.code);
-   });
+const handleKeyboardEvent = (event: KeyboardEvent, hotkeys: Hotkey[]) => {
+   const hotkeysInEvent = filter(hotkeys, (key) => key.eventCode === event.code);
 
-   if (!hotkeysInEvent.length) {
-      return;
-   }
+   forEach(hotkeysInEvent, (hotkey) => {
+      if (document.activeElement?.tagName === 'INPUT') {
+         return;
+      }
 
-   hotkeysInEvent.forEach((hotkey) => {
       if (
-         isEqual(ev.code, hotkey.eventCode) &&
-         isEqual(ev.shiftKey, hotkey.shiftKey || false) &&
-         isEqual(ev.ctrlKey, hotkey.ctrlKey || false) &&
-         isEqual(ev.altKey, hotkey.altKey || false) &&
-         isEqual(ev.metaKey, hotkey.metaKey || false)
+         hotkey.handler &&
+         event.code === hotkey.eventCode &&
+         event.shiftKey === (hotkey.shiftKey || false) &&
+         event.ctrlKey === (hotkey.ctrlKey || false) &&
+         event.altKey === (hotkey.altKey || false) &&
+         event.metaKey === (hotkey.metaKey || false)
       ) {
-         if (hotkey.disableOn && isEqual(document.activeElement, hotkey.disableOn)) {
-            hotkey.handler(ev);
-            return;
-         }
-
-         ev.preventDefault();
-         hotkey.handler(ev);
+         event.preventDefault();
+         hotkey.handler(event);
       }
    });
+};
+
+document.addEventListener('keydown', (event: KeyboardEvent) => {
+   handleKeyboardEvent(event, keydownHotkeys);
+
+   if (filter(keyUpHotkeys, (key) => key.eventCode === event.code).length) {
+      event.preventDefault();
+   }
+});
+
+document.addEventListener('keyup', (event: KeyboardEvent) => {
+   handleKeyboardEvent(event, keyUpHotkeys);
 });
