@@ -1,5 +1,5 @@
 import { newVideoDoc } from './canvas';
-import { chooseFiles } from '../filepicker';
+import { chooseFiles } from '../dialogs';
 import { initializePlayer, setVideoSource } from '../player';
 import { $, addAttribute, removeAttribute } from '../../utils/dom';
 import { formatTime, formatFilename, megabyte, str } from '../../utils/format';

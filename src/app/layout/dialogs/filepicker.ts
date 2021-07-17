@@ -1,5 +1,6 @@
 import { $, conditionalAttribute, preventDefault } from '../../utils';
 import { addVideosToPlaylist } from '../playlist';
+import './filepicker.scss';
 
 // Refs
 const fileInput = $<HTMLInputElement>('.file-picker#input'),

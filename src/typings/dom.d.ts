@@ -10,6 +10,7 @@ interface Navigator {
 
 interface Window {
    MediaSession?: MediaSession;
+   [key: string]: any;
 }
 
 type MediaSessionPlaybackState = 'none' | 'paused' | 'playing';

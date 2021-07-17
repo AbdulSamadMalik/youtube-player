@@ -1,7 +1,7 @@
 import { ajax, AjaxError } from 'rxjs/ajax';
-import { chooseFiles } from '../filepicker';
+import { chooseFiles } from '../dialogs';
 import { registerHotkey } from '../../hotkeys';
-import { Storage } from '../../classes/Storage';
+import { Storage } from '../../services/Storage';
 import { catchError, map, Observable, of } from 'rxjs';
 import { $, addAttribute, removeAttribute } from '../../utils/dom';
 import { preventAnchorReload, preventDefault } from '../../utils/common';

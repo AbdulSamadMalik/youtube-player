@@ -1,9 +1,9 @@
 import './theme';
-import './components/player';
-import './components/header';
-import './components/filepicker';
-import './components/playlist';
+import './layout/player';
+import './layout/header';
+import './layout/dialogs';
+import './layout/playlist';
 
 if (import.meta.env.DEV) {
-   import('../environment/dev').then((module) => module.default());
+   import('./dev').then((module) => module.default());
 }

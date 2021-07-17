@@ -1,7 +1,7 @@
 import { header } from '../header';
 import { isString } from 'lodash-es';
 import { BehaviorSubject } from 'rxjs';
-import { chooseFiles } from '../filepicker';
+import { chooseFiles } from '../dialogs';
 import { registerHotkey } from '../../hotkeys';
 import { hideControls, initializeControls, scrollButton, showControls } from '../controls';
 import { $, conditionalAttribute, createObjectURL } from '../../utils';
