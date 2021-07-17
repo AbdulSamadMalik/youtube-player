@@ -1,10 +1,17 @@
 import { random } from 'lodash-es';
 
 export const createObjectURL = (source: File | Blob) => {
-   if (!source) throw new Error('No file or blob object');
+   if (source instanceof File || source instanceof Blob) {
+      if (window.URL) {
+         return window.URL.createObjectURL(source);
+      }
 
-   const windowURL = window.URL || window.webkitURL;
-   return windowURL.createObjectURL(source);
+      if (window.webkitURL) {
+         return window.webkitURL.createObjectURL(source);
+      }
+   }
+
+   throw new Error('Not a file or blob');
 };
 
 /** Prevents default behaviour for an `Event` */
