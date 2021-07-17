@@ -3,21 +3,17 @@ import { registerHotkey } from './hotkeys';
 import { Storage } from './services/Storage';
 import { $, conditionalAttribute, prefersDarkTheme } from './utils';
 
-// Observables
-export const isDarkTheme = new BehaviorSubject(false);
+const html = $<HTMLHtmlElement>('html');
+const isDarkTheme = new BehaviorSubject<boolean>(false);
 
-// Constants
-const html = $('html');
-
-const toggleDarkTheme = () => {
-   const isDark = !html?.hasAttribute('dark');
+const setDarkTheme = (isDark: boolean) => {
+   conditionalAttribute(html, isDark, 'dark');
    Storage.set('isDarkTheme', isDark);
-   isDarkTheme.next(isDark);
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-   const isDark = Storage.get('isDarkTheme', prefersDarkTheme());
-   conditionalAttribute(html, isDark, 'dark');
-});
+const toggleDarkTheme = () => isDarkTheme.next(!isDarkTheme.value);
 
-registerHotkey({ eventCode: 'KeyX', ctrlKey: true, handler: toggleDarkTheme });
+isDarkTheme.next(Storage.get('isDarkTheme', prefersDarkTheme()));
+isDarkTheme.subscribe(setDarkTheme);
+
+registerHotkey({ eventCode: 'KeyX', ctrlKey: true, keyup: true, handler: toggleDarkTheme });
