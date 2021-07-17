@@ -1,13 +1,19 @@
 {
-   "name": "yt-player",
+   "name": "youtube-player",
+   "main": "./src/app/main",
+   "private": true,
    "license": "MIT",
-   "version": "0.1.0",
+   "version": "0.1.1",
    "description": "Video player similar to YouTube's player for playing videos",
    "homepage": "https://youtubeplayer.vercel.app",
    "author": {
       "name": "Abdul Samad",
       "email": "asmalik.dev@gmail.com",
       "url": "https://asmalik.site"
+   },
+   "repository": {
+      "type": "git",
+      "url": "https://github.com/AbdulSamadMalik/youtube-player.git"
    },
    "scripts": {
       "dev": "vite",
