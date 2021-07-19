@@ -25,6 +25,9 @@ html {
 
     --scrollbar-thumb-bg: #909090;
     --scrollbar-thumb-bg-active: #cccccc;
+
+    --avatar-fill-bg: #c7caca;
+    --avatar-fill-path: #ffffff;
 }
 
 html[dark],
@@ -55,4 +58,7 @@ html[dark],
 
     --scrollbar-thumb-bg: #909090;
     --scrollbar-thumb-bg-active: #606060;
+
+    --avatar-fill-bg: #333333;
+    --avatar-fill-path: #9c9c9c;
 }

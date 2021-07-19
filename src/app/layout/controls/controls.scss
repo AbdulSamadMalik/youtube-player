@@ -176,7 +176,7 @@
     z-index: 10;
 }
 
-#volume-adjust[aria-expanded]:not([aria-expanded='false']) {
+#volume-adjust[aria-expanded] {
     width: 52px;
     height: 100%;
     margin-right: 10px;

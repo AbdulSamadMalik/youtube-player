@@ -5,5 +5,5 @@ import './layout/dialogs';
 import './layout/playlist';
 
 if (import.meta.env.DEV) {
-   import('./dev').then((module) => module.default());
+   // import('./dev').then((module) => module.default());
 }

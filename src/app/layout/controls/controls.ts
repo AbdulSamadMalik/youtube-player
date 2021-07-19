@@ -94,6 +94,7 @@ const onSeekbarMouseMove = (e: MouseEvent) => {
 };
 
 const onSeekbarChange = (percent: number) => {
+   videoNode.ended && videoNode.play();
    const time = videoNode.duration * (percent / 100);
    setSeekbarScrubberPosition(time);
    videoNode.currentTime = time;
