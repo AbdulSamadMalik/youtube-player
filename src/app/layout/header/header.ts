@@ -3,17 +3,19 @@ import { chooseFiles } from '../dialogs';
 import { registerHotkey } from '../../hotkeys';
 import { Storage } from '../../services/Storage';
 import { catchError, map, Observable, of } from 'rxjs';
-import { $, addAttribute, removeAttribute } from '../../utils/dom';
+import { $, $$, addAttribute, removeAttribute } from '../../utils/dom';
 import { preventAnchorReload, preventDefault } from '../../utils/common';
+import { forEach } from 'lodash-es';
 
 // Refs
-const searchForm = $<HTMLFormElement>('#search-form'),
-   searchInput = $<HTMLInputElement>('#search-input'),
-   searchContainer = $<HTMLDivElement>('.search-container'),
-   chooseFileButton = $<HTMLButtonElement>('#choose-file-button'),
-   headerHomeLink = $<HTMLAnchorElement>('a.youtube-icon'),
+const header = $('header.header'),
    countryCode = $('.country-code'),
-   header = $('header.header');
+   tooltipButtons = $$('.header [data-tooltip]'),
+   searchForm = $<HTMLFormElement>('#search-form'),
+   searchInput = $<HTMLInputElement>('#search-input'),
+   headerHomeLink = $<HTMLAnchorElement>('a.youtube-icon'),
+   searchContainer = $<HTMLDivElement>('.search-container'),
+   chooseFileButton = $<HTMLButtonElement>('#choose-file-button');
 
 // Methods
 const focusSearchBar = () => {
@@ -53,6 +55,19 @@ const getCountryCode = (): Observable<string> => {
    );
 };
 
+const setupTooltip = (button: HTMLElement) => {
+   button.addEventListener('click', function () {
+      button.setAttribute('data-tooltip', 'false');
+      setTimeout(() => button.blur(), 400);
+   });
+
+   button.addEventListener('mouseenter', function () {
+      if (button.getAttribute('data-tooltip') != 'true') {
+         button.setAttribute('data-tooltip', 'true');
+      }
+   });
+};
+
 // Event Listeners
 document.addEventListener('DOMContentLoaded', () => {
    getCountryCode().subscribe((code) => {
@@ -65,6 +80,8 @@ searchInput.addEventListener('blur', blurSearchBar);
 headerHomeLink.addEventListener('click', preventAnchorReload);
 searchForm.addEventListener('submit', handleSearchFormSubmit);
 chooseFileButton.addEventListener('click', chooseFiles);
+
+forEach(tooltipButtons, setupTooltip);
 searchInput.addEventListener('keydown', (e) => e.code === 'Escape' && blurSearchBar());
 
 // Hotkeys

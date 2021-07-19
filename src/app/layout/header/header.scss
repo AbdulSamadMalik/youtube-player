@@ -286,3 +286,41 @@ $headerTransitionDuration: 300ms;
         display: none;
     }
 }
+
+// Tooltips
+.header {
+    [data-tooltip='true'] {
+        position: relative;
+        cursor: pointer;
+
+        &::after {
+            width: max-content;
+            top: 48px;
+            position: absolute;
+            content: attr(aria-label);
+            display: block;
+            outline: none;
+            font-family: 'Roboto', Arial, Helvetica, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            font-size: 10px;
+            line-height: 1;
+            background-color: #616161;
+            color: white;
+            padding: 8px;
+            border-radius: 2px;
+            margin: 8px;
+            font-size: 1.2rem;
+            font-weight: 400;
+            line-height: 1.8rem;
+            letter-spacing: 0.3px;
+            text-transform: none;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 150ms ease-in-out;
+        }
+
+        &:hover::after {
+            opacity: 0.9;
+        }
+    }
+}
