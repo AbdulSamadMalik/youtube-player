@@ -70,13 +70,6 @@ $headerTransitionDuration: 300ms;
         top: 50%;
         transform: translateY(-50%);
     }
-
-    &:focus {
-        outline-width: 2px;
-        outline-color: white;
-        outline-offset: 3px;
-        outline-style: solid;
-    }
 }
 
 .header .header-inner-container .start .youtube-icon .country-code {

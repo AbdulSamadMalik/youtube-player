@@ -1,11 +1,10 @@
-import { header } from '../header';
-import { isString } from 'lodash-es';
 import { BehaviorSubject } from 'rxjs';
-import { chooseFiles } from '../dialogs';
 import { registerHotkey } from '../../hotkeys';
-import { hideControls, initializeControls, scrollButton, showControls } from '../controls';
 import { $, conditionalAttribute, createObjectURL } from '../../utils';
 import { formatDate, formatFilename, formatVideoViews } from '../../utils/format';
+import { hideControls, initializeControls, scrollButton, showControls } from '../controls';
+import { chooseFiles } from '../dialogs';
+import { header } from '../header';
 
 const initialScreen = $('#initial-player-container'),
    videoNode = $<HTMLVideoElement>('.html5-main-video'),
@@ -34,34 +33,34 @@ export const initializePlayer = (): HTMLVideoElement => {
    return videoNode;
 };
 
-export const setVideoSource = (videoInput: VideoInput): Promise<HTMLVideoElement> => {
+export const setVideoSource = ({
+   views,
+   title,
+   startAt,
+   source,
+   lastModified,
+}: VideoInput): Promise<HTMLVideoElement> => {
    return new Promise((resolve, reject) => {
-      const setSource = (src: string) => {
+      const _setVideoSource = (src: string) => {
          videoNode.src = src;
          videoPreview.src = src;
 
-         if (videoInput.fileName) {
-            const baseTitle = 'YouTube Video Player',
-               title = formatFilename(videoInput.fileName);
-            document.title = `${title} - ${baseTitle}`;
-            videoTitle.innerHTML = title;
-         }
+         const base = 'YouTube Video Player';
+         title = formatFilename(title);
+         document.title = `${title} - ${base}`;
+         videoTitle.innerHTML = title;
 
-         if (videoInput.lastModified) {
-            videoDate.innerHTML = formatDate(videoInput.lastModified);
-         }
-
-         if (videoInput.views) {
-            videoViewCount.innerHTML = formatVideoViews(videoInput.views);
-         }
+         videoDate.innerHTML = formatDate(lastModified || Date.now());
+         videoNode.currentTime = startAt || 0;
+         videoViewCount.innerHTML = formatVideoViews(views || 0);
       };
 
-      if (videoInput.source instanceof File || videoInput.source instanceof Blob) {
-         setSource(createObjectURL(videoInput.source));
-      } else if (isString(videoInput.source)) {
-         setSource(videoInput.source);
+      if (source instanceof File || source instanceof Blob) {
+         _setVideoSource(createObjectURL(source));
+      } else if ('string' == typeof source) {
+         _setVideoSource(source);
       } else {
-         reject('Not a valid video source.');
+         reject('Invalid video source.');
       }
       resolve(videoNode);
    });

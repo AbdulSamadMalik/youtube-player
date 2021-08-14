@@ -64,7 +64,8 @@ export const canvasToURL = (canvas: HTMLCanvasElement, type: ImageType, quality 
    return canvas.toDataURL(type, quality);
 };
 
-export const elementToRange = (element: HTMLElement) => {
+/** Converts an Element to behave like a Range Input */
+export const HTMLRangeInput = (element: HTMLElement) => {
    return new Observable<number>((subscriber) => {
       let isMouseDown = false;
 

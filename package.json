@@ -3,7 +3,7 @@
    "main": "./src/app/main",
    "private": true,
    "license": "MIT",
-   "version": "0.1.2",
+   "version": "0.2.3",
    "description": "Video player similar to YouTube's player for playing videos",
    "homepage": "https://youtubeplayer.vercel.app",
    "author": {

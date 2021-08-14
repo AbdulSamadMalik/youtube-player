@@ -1,21 +1,29 @@
-import { newVideoDoc } from './canvas';
+import { createObjectURL } from '../../utils';
+import { $, addAttribute, removeAttribute } from '../../utils/dom';
+import { formatFilename, formatTime, megabyte, str } from '../../utils/format';
 import { chooseFiles } from '../dialogs';
 import { initializePlayer, setVideoSource } from '../player';
-import { $, addAttribute, removeAttribute } from '../../utils/dom';
-import { formatTime, formatFilename, megabyte, str } from '../../utils/format';
+import { newVideoDoc } from './canvas';
+import {
+   getVideoDoc,
+   getVideoTime,
+   getVideoViews,
+   saveVideoDoc,
+   updateVideoViews,
+} from './storage';
 
-let currentVideoId: string,
-   playerInitialized: boolean,
+let playerInitialized: boolean,
+   viewUpdateHandle: number,
    currentListItem: HTMLElement,
    currentVideoFileName: string,
    switchingVideo: boolean,
    videoNode: HTMLVideoElement;
 
 const supportedFileTypes = ['video/mp4', 'video/webm', 'video/x-matroska', 'video/quicktime'],
-   allFileNames: Array<string> = [],
+   fileNames: Array<string> = [],
    videoDocs: Array<VideoDocument> = [];
 
-const listItemCount = $('#playlist-item-count'),
+const totalCount = $('#playlist-item-count'),
    listItemsContainer = $('#playlist-panel-items'),
    currentListItemIndex = $('#current-playlist-item'),
    addToPlayListButton = $('#add-to-playlist'),
@@ -27,7 +35,7 @@ const removePlaceholder = () => {
 };
 
 const changeVideo = async (videoDoc: VideoDocument, playListItemElement: HTMLElement) => {
-   if (currentVideoId && currentVideoId === videoDoc.id) {
+   if (currentVideoFileName && currentVideoFileName === videoDoc.fileName) {
       return;
    }
 
@@ -37,27 +45,35 @@ const changeVideo = async (videoDoc: VideoDocument, playListItemElement: HTMLEle
 
    currentVideoFileName = videoDoc.fileName;
 
+   viewUpdateHandle && clearTimeout(viewUpdateHandle);
    currentListItem && removeAttribute(currentListItem, 'active');
 
    if (playListItemElement) {
       const currentIdx = videoDocs.findIndex((doc) => doc.fileName === videoDoc.fileName);
       currentListItemIndex.innerHTML = str(currentIdx + 1);
-      currentListItem = playListItemElement;
       addAttribute(playListItemElement, 'active');
+      currentListItem = playListItemElement;
    }
 
-   setVideoSource({
+   const storedTime = await getVideoTime(videoDoc.fileName);
+   const storedViews = await getVideoViews(videoDoc.fileName);
+
+   await setVideoSource({
+      views: storedViews,
+      title: videoDoc.fileName,
+      startAt: storedTime,
       source: videoDoc.blobLocation,
       lastModified: videoDoc.dateAsNumber,
-      fileName: videoDoc.fileName,
    });
 
-   window.scrollTo(0, 0);
    videoNode.autoplay = true;
+   window.scrollTo(0, 0);
    switchingVideo = false;
+   // Wait 10s before updating video views
+   viewUpdateHandle = setTimeout(updateVideoViews, 10000, videoDoc.fileName);
 };
 
-const appendVideoTile = (videoDoc: VideoDocument) => {
+const newVideoTile = (videoDoc: VideoDocument): HTMLElement => {
    const newVideoTile = document.createElement('video-tile');
    newVideoTile.innerHTML = videoTileTemplate.innerHTML;
    newVideoTile.id = 'video-tile';
@@ -86,17 +102,26 @@ const appendVideoTile = (videoDoc: VideoDocument) => {
    return newVideoTile;
 };
 
+async function _getVideoDoc(file: File): Promise<VideoDocument> {
+   const storedDoc = await getVideoDoc(file.name);
+   if (storedDoc) return Object.assign({}, storedDoc, { blobLocation: createObjectURL(file) });
+
+   const newDoc = await newVideoDoc(file);
+   saveVideoDoc(file.name, newDoc);
+   return newDoc;
+}
+
 const addVideoToPlaylist = async (file: File) => {
-   const videoDoc = await newVideoDoc(file);
-   const newVideoTile = appendVideoTile(videoDoc);
-   allFileNames.push(file.name);
+   const videoDoc = await _getVideoDoc(file);
+   const videoTile = newVideoTile(videoDoc);
+   fileNames.push(file.name);
    videoDocs.push(videoDoc);
-   listItemCount.innerHTML = videoDocs.length.toString();
+   totalCount.innerHTML = videoDocs.length.toString();
 
    if (!playerInitialized) {
       removePlaceholder();
       videoNode = initializePlayer();
-      changeVideo(videoDoc, newVideoTile);
+      changeVideo(videoDoc, videoTile);
       playerInitialized = true;
    }
 };
@@ -106,7 +131,7 @@ export const addVideosToPlaylist = async (files: File[]) => {
       return;
    }
 
-   let alertMessage;
+   let alertMessage = '';
 
    const supportedFiles = Array.from(files).filter((file) => {
       if (supportedFileTypes.includes(file.type)) {
@@ -116,7 +141,7 @@ export const addVideosToPlaylist = async (files: File[]) => {
          alertMessage = 'Please choose a file greater than 1MB';
          return false;
       }
-      alertMessage = 'Please choose mp4, mkv or avi file formats';
+      alertMessage += 'Please choose mp4, mkv or avi video formats';
       return false;
    });
 
@@ -124,16 +149,16 @@ export const addVideosToPlaylist = async (files: File[]) => {
       alert(alertMessage);
    }
 
-   const uniqueFiles: Array<File> = [];
+   const uniqueFiles: File[] = [];
 
    supportedFiles.forEach((file) => {
-      if (!allFileNames.includes(file.name)) {
+      if (!fileNames.includes(file.name)) {
          uniqueFiles.push(file);
       }
    });
 
-   for (let index = 0; index < uniqueFiles.length; index++) {
-      await addVideoToPlaylist(uniqueFiles[index]);
+   for (const uniqueFile of uniqueFiles) {
+      await addVideoToPlaylist(uniqueFile);
    }
 };
 

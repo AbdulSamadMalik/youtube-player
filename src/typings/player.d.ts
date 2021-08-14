@@ -3,7 +3,8 @@ declare type VolumeState = 'zero' | 'half' | 'full';
 
 declare interface VideoInput {
    source: Blob | File | string;
-   fileName?: string;
+   title: string;
    lastModified?: number;
    views?: number;
+   startAt?: number;
 }

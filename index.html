@@ -17,6 +17,7 @@
          rel="stylesheet"
       />
       <link rel="stylesheet" href="/src/app/styles/main.scss" />
+      <script defer type="module" src="/src/app/polyfills.ts"></script>
       <script defer type="module" src="/src/app/main.ts"></script>
    </head>
 
@@ -51,11 +52,11 @@
                </button>
                <a class="youtube-icon" href="/" tabindex="-1" aria-disabled="true">
                   <svg
-                     height="20px"
                      width="90px"
+                     height="20px"
+                     focusable="false"
                      viewBox="0 0 90 20"
                      preserveAspectRatio="xMidYMid meet"
-                     focusable="false"
                   >
                      <g viewBox="0 0 90 20" preserveAspectRatio="xMidYMid meet">
                         <g>
@@ -121,12 +122,7 @@
                            />
                         </div>
                      </div>
-                     <button
-                        class="search-button"
-                        data-tooltip
-                        aria-label="Search"
-                        tabindex="-1"
-                     >
+                     <button class="search-button" data-tooltip aria-label="Search" tabindex="-1">
                         <svg focusable="false" viewBox="0 0 24 24" aria-hidden="true">
                            <path
                               d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
@@ -208,9 +204,9 @@
                <div class="paused" id="video-player">
                   <div id="container" class="video-player">
                      <video class="video-stream html5-main-video"></video>
-                     <!-- Player Gridients -->
+                     <!-- Player Gradients -->
                      <div class="player-gradient bottom"></div>
-                     <!-- Vidoe preview -->
+                     <!-- Video preview -->
                      <div class="video-preview" id="main">
                         <div class="video-preview hidden" id="container">
                            <div id="video-container" class="video-preview">

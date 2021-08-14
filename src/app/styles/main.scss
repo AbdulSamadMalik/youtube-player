@@ -30,7 +30,6 @@ body {
 
 body {
     min-width: 200px;
-    min-height: 150vh;
     overflow-x: hidden;
 }
 
@@ -83,12 +82,6 @@ svg {
 
 .pointer {
     cursor: pointer !important;
-}
-
-.flexy {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
 }
 
 [hidden]:not([hidden='false']) {

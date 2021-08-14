@@ -1,4 +1,4 @@
-export const str = (value: any): string => {
+export const str = (value: number | boolean): string => {
    if (!value) return '';
    return value.toString();
 };
@@ -8,7 +8,7 @@ export const padStart = (value: string, maxLength = 2, fillString = '0') => {
 };
 
 export const formatVideoViews = (count: number) => {
-   if (count > 0 && !isNaN(count)) {
+   if (count > 1 && !isNaN(count)) {
       return `${count} views`;
    }
    return 'No Views';
@@ -30,7 +30,7 @@ export const formatTime = (seconds: number, minPad = 2, secPad = 2) => {
 };
 
 export const formatDate = (time: number) => {
-   if (!time) time = new Date().getTime();
+   if (!time) time = Date.now();
 
    const dt = new Date(time),
       date = dt.getDate(),
@@ -40,7 +40,7 @@ export const formatDate = (time: number) => {
    return `${date} ${months[month]} ${year}`;
 };
 
-export const removeFileExtension = (fileName: string) => {
+export const removeExtension = (fileName: string) => {
    if ([2, 3, 4, 5].includes(fileName.length - fileName.lastIndexOf('.'))) {
       return fileName.slice(0, fileName.lastIndexOf('.'));
    }
@@ -49,15 +49,13 @@ export const removeFileExtension = (fileName: string) => {
 
 export const removeLetters = (string: string, letters: string) => {
    for (let letter of letters.split('')) {
-      while (string.includes(letter)) {
-         string = string.replace(letter, ' ');
-      }
+      string = string.replace(new RegExp(letter, 'gm'), ' ');
    }
-   return string;
+   return string.replace(/ +/gm, ' ');
 };
 
 export const formatFilename = (filename: string) => {
-   filename = removeFileExtension(filename);
+   filename = removeExtension(filename);
    filename = removeLetters(filename, '[](){}_=+');
    filename = filename.replace(/  +/g, ' ').trim();
    return filename;

@@ -1,15 +1,15 @@
-import { header } from '../header';
+import { asyncScheduler, fromEvent, interval, merge, of, Subject } from 'rxjs';
+import { debounceTime, delay, mapTo, switchMap, tap, throttleTime } from 'rxjs/operators';
 import { registerHotkey } from '../../hotkeys';
-import { fromEvent, interval, merge, of, Subject } from 'rxjs';
-import { debounceTime, delay, mapTo, switchMap, tap } from 'rxjs/operators';
-import { formatTime, elementToRange, clamp } from '../../utils';
+import { clamp, formatTime, HTMLRangeInput } from '../../utils';
 import { $, conditionalAttribute, conditionalClass, removeAttribute } from '../../utils/dom';
+import { header } from '../header';
 import {
    videoNode,
    videoState,
+   volumeState,
    videoPlayer,
    videoPreview,
-   volumeState,
    toggleCinemaMode,
    toggleFullScreenMode,
    toggleMiniPlayerMode,
@@ -20,7 +20,7 @@ const videoControls = $('#video-controls.video-controls'),
    videoHoverBar = $('.progress-bar#hover'),
    videoPlayedBar = $('.progress-bar#played'),
    videoScrubber = $('.progress-bar#scrubber'),
-   voulumeDisplayBar = $('.volume-adjust#volume'),
+   volumeDisplayBar = $('.volume-adjust#volume'),
    volumeScrubber = $('.volume-adjust#scrubber'),
    currentTimeDisplay = $('.time-current'),
    durationTimeDisplay = $('.time-duration'),
@@ -60,10 +60,14 @@ const setSeekbarScrubberPosition = (time: number) => {
    videoScrubber.style.left = percent + '%';
 };
 
-const onVolumeInputChange = (e: Event) => {
+const onVolumeInput = (e: Event) => {
    const target = e.target as HTMLInputElement,
       volume = target.valueAsNumber / 20;
    changeVolume(volume);
+};
+
+const onVolumeChange = () => {
+   localStorage.setItem('volume', videoNode.volume.toString());
 };
 
 const volumeAdjusterHidden = (isHidden: boolean) => () => {
@@ -123,21 +127,23 @@ const onVolumeStateChange = (state: VolumeState) => {
 };
 
 const toggleMute = () => {
-   if (videoNode.volume > 0) {
+   if (videoNode.volume > 0 && !videoNode.muted) {
       sessionStorage.setItem('volume', videoNode.volume.toString());
+      localStorage.setItem('volume', '0');
       videoNode.volume = 0;
       return;
    }
 
    const storedVolume = sessionStorage.getItem('volume');
    videoNode.volume = storedVolume ? parseFloat(storedVolume) : 1;
+   localStorage.setItem('volume', videoNode.volume.toString());
 };
 
-/** Detect the change in volume and updates the UI */
+/** Detects volume change and updates the UI */
 const detectVolumeChange = (volume?: number | Event) => {
    volume = volume instanceof Event ? videoNode.volume : volume ?? videoNode.volume;
    volumeScrubber.style.left = volume * 80 + '%';
-   voulumeDisplayBar.style.width = volume * 100 + '%';
+   volumeDisplayBar.style.width = volume * 100 + '%';
 
    if (volume === 0 || videoNode.muted) {
       volumeState.next('zero');
@@ -160,7 +166,7 @@ const changeVolumeRelative = (difference: number) => {
    changeVolume(videoNode.volume + difference);
 };
 
-const seekVideo = (newTime: number) => {
+const seekVideoTo = (newTime: number) => {
    detectVideoTimeUpdate(newTime);
    videoNode.currentTime = clamp(newTime, 0, videoNode.duration);
 };
@@ -227,6 +233,42 @@ const initializeVideoPreview = () => {
       .subscribe((bool) => conditionalAttribute(seekbarContainer, !bool, 'hover'));
 };
 
+const checkForStoredVolume = () => {
+   // const storedVolume = sessionStorage.getItem('volume') || localStorage.getItem('volume') || '1';
+   const storedVolume = localStorage.getItem('volume') || '1';
+   const parsedVolume = parseFloat(storedVolume);
+   videoNode.volume = isNaN(parsedVolume) ? 1 : parsedVolume;
+};
+
+const addNumpadListeners = () => {
+   const keyCodes: EventCode[] = [
+      'Numpad0',
+      'Numpad1',
+      'Numpad2',
+      'Numpad3',
+      'Numpad4',
+      'Numpad5',
+      'Numpad6',
+      'Numpad7',
+      'Numpad8',
+      'Numpad9',
+   ];
+   keyCodes.forEach((keyCode) => {
+      registerHotkey(keyCode, () => {
+         console.log(parseInt(keyCode));
+         seekVideoTo((videoNode.duration * parseInt(keyCode) * 10) / 100);
+      });
+   });
+};
+
+const storeVolumeToStorage = (volume: any) => {
+   if (typeof volume != 'number') {
+      volume = videoNode.volume;
+   }
+
+   localStorage.setItem('volume', volume.toString());
+};
+
 export const initializeControls = () => {
    // Video playback state
    removeAttribute(videoControls, 'hidden');
@@ -235,25 +277,31 @@ export const initializeControls = () => {
 
    // Video preview
    initializeHotkeys();
+   addNumpadListeners();
    detectVolumeChange();
+   checkForStoredVolume();
    initializeVideoPreview();
 
-   // Video seekbar related
-   elementToRange(seekbarContainer).subscribe(onSeekbarChange);
+   // Seekbar related
+   HTMLRangeInput(seekbarContainer).subscribe(onSeekbarChange);
    seekbarContainer.addEventListener('mousemove', onSeekbarMouseMove);
 
-   // Control listeners
+   // listeners
    cinemaButton.addEventListener('click', toggleCinemaMode);
    playPauseButton.addEventListener('click', togglePlayPause);
    scrollButton.addEventListener('click', onScrollButtonClick);
    fullScreenButton.addEventListener('click', toggleFullScreenMode);
    miniPlayerButton.addEventListener('click', toggleMiniPlayerMode);
+   videoNode.addEventListener('click', togglePlayPause);
+   videoNode.addEventListener('loadedmetadata', onVideoMetadataLoad);
+   videoNode.addEventListener('volumechange', detectVolumeChange);
 
    //  Volume related
    muteButton.addEventListener('click', toggleMute);
+   volumeControlInput.addEventListener('input', onVolumeInput);
+   volumeControlInput.addEventListener('change', onVolumeChange);
    muteButton.addEventListener('wheel', setVolumeByMouseWheel);
    volumeAdjust.addEventListener('wheel', setVolumeByMouseWheel);
-   volumeControlInput.addEventListener('input', onVolumeInputChange);
    muteButton.addEventListener('mouseenter', volumeAdjusterHidden(false));
    leftControls.addEventListener('mouseleave', volumeAdjusterHidden(true));
    volumeAdjust.addEventListener('mouseenter', volumeAdjusterHidden(false));
@@ -265,11 +313,9 @@ export const initializeControls = () => {
    $bodyScroll.subscribe(onBodyScroll);
    interval(15).subscribe(onVideoTimeUpdate); // Interval for smooth seekbar
    merge($bodyScroll, $windowScroll).pipe(delay(100)).subscribe(showControls);
-
-   //  Video events
-   videoNode.addEventListener('click', togglePlayPause);
-   videoNode.addEventListener('loadedmetadata', onVideoMetadataLoad);
-   videoNode.addEventListener('volumechange', detectVolumeChange);
+   fromEvent(videoNode, 'volumechange')
+      .pipe(throttleTime(750, asyncScheduler, { trailing: true }))
+      .subscribe(storeVolumeToStorage);
 };
 
 // Exports

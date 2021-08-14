@@ -2,19 +2,13 @@ import { random } from 'lodash-es';
 
 export const createObjectURL = (source: File | Blob) => {
    if (source instanceof File || source instanceof Blob) {
-      if (window.URL) {
-         return window.URL.createObjectURL(source);
-      }
-
-      if (window.webkitURL) {
-         return window.webkitURL.createObjectURL(source);
-      }
+      if (URL) return URL.createObjectURL(source);
+      if (webkitURL) return webkitURL.createObjectURL(source);
    }
-
    throw new Error('Not a file or blob');
 };
 
-/** Prevents default behaviour for an `Event` */
+/** Prevents default behavior for an `Event` */
 export const preventDefault = (
    event: Event,
    stopPropagation = false,
@@ -54,4 +48,8 @@ export const clamp = (number: number, min: number, max: number) => {
       return 0;
    }
    return Math.max(min, Math.min(number, max));
+};
+
+export const asyncTimer = (ms: number): Promise<void> => {
+   return new Promise((resolve) => setTimeout(resolve, ms));
 };
