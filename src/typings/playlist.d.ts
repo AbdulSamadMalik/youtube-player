@@ -1,12 +1,11 @@
-declare interface VideoDocument {
-   id: string;
-   blobLocation: string;
+declare interface VideoDoc {
+   date: number;
+   blobURL: string;
    duration: number;
-   dateAsNumber: number;
    fileName: string;
-   thumbnails: VideoDocumentThumbnails;
+   thumbnail: VideoDocThumbnail;
 }
 
-declare interface VideoDocumentThumbnails {
-   small: string;
+declare interface VideoDocThumbnail {
+   dataURL: string;
 }

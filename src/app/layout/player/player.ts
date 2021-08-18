@@ -3,7 +3,7 @@ import { registerHotkey } from '../../hotkeys';
 import { $, conditionalAttribute, createObjectURL } from '../../utils';
 import { formatDate, formatFileName, formatVideoViews } from '../../utils/format';
 import { hideControls, initializeControls, scrollButton, showControls } from '../controls';
-import { chooseFiles } from '../dialogs';
+import { chooseFiles } from '../dialogs/filePicker';
 import { header } from '../header';
 
 const initialScreen = $('#initial-player-container'),

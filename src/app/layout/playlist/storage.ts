@@ -2,9 +2,9 @@ import { createInstance } from 'localforage';
 
 const DB_NAME = 'database';
 
+const videoDocsStorage = createInstance({ name: DB_NAME, storeName: 'video_docs' });
 const videoTimeStorage = createInstance({ name: DB_NAME, storeName: 'video_times' });
 const videoViewsStorage = createInstance({ name: DB_NAME, storeName: 'video_views' });
-const videoDocsStorage = createInstance({ name: DB_NAME, storeName: 'video_docs' });
 
 /** Saves current video time to storage */
 export function saveVideoTime(key: string, time = 0) {
@@ -29,12 +29,12 @@ export async function getVideoViews(key: string): Promise<number> {
    return (await videoViewsStorage.getItem(key)) || 0;
 }
 
-/** Gets `VideoDocument` from storage */
-export function getVideoDoc(key: string): Promise<VideoDocument | null> {
+/** Gets `VideoDoc` from storage */
+export function getVideoDoc(key: string): Promise<VideoDoc | null> {
    return videoDocsStorage.getItem(key);
 }
 
-/** Saves `VideoDocument` to storage */
-export function saveVideoDoc(key: string, videoDoc: VideoDocument) {
-   return videoDocsStorage.setItem<VideoDocument>(key, videoDoc);
+/** Saves `VideoDoc` to storage */
+export function saveVideoDoc(key: string, videoDoc: VideoDoc) {
+   return videoDocsStorage.setItem<VideoDoc>(key, videoDoc);
 }

@@ -1,4 +1,4 @@
-import { chooseFiles } from '../dialogs';
+import { chooseFiles } from '../dialogs/filePicker';
 import { registerHotkey } from '../../hotkeys';
 import { preventAnchorReload } from '../../utils/common';
 import { $, $$, addAttribute, removeAttribute } from '../../utils/dom';

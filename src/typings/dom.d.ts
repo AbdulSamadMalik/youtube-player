@@ -219,7 +219,7 @@ declare type EventCode =
 
 declare type ImageType = 'image/png' | 'image/webp' | 'image/jpeg';
 
-// Decrations for picture in picture mode
+// Declarations for picture in picture mode
 
 interface PictureInPictureWindow {
    readonly width: number;

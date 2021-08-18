@@ -1,7 +1,7 @@
 import { createObjectURL } from '../../utils';
 import { $, addAttribute, removeAttribute } from '../../utils/dom';
 import { formatFileName, formatTime, megabyte, str } from '../../utils/format';
-import { chooseFiles } from '../dialogs';
+import { chooseFiles } from '../dialogs/filePicker';
 import { initializePlayer, setVideoSource } from '../player';
 import { newVideoDoc } from './canvas';
 import {
@@ -21,7 +21,7 @@ let playerInitialized: boolean,
 
 const supportedFileTypes = ['video/mp4', 'video/webm', 'video/x-matroska', 'video/quicktime'],
    fileNames: Array<string> = [],
-   videoDocs: Array<VideoDocument> = [];
+   videoDocs: Array<VideoDoc> = [];
 
 const totalCount = $('#playlist-item-count'),
    listItemsContainer = $('#playlist-panel-items'),
@@ -34,8 +34,8 @@ const removePlaceholder = () => {
    placeholder && placeholder.parentElement!.removeChild(placeholder);
 };
 
-const changeVideo = async (videoDoc: VideoDocument, playListItemElement: HTMLElement) => {
-   if (currentVideoFileName && currentVideoFileName === videoDoc.fileName) {
+const changeVideo = async (videoDoc: VideoDoc, playListItemElement: HTMLElement) => {
+   if (currentVideoFileName === videoDoc.fileName || switchingVideo) {
       return;
    }
 
@@ -62,57 +62,59 @@ const changeVideo = async (videoDoc: VideoDocument, playListItemElement: HTMLEle
       views: storedViews,
       title: videoDoc.fileName,
       startAt: storedTime,
-      source: videoDoc.blobLocation,
-      lastModified: videoDoc.dateAsNumber,
+      source: videoDoc.blobURL,
+      lastModified: videoDoc.date,
    });
 
    videoNode.autoplay = true;
    window.scrollTo(0, 0);
    switchingVideo = false;
+
    // Wait 10s before updating video views
    viewUpdateHandle = setTimeout(updateVideoViews, 10000, videoDoc.fileName);
 };
 
-const newVideoTile = (videoDoc: VideoDocument): HTMLElement => {
-   const newVideoTile = document.createElement('video-tile');
+const newVideoTile = (videoDoc: VideoDoc) => {
+   const newVideoTile = document.createElement('div');
    newVideoTile.innerHTML = videoTileTemplate.innerHTML;
    newVideoTile.id = 'video-tile';
 
-   const videoAnchor = newVideoTile.querySelector('a')!;
-   videoAnchor.href = `/watch?v=${videoDoc.id}`;
-   videoAnchor.id = 'video-link';
+   const container = newVideoTile.querySelector('#container')!;
 
-   const thumbnail = videoAnchor.querySelector('img')!;
-   thumbnail.src = videoDoc.thumbnails.small;
+   const thumbnail = container.querySelector('img')!;
+   thumbnail.src = videoDoc.thumbnail.dataURL;
 
-   const duration = videoAnchor.querySelector('#duration')!;
+   const duration = container.querySelector('#duration')!;
    duration.innerHTML = formatTime(videoDoc.duration, 2, 2);
 
-   const title = videoAnchor.querySelector('#video-title')!;
+   const title = container.querySelector('#video-title')!;
    title.innerHTML = formatFileName(videoDoc.fileName);
    title.setAttribute('title', title.innerHTML);
 
    listItemsContainer.appendChild(newVideoTile);
 
-   videoAnchor.addEventListener('click', (ev) => {
-      ev.preventDefault();
-      changeVideo(videoDoc, newVideoTile);
-   });
+   newVideoTile.addEventListener('click', () => changeVideo(videoDoc, newVideoTile));
 
    return newVideoTile;
 };
 
-async function _getVideoDoc(file: File): Promise<VideoDocument> {
+async function _getVideoDoc(file: File): Promise<VideoDoc | null> {
    const storedDoc = await getVideoDoc(file.name);
-   if (storedDoc) return Object.assign({}, storedDoc, { blobLocation: createObjectURL(file) });
+   if (storedDoc)
+      return Object.assign<VideoDoc, Partial<VideoDoc>>(storedDoc, {
+         blobURL: createObjectURL(file),
+      });
 
    const newDoc = await newVideoDoc(file);
-   saveVideoDoc(file.name, newDoc);
+   newDoc && saveVideoDoc(file.name, newDoc);
    return newDoc;
 }
 
 const addVideoToPlaylist = async (file: File) => {
    const videoDoc = await _getVideoDoc(file);
+
+   if (!videoDoc) return;
+
    const videoTile = newVideoTile(videoDoc);
    fileNames.push(file.name);
    videoDocs.push(videoDoc);
@@ -162,4 +164,4 @@ export const addVideosToPlaylist = async (files: File[]) => {
    }
 };
 
-addToPlayListButton.addEventListener('click', () => chooseFiles());
+addToPlayListButton.addEventListener('click', chooseFiles);

@@ -18,7 +18,7 @@
       />
       <link rel="stylesheet" href="/src/app/styles/main.scss" />
       <script src="https://polyfill.io/v3/polyfill.min.js?features=fetch"></script>
-      <script defer type="module" src="/src/app/polyfills.ts"></script>
+      <script src="/src/app/polyfills.ts"></script>
       <script defer type="module" src="/src/app/main.ts"></script>
    </head>
 
@@ -422,11 +422,11 @@
 
                <!-- Playlist Panel -->
                <div class="playlist-panel">
-                  <div id="playlist-panel-header">
-                     <div id="header-contents">
-                        <div id="playlist-header-details">
-                           <h3 id="playlist-header-title">Playlist</h3>
-                           <div id="playlist-header-subtitle">
+                  <div class="playlist-header">
+                     <div class="contents">
+                        <div class="details">
+                           <h3 class="title">Playlist</h3>
+                           <div class="subtitle">
                               <span id="current-playlist-item">0</span>
                               <span>&nbsp;/&nbsp;</span>
                               <span id="playlist-item-count">0</span>
@@ -481,26 +481,22 @@
       </template>
       <!-- Playlist video tile -->
       <template id="playlist-tile">
-         <!-- <playlist-tile id="video-tile"> -->
-         <a id="video-link">
-            <div id="container">
-               <div id="index-container">
-                  <svg viewBox="0 0 48 48" preserveAspectRatio="xMidYMid meet">
-                     <path d="M0 18H10v4h24v-4zM8 30h26v-4H10v4z"></path>
-                  </svg>
-                  <span>▶</span>
-               </div>
-               <div id="thumbnail-container">
-                  <img id="thumbnail" />
-                  <span id="duration"></span>
-               </div>
-               <div id="meta">
-                  <h4 id="video-title"></h4>
-                  <p id="channel-name" title="Your Videos">Your Videos</p>
-               </div>
+         <div id="container">
+            <div id="index-container">
+               <svg viewBox="0 0 48 48" preserveAspectRatio="xMidYMid meet">
+                  <path d="M0 18H10v4h24v-4zM8 30h26v-4H10v4z"></path>
+               </svg>
+               <span>▶</span>
             </div>
-         </a>
-         <!-- </playlist-tile> -->
+            <div id="thumbnail-container">
+               <img id="thumbnail" />
+               <span id="duration"></span>
+            </div>
+            <div id="meta">
+               <h4 id="video-title"></h4>
+               <p id="channel-name" title="Your Videos">Your Videos</p>
+            </div>
+         </div>
       </template>
    </body>
 </html>

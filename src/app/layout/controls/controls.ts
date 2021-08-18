@@ -1,7 +1,8 @@
+import clamp from 'lodash-es/clamp';
 import { asyncScheduler, fromEvent, interval, merge, of, Subject } from 'rxjs';
 import { debounceTime, delay, mapTo, switchMap, tap, throttleTime } from 'rxjs/operators';
 import { registerHotkey } from '../../hotkeys';
-import { clamp, formatTime, HTMLRangeInput } from '../../utils';
+import { formatTime, toRangeInput } from '../../utils';
 import { $, conditionalAttribute, conditionalClass, removeAttribute } from '../../utils/dom';
 import { header } from '../header';
 import {
@@ -235,7 +236,6 @@ const initializeVideoPreview = () => {
 };
 
 const checkForStoredVolume = () => {
-   VOLUME;
    const storedVolume = localStorage.getItem(VOLUME) || '1';
    const parsedVolume = parseFloat(storedVolume);
    videoNode.volume = isNaN(parsedVolume) ? 1 : parsedVolume;
@@ -256,8 +256,7 @@ const addNumpadListeners = () => {
    ];
    keyCodes.forEach((keyCode) => {
       registerHotkey(keyCode, () => {
-         console.log(parseInt(keyCode));
-         seekVideoTo((videoNode.duration * parseInt(keyCode) * 10) / 100);
+         seekVideoTo((videoNode.duration * parseInt(keyCode.substr(6)) * 10) / 100);
       });
    });
 };
@@ -284,7 +283,7 @@ export const initializeControls = () => {
    initializeVideoPreview();
 
    // Seekbar related
-   HTMLRangeInput(seekbarContainer).subscribe(onSeekbarChange);
+   toRangeInput(seekbarContainer).subscribe(onSeekbarChange);
    seekbarContainer.addEventListener('mousemove', onSeekbarMouseMove);
 
    // listeners

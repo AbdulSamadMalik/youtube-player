@@ -1,5 +1,4 @@
-import { createObjectURL, base64Id } from '../../utils/common';
-import { formatDate, formatFileName, formatTime } from '../../utils/format';
+import { createObjectURL } from '../../utils/common';
 
 const canvasRef = document.createElement('canvas'),
    ctx = canvasRef.getContext('2d')!;
@@ -33,7 +32,7 @@ const snapShot = async (width = 160, height = 90) => {
    // drawing a black box on canvas
    ctx.fillRect(0, 0, canvasRef.width, canvasRef.height);
 
-   // Positons for drawing
+   // Positions for drawing
    const posX = width / 2 - snapshotWidth / 2;
    const posY = height / 2 - snapshotHeight / 2;
 
@@ -43,11 +42,10 @@ const snapShot = async (width = 160, height = 90) => {
    return canvasRef.toDataURL('image/jpg', 1);
 };
 
-export const newVideoDoc = (file: File): Promise<VideoDocument> => {
-   return new Promise(async (resolve, reject) => {
+export const newVideoDoc = (file: File): Promise<VideoDoc | null> => {
+   return new Promise((resolve) => {
       try {
-         const blobURL = createObjectURL(file),
-            videoId = base64Id(11);
+         const blobURL = createObjectURL(file);
 
          videoRef.oncanplaythrough = () => {
             if (!isNaN(videoRef.duration)) {
@@ -56,14 +54,13 @@ export const newVideoDoc = (file: File): Promise<VideoDocument> => {
          };
 
          videoRef.onseeked = async () => {
-            const videoDoc: VideoDocument = {
-               id: videoId,
+            const videoDoc: VideoDoc = {
+               blobURL: blobURL,
                fileName: file.name,
-               blobLocation: blobURL,
+               date: file.lastModified,
                duration: videoRef.duration,
-               dateAsNumber: file.lastModified,
-               thumbnails: {
-                  small: await snapShot(104, 60),
+               thumbnail: {
+                  dataURL: await snapShot(104, 60),
                },
             };
 
@@ -72,7 +69,7 @@ export const newVideoDoc = (file: File): Promise<VideoDocument> => {
 
          videoRef.src = blobURL;
       } catch (error) {
-         reject(error.message);
+         resolve(null);
       }
    });
 };

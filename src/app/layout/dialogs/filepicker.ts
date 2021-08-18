@@ -1,6 +1,6 @@
-import { $, conditionalAttribute, preventDefault } from '../../utils';
+import { $, conditionalAttribute } from '../../utils';
 import { addVideosToPlaylist } from '../playlist';
-import './filepicker.scss';
+import './filePicker.scss';
 
 // Refs
 const fileInput = $<HTMLInputElement>('.file-picker#input'),
@@ -12,18 +12,18 @@ const fileBackdropHidden = (condition: boolean) => {
    conditionalAttribute(document.body, !condition, 'no-scroll');
 };
 
-export const chooseFiles = () => {
+export function chooseFiles() {
    fileInput.click();
-};
+}
 
 // Event Listeners
 document.addEventListener('dragenter', (event) => {
-   preventDefault(event, true);
+   event.preventDefault();
    fileBackdropHidden(false);
 });
 
 fileBackdrop.addEventListener('dragleave', (event) => {
-   preventDefault(event, true, true);
+   event.preventDefault();
    fileBackdropHidden(true);
 });
 

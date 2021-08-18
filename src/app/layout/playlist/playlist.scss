@@ -10,31 +10,26 @@
     max-height: 82vh;
 }
 
-#playlist-panel-header {
+.playlist-header {
     background-color: var(--yt-spec-brand-background-primary);
     padding: 20px 20px 16px 20px;
     flex: none;
 }
 
-#playlist-panel-header #header-contents {
+.playlist-header .contents {
     display: flex;
     flex-direction: row;
     align-items: center;
 }
 
-#playlist-panel-header #playlist-header-details {
+.playlist-header .details {
     min-width: 0;
     margin-right: 8px;
     flex: 1;
     flex-basis: 0.000000001px;
 }
 
-#playlist-panel-header .icon-button {
-    height: 36px;
-    width: 36px;
-}
-
-#playlist-panel-header #playlist-header-title {
+.playlist-header .title {
     margin: 0;
     text-overflow: ellipsis;
     display: block;
@@ -48,21 +43,24 @@
     color: var(--primary-text-color);
 }
 
-#playlist-panel-header #playlist-header-subtitle {
+.playlist-header .subtitle {
     display: flex;
     flex-direction: row;
     margin-top: 4px;
     align-items: center;
-
     font-size: 1.2rem;
     font-weight: 400;
     line-height: 1.5rem;
     color: var(--secondary-text-color);
 }
 
+.playlist-header .icon-button {
+    height: 36px;
+    width: 36px;
+}
+
 #playlist-panel-items {
     height: 100%;
-    // padding: 4px 0;
     overflow-y: auto;
     overflow-x: hidden;
     max-height: calc(100vh - 189px);
@@ -83,11 +81,9 @@
 }
 
 #playlist-panel-items #video-tile {
-    padding: 10px 8px 8px 0;
-    display: flex;
-    flex-direction: row;
     user-select: none;
     min-width: 250px;
+    display: block;
 }
 
 #playlist-panel-items #video-tile * {
@@ -103,8 +99,8 @@
     background: var(--chip-bg-color);
 }
 
-#video-tile #video-link {
-    display: block;
+#video-tile #container {
+    padding: 10px 8px 8px 0;
     min-width: 0;
     flex: 1;
     flex-basis: 0.000000001px;
@@ -112,9 +108,6 @@
     cursor: pointer;
     text-decoration: none;
     color: var(--primary-text-color);
-}
-
-#video-tile #video-link #container {
     display: flex;
     flex-direction: row;
 }
@@ -151,19 +144,9 @@
 #video-tile[active] #container #index-container svg {
     display: none;
 }
-/* 
-#video-tile[active]:hover #container #index-container svg {
-   display: inline-block;
-}
-
-#video-tile[active]:hover #container #index-container span {
-   display: none;
-} */
 
 #video-tile #thumbnail-container {
     position: relative;
-    /* width: 100px;
-   height: 56px; */
     width: 104px;
     height: 60px;
     margin-left: auto;
