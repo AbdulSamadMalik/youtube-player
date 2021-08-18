@@ -1,11 +1,7 @@
-import { ajax, AjaxError } from 'rxjs/ajax';
 import { chooseFiles } from '../dialogs';
 import { registerHotkey } from '../../hotkeys';
-import { Storage } from '../../services/Storage';
-import { catchError, map, Observable, of } from 'rxjs';
+import { preventAnchorReload } from '../../utils/common';
 import { $, $$, addAttribute, removeAttribute } from '../../utils/dom';
-import { preventAnchorReload, preventDefault } from '../../utils/common';
-import { forEach } from 'lodash-es';
 
 // Refs
 const header = $('header.header'),
@@ -16,6 +12,9 @@ const header = $('header.header'),
    headerHomeLink = $<HTMLAnchorElement>('a.youtube-icon'),
    searchContainer = $<HTMLDivElement>('.search-container'),
    chooseFileButton = $<HTMLButtonElement>('#choose-file-button');
+
+const COUNTRY_CODE_STORE = 'COUNTRY_CODE';
+const DEFAULT_COUNTRY_CODE = 'IN';
 
 // Methods
 const focusSearchBar = () => {
@@ -38,21 +37,25 @@ const handleSearchFormSubmit = (event: Event) => {
    }
 };
 
-const getCountryCode = (): Observable<string> => {
-   const stored = Storage.get<string>('countryCode');
+const getCountryCode = async (): Promise<string> => {
+   try {
+      const storedCountryCode = localStorage.getItem(COUNTRY_CODE_STORE);
 
-   if (stored) {
-      return of(stored);
+      if (storedCountryCode != null) return storedCountryCode;
+
+      const res = await fetch('https://ipinfo.io/?token=e7f553952c3125');
+
+      if (!res.ok) {
+         localStorage.setItem(COUNTRY_CODE_STORE, DEFAULT_COUNTRY_CODE);
+         return DEFAULT_COUNTRY_CODE;
+      }
+
+      const data: IpInfo = await res.json();
+      localStorage.setItem(COUNTRY_CODE_STORE, data.country);
+      return data.country;
+   } catch (error) {
+      return DEFAULT_COUNTRY_CODE;
    }
-
-   return ajax<IpInfo>('https://ipinfo.io/?token=e7f553952c3125').pipe(
-      map((request) => request.response.country),
-      catchError((error: AjaxError) => {
-         console.error('Error fetching country code', error);
-         Storage.set<string>('countryCode', 'IN');
-         return getCountryCode();
-      })
-   );
 };
 
 const setupTooltip = (button: HTMLElement) => {
@@ -69,10 +72,8 @@ const setupTooltip = (button: HTMLElement) => {
 };
 
 // Event Listeners
-document.addEventListener('DOMContentLoaded', () => {
-   getCountryCode().subscribe((code) => {
-      countryCode.innerHTML = code;
-   });
+document.addEventListener('DOMContentLoaded', async () => {
+   countryCode.innerHTML = await getCountryCode();
 });
 
 searchInput.addEventListener('focus', focusSearchBar);
@@ -81,8 +82,8 @@ headerHomeLink.addEventListener('click', preventAnchorReload);
 searchForm.addEventListener('submit', handleSearchFormSubmit);
 chooseFileButton.addEventListener('click', chooseFiles);
 
-forEach(tooltipButtons, setupTooltip);
 searchInput.addEventListener('keydown', (e) => e.code === 'Escape' && blurSearchBar());
+tooltipButtons.forEach(setupTooltip);
 
 // Hotkeys
 registerHotkey({ eventCode: 'KeyC', handler: chooseFiles });

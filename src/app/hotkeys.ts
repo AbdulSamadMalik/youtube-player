@@ -1,5 +1,3 @@
-import { filter, forEach } from 'lodash-es';
-
 interface Hotkey {
    keyup?: boolean;
    altKey?: boolean;
@@ -30,9 +28,9 @@ export const registerHotkey = (
 };
 
 const handleKeyboardEvent = (event: KeyboardEvent, hotkeys: Hotkey[]) => {
-   const hotkeysInEvent = filter(hotkeys, (key) => key.eventCode === event.code);
+   const hotkeysInEvent = hotkeys.filter((key) => key.eventCode === event.code);
 
-   forEach(hotkeysInEvent, (hotkey) => {
+   hotkeysInEvent.forEach((hotkey) => {
       if (document.activeElement?.tagName === 'INPUT') {
          return;
       }
@@ -54,7 +52,7 @@ const handleKeyboardEvent = (event: KeyboardEvent, hotkeys: Hotkey[]) => {
 document.addEventListener('keydown', (event: KeyboardEvent) => {
    handleKeyboardEvent(event, keydownHotkeys);
 
-   if (filter(keyUpHotkeys, (key) => key.eventCode === event.code).length) {
+   if (keyUpHotkeys.filter((key) => key.eventCode === event.code).length) {
       event.preventDefault();
    }
 });

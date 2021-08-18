@@ -36,6 +36,7 @@ const videoControls = $('#video-controls.video-controls'),
    videoPreviewContainer = $('.video-preview#container'),
    videoPreviewText = $('.video-preview#text');
 
+const VOLUME = 'VOLUME';
 const hideCtrlSubject = new Subject<null>();
 
 const _controlsHidden = (condition: boolean) => {
@@ -67,7 +68,7 @@ const onVolumeInput = (e: Event) => {
 };
 
 const onVolumeChange = () => {
-   localStorage.setItem('volume', videoNode.volume.toString());
+   localStorage.setItem(VOLUME, videoNode.volume.toString());
 };
 
 const volumeAdjusterHidden = (isHidden: boolean) => () => {
@@ -128,15 +129,15 @@ const onVolumeStateChange = (state: VolumeState) => {
 
 const toggleMute = () => {
    if (videoNode.volume > 0 && !videoNode.muted) {
-      sessionStorage.setItem('volume', videoNode.volume.toString());
-      localStorage.setItem('volume', '0');
+      sessionStorage.setItem(VOLUME, videoNode.volume.toString());
+      localStorage.setItem(VOLUME, '0');
       videoNode.volume = 0;
       return;
    }
 
-   const storedVolume = sessionStorage.getItem('volume');
+   const storedVolume = sessionStorage.getItem(VOLUME);
    videoNode.volume = storedVolume ? parseFloat(storedVolume) : 1;
-   localStorage.setItem('volume', videoNode.volume.toString());
+   localStorage.setItem(VOLUME, videoNode.volume.toString());
 };
 
 /** Detects volume change and updates the UI */
@@ -234,8 +235,8 @@ const initializeVideoPreview = () => {
 };
 
 const checkForStoredVolume = () => {
-   // const storedVolume = sessionStorage.getItem('volume') || localStorage.getItem('volume') || '1';
-   const storedVolume = localStorage.getItem('volume') || '1';
+   VOLUME;
+   const storedVolume = localStorage.getItem(VOLUME) || '1';
    const parsedVolume = parseFloat(storedVolume);
    videoNode.volume = isNaN(parsedVolume) ? 1 : parsedVolume;
 };
@@ -266,7 +267,7 @@ const storeVolumeToStorage = (volume: any) => {
       volume = videoNode.volume;
    }
 
-   localStorage.setItem('volume', volume.toString());
+   localStorage.setItem(VOLUME, volume.toString());
 };
 
 export const initializeControls = () => {

@@ -7,3 +7,5 @@ import './layout/playlist';
 if (import.meta.env.DEV) {
    import('./dev').then((module) => module.default());
 }
+
+// console.log([0, 1].last);

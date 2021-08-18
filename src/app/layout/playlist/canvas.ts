@@ -1,5 +1,5 @@
 import { createObjectURL, base64Id } from '../../utils/common';
-import { formatDate, formatFilename, formatTime } from '../../utils/format';
+import { formatDate, formatFileName, formatTime } from '../../utils/format';
 
 const canvasRef = document.createElement('canvas'),
    ctx = canvasRef.getContext('2d')!;

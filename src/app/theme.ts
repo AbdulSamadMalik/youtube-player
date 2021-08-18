@@ -1,19 +1,26 @@
-import { BehaviorSubject } from 'rxjs';
 import { registerHotkey } from './hotkeys';
-import { Storage } from './services/Storage';
-import { $, conditionalAttribute, prefersDarkTheme } from './utils';
+import { conditionalAttribute, prefersDarkTheme, parseBool } from './utils';
 
-const html = $<HTMLHtmlElement>('html');
-const isDarkTheme = new BehaviorSubject<boolean>(false);
+const IS_DARK_THEME = 'IS_DARK_THEME';
 
-const setDarkTheme = (isDark: boolean) => {
-   conditionalAttribute(html, isDark, 'dark');
-   Storage.set('isDarkTheme', isDark);
+const setDarkTheme = (value: boolean) => {
+   conditionalAttribute(document.documentElement, value, 'dark');
+   localStorage.setItem(IS_DARK_THEME, value.toString());
 };
 
-const toggleDarkTheme = () => isDarkTheme.next(!isDarkTheme.value);
+const toggleDarkTheme = () => {
+   setDarkTheme(!document.documentElement.hasAttribute('dark'));
+};
 
-isDarkTheme.next(Storage.get('isDarkTheme', prefersDarkTheme()));
-isDarkTheme.subscribe(setDarkTheme);
+(function () {
+   const isDarkStored = localStorage.getItem(IS_DARK_THEME);
+   const isDarkTheme = isDarkStored ? parseBool(isDarkStored) : prefersDarkTheme();
+   setDarkTheme(isDarkTheme);
+})();
 
-registerHotkey({ eventCode: 'KeyX', ctrlKey: true, keyup: true, handler: toggleDarkTheme });
+registerHotkey({
+   eventCode: 'KeyX',
+   ctrlKey: true,
+   keyup: true,
+   handler: toggleDarkTheme,
+});

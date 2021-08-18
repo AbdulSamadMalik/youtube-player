@@ -1,7 +1,7 @@
 import { BehaviorSubject } from 'rxjs';
 import { registerHotkey } from '../../hotkeys';
 import { $, conditionalAttribute, createObjectURL } from '../../utils';
-import { formatDate, formatFilename, formatVideoViews } from '../../utils/format';
+import { formatDate, formatFileName, formatVideoViews } from '../../utils/format';
 import { hideControls, initializeControls, scrollButton, showControls } from '../controls';
 import { chooseFiles } from '../dialogs';
 import { header } from '../header';
@@ -46,7 +46,7 @@ export const setVideoSource = ({
          videoPreview.src = src;
 
          const base = 'YouTube Video Player';
-         title = formatFilename(title);
+         title = formatFileName(title);
          document.title = `${title} - ${base}`;
          videoTitle.innerHTML = title;
 

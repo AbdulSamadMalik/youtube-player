@@ -263,5 +263,6 @@ interface DocumentOrShadowRoot {
 }
 
 interface Array<T> {
-   get last(): T;
+   get first(): T | null;
+   get last(): T | null;
 }

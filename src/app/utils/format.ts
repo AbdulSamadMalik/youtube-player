@@ -47,17 +47,19 @@ export const removeExtension = (fileName: string) => {
    return fileName;
 };
 
-export const removeLetters = (string: string, letters: string) => {
-   for (let letter of letters.split('')) {
-      string = string.replace(new RegExp(letter, 'gm'), ' ');
+export const removeLetters = (string: string, letters: string, separator = '') => {
+   for (let letter of letters.split(separator)) {
+      while (string.includes(letter)) {
+         string = string.replace(letter, ' ');
+      }
    }
-   return string.replace(/ +/gm, ' ');
+
+   return string.replace(/ +/gm, ' ').trim();
 };
 
-export const formatFilename = (filename: string) => {
+export const formatFileName = (filename: string) => {
    filename = removeExtension(filename);
    filename = removeLetters(filename, '[](){}_=+');
-   filename = filename.replace(/  +/g, ' ').trim();
    return filename;
 };
 

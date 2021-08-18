@@ -1,6 +1,6 @@
 import { createObjectURL } from '../../utils';
 import { $, addAttribute, removeAttribute } from '../../utils/dom';
-import { formatFilename, formatTime, megabyte, str } from '../../utils/format';
+import { formatFileName, formatTime, megabyte, str } from '../../utils/format';
 import { chooseFiles } from '../dialogs';
 import { initializePlayer, setVideoSource } from '../player';
 import { newVideoDoc } from './canvas';
@@ -89,7 +89,7 @@ const newVideoTile = (videoDoc: VideoDocument): HTMLElement => {
    duration.innerHTML = formatTime(videoDoc.duration, 2, 2);
 
    const title = videoAnchor.querySelector('#video-title')!;
-   title.innerHTML = formatFilename(videoDoc.fileName);
+   title.innerHTML = formatFileName(videoDoc.fileName);
    title.setAttribute('title', title.innerHTML);
 
    listItemsContainer.appendChild(newVideoTile);

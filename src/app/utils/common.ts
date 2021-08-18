@@ -1,5 +1,9 @@
 import { random } from 'lodash-es';
 
+export const parseBool = (str: string) => {
+   return str.toLowerCase() == 'true';
+};
+
 export const createObjectURL = (source: File | Blob) => {
    if (source instanceof File || source instanceof Blob) {
       if (URL) return URL.createObjectURL(source);
