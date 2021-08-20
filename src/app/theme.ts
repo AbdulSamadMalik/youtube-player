@@ -8,15 +8,15 @@ const setDarkTheme = (value: boolean) => {
    localStorage.setItem(IS_DARK_THEME, value.toString());
 };
 
-const toggleDarkTheme = () => {
-   setDarkTheme(!document.documentElement.hasAttribute('dark'));
-};
-
 (function () {
    const isDarkStored = localStorage.getItem(IS_DARK_THEME);
    const isDarkTheme = isDarkStored ? parseBool(isDarkStored) : prefersDarkTheme();
    setDarkTheme(isDarkTheme);
 })();
+
+const toggleDarkTheme = () => {
+   setDarkTheme(!document.documentElement.hasAttribute('dark'));
+};
 
 registerHotkey({
    eventCode: 'KeyX',

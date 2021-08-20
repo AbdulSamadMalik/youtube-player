@@ -87,6 +87,7 @@ tooltipButtons.forEach(setupTooltip);
 
 // Hotkeys
 registerHotkey({ eventCode: 'KeyC', handler: chooseFiles });
+registerHotkey({ eventCode: 'KeyO', handler: chooseFiles });
 registerHotkey({ eventCode: 'Slash', handler: focusSearchBar });
 
 export { header };

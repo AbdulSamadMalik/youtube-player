@@ -7,13 +7,13 @@ import { chooseFiles } from '../dialogs/filePicker';
 import { header } from '../header';
 
 const initialScreen = $('#initial-player-container'),
-   videoNode = $<HTMLVideoElement>('.html5-main-video'),
-   videoPreview = $<HTMLVideoElement>('.video-preview#video'),
    videoPlayer = $('#video-player'),
    watchPage = $('.watch-page#watch-page'),
    videoTitle = $('.video-info#video-title'),
    videoDate = $('.video-info#video-date'),
-   videoViewCount = $('.video-info#count');
+   videoViewCount = $('.video-info#count'),
+   videoNode = $('.html5-main-video') as HTMLVideoElement,
+   videoPreview = $('.video-preview#video') as HTMLVideoElement;
 
 const isInitialized = new BehaviorSubject<boolean>(false),
    videoState = new BehaviorSubject<VideoState>('paused'),
@@ -67,8 +67,7 @@ export const setVideoSource = ({
 };
 
 const toggleCinemaMode = () => {
-   watchPage.toggleAttribute('cinema');
-   videoPlayer.toggleAttribute('cinema');
+   conditionalAttribute(videoPlayer, watchPage.toggleAttribute('cinema'), 'cinema');
 };
 
 const toggleFullScreenMode = () => {

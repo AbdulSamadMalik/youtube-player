@@ -3,7 +3,7 @@ import { initializePlayer } from './layout/player';
 
 const Development = async () => {
    const videoNode = initializePlayer();
-   const res = await fetch('/local/videos/2.mp4');
+   const res = await fetch('/local/videos/disney.mp4');
    const blob = await res.blob();
 
    // Global access

@@ -383,3 +383,32 @@
     color: #e8e8e8;
     text-shadow: #00000050 0px 0px 2px;
 }
+
+// Fullscreen button animations
+
+@each $var in 1, 2, 3, 4 {
+    .control-button.fullscreen-button:hover .corner-#{$var} {
+        animation: fullscreen-button-corner-#{$var}-animation 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+}
+
+@keyframes fullscreen-button-corner-1-animation {
+    50% {
+        transform: translate(-1px, -1px);
+    }
+}
+@keyframes fullscreen-button-corner-2-animation {
+    50% {
+        transform: translate(1px, -1px);
+    }
+}
+@keyframes fullscreen-button-corner-3-animation {
+    50% {
+        transform: translate(1px, 1px);
+    }
+}
+@keyframes fullscreen-button-corner-4-animation {
+    50% {
+        transform: translate(-1px, 1px);
+    }
+}
