@@ -1,4 +1,4 @@
-import { createObjectURL } from '../../utils/common';
+import { createObjectURL, generateFileId } from '../../utils/common';
 
 const canvasRef = document.createElement('canvas'),
    ctx = canvasRef.getContext('2d')!;
@@ -55,6 +55,7 @@ export const newVideoDoc = (file: File): Promise<VideoDoc | null> => {
 
          videoRef.onseeked = async () => {
             const videoDoc: VideoDoc = {
+               fileId: generateFileId(file),
                blobURL: blobURL,
                fileName: file.name,
                date: file.lastModified,

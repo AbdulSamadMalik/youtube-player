@@ -27,3 +27,7 @@ export const preventAnchorReload = (event: MouseEvent) => {
 export const asyncTimer = (ms: number): Promise<void> => {
    return new Promise((resolve) => setTimeout(resolve, ms));
 };
+
+export const generateFileId = (file: File, maxLength = 20) => {
+   return `${file.size}_${file.name.substr(0, maxLength - file.size.toString().length)}`;
+};

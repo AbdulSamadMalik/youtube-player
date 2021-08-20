@@ -1,4 +1,4 @@
-import { createObjectURL } from '../../utils';
+import { createObjectURL, generateFileId } from '../../utils';
 import { $, addAttribute, removeAttribute } from '../../utils/dom';
 import { formatFileName, formatTime, megabyte, str } from '../../utils/format';
 import { chooseFiles } from '../dialogs/filePicker';
@@ -9,13 +9,14 @@ import {
    getVideoTime,
    getVideoViews,
    saveVideoDoc,
+   saveVideoTime,
    updateVideoViews,
 } from './storage';
 
 let playerInitialized: boolean,
    viewUpdateHandle: number,
    currentListItem: HTMLElement,
-   currentVideoFileName: string,
+   currentVideoFileId: string,
    switchingVideo: boolean,
    videoNode: HTMLVideoElement;
 
@@ -35,7 +36,7 @@ const removePlaceholder = () => {
 };
 
 const changeVideo = async (videoDoc: VideoDoc, playListItemElement: HTMLElement) => {
-   if (currentVideoFileName === videoDoc.fileName || switchingVideo) {
+   if (currentVideoFileId === videoDoc.fileId || switchingVideo) {
       return;
    }
 
@@ -43,20 +44,20 @@ const changeVideo = async (videoDoc: VideoDoc, playListItemElement: HTMLElement)
    videoNode.pause();
    videoNode.currentTime = 0;
 
-   currentVideoFileName = videoDoc.fileName;
+   currentVideoFileId = videoDoc.fileId;
 
    viewUpdateHandle && clearTimeout(viewUpdateHandle);
    currentListItem && removeAttribute(currentListItem, 'active');
 
    if (playListItemElement) {
-      const currentIdx = videoDocs.findIndex((doc) => doc.fileName === videoDoc.fileName);
+      const currentIdx = videoDocs.findIndex((doc) => doc.fileId === videoDoc.fileId);
       currentListItemIndex.innerHTML = str(currentIdx + 1);
       addAttribute(playListItemElement, 'active');
       currentListItem = playListItemElement;
    }
 
-   const storedTime = await getVideoTime(videoDoc.fileName);
-   const storedViews = await getVideoViews(videoDoc.fileName);
+   const storedTime = await getVideoTime(videoDoc.fileId);
+   const storedViews = await getVideoViews(videoDoc.fileId);
 
    await setVideoSource({
       views: storedViews,
@@ -71,7 +72,7 @@ const changeVideo = async (videoDoc: VideoDoc, playListItemElement: HTMLElement)
    switchingVideo = false;
 
    // Wait 10s before updating video views
-   viewUpdateHandle = setTimeout(updateVideoViews, 10000, videoDoc.fileName);
+   viewUpdateHandle = setTimeout(updateVideoViews, 10000, videoDoc.fileId);
 };
 
 const newVideoTile = (videoDoc: VideoDoc) => {
@@ -99,14 +100,15 @@ const newVideoTile = (videoDoc: VideoDoc) => {
 };
 
 async function _getVideoDoc(file: File): Promise<VideoDoc | null> {
-   const storedDoc = await getVideoDoc(file.name);
+   const fileId = generateFileId(file);
+   const storedDoc = await getVideoDoc(fileId);
    if (storedDoc)
       return Object.assign<VideoDoc, Partial<VideoDoc>>(storedDoc, {
          blobURL: createObjectURL(file),
       });
 
    const newDoc = await newVideoDoc(file);
-   newDoc && saveVideoDoc(file.name, newDoc);
+   newDoc && saveVideoDoc(fileId, newDoc);
    return newDoc;
 }
 
@@ -125,6 +127,16 @@ const addVideoToPlaylist = async (file: File) => {
       videoNode = initializePlayer();
       changeVideo(videoDoc, videoTile);
       playerInitialized = true;
+
+      setInterval(() => {
+         if (!currentVideoFileId || !videoNode) return;
+         // Don't save time if current time is greater than 98% video length
+         if (videoNode.currentTime >= videoNode.duration * 0.98) return;
+
+         if (!videoNode.ended && !videoNode.paused) {
+            saveVideoTime(currentVideoFileId, videoNode.currentTime);
+         }
+      }, 1000);
    }
 };
 

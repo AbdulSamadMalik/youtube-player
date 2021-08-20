@@ -1,19 +1,19 @@
 import clamp from 'lodash-es/clamp';
-import { asyncScheduler, fromEvent, interval, merge, of, Subject } from 'rxjs';
+import { asyncScheduler, fromEvent, merge, of, Subject } from 'rxjs';
 import { debounceTime, delay, mapTo, switchMap, tap, throttleTime } from 'rxjs/operators';
 import { registerHotkey } from '../../hotkeys';
 import { formatTime, toRangeInput } from '../../utils';
 import { $, conditionalAttribute, conditionalClass, removeAttribute } from '../../utils/dom';
 import { header } from '../header';
 import {
-   videoNode,
-   videoState,
-   volumeState,
-   videoPlayer,
-   videoPreview,
    toggleCinemaMode,
    toggleFullScreenMode,
    toggleMiniPlayerMode,
+   videoNode,
+   videoPlayer,
+   videoPreview,
+   videoState,
+   volumeState,
 } from '../player';
 
 const videoControls = $('#video-controls.video-controls'),
@@ -113,7 +113,10 @@ const detectVideoTimeUpdate = (newTime: number) => {
    currentTimeDisplay.innerHTML = formatTime(newTime, 1, 2);
 };
 
-const onVideoTimeUpdate = () => detectVideoTimeUpdate(videoNode.currentTime);
+const onVideoTimeUpdate = () => {
+   if (videoNode.ended || videoNode.paused) return;
+   detectVideoTimeUpdate(videoNode.currentTime);
+};
 
 const togglePlayPause = () => {
    videoNode.paused ? videoNode.play() : videoNode.pause();
@@ -256,6 +259,7 @@ const addNumpadListeners = () => {
    ];
    keyCodes.forEach((keyCode) => {
       registerHotkey(keyCode, () => {
+         if (videoNode.ended) videoNode.play();
          seekVideoTo((videoNode.duration * parseInt(keyCode.substr(6)) * 10) / 100);
       });
    });
@@ -311,7 +315,7 @@ export const initializeControls = () => {
    const $windowScroll = fromEvent(window, 'scroll');
 
    $bodyScroll.subscribe(onBodyScroll);
-   interval(15).subscribe(onVideoTimeUpdate); // Interval for smooth seekbar
+   setInterval(onVideoTimeUpdate, 15); // Interval for smooth seekbar
    merge($bodyScroll, $windowScroll).pipe(delay(100)).subscribe(showControls);
    fromEvent(videoNode, 'volumechange')
       .pipe(throttleTime(750, asyncScheduler, { trailing: true }))

@@ -1,5 +1,6 @@
 declare interface VideoDoc {
    date: number;
+   fileId: string;
    blobURL: string;
    duration: number;
    fileName: string;
