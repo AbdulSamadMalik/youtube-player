@@ -8,7 +8,6 @@ const videoViewsStorage = createInstance({ name: DB_NAME, storeName: 'video_view
 
 /** Saves current video time to storage */
 export function saveVideoTime(key: string, time: number) {
-   console.log({ key });
    videoTimeStorage.setItem(key, time > 4 ? time : 0);
 }
 

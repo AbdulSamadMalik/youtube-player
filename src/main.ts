@@ -6,7 +6,5 @@ import './lib/choose';
 import './styles/main.scss';
 
 if (import.meta.env.DEV) {
-   const script = document.createElement('script');
-   script.src = '/dev.js';
-   document.head.append(script);
+   import('./dev').then((module) => module.default());
 }
