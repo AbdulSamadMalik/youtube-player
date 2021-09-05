@@ -261,8 +261,3 @@ interface Document {
 interface DocumentOrShadowRoot {
    readonly pictureInPictureElement: HTMLVideoElement | null;
 }
-
-interface Array<T> {
-   get first(): T | null;
-   get last(): T | null;
-}

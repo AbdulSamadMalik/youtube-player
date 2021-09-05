@@ -1,10 +1,11 @@
 import { BehaviorSubject } from 'rxjs';
-import { registerHotkey } from '../../hotkeys';
-import { $, conditionalAttribute, createObjectURL } from '../../utils';
-import { formatDate, formatFileName, formatVideoViews } from '../../utils/format';
-import { hideControls, initializeControls, scrollButton, showControls } from '../controls';
-import { chooseFiles } from '../dialogs/filePicker';
-import { header } from '../header';
+import { registerHotkey } from '../helpers/hotkeys';
+import { $, conditionalAttribute, createObjectURL } from '../utils';
+import { formatDate, formatFileName, formatVideoViews } from '../utils/format';
+import { hideControls, initializeControls, scrollButton, showControls } from './controls';
+import { chooseFiles } from './choose';
+import { header } from './header';
+import '../styles/player.scss';
 
 const initialScreen = $('#initial-player-container'),
    videoPlayer = $('#video-player'),

@@ -1,4 +1,4 @@
-import { createObjectURL, generateFileId } from '../../utils/common';
+import { createObjectURL, generateFileId } from '../utils/common';
 
 const canvasRef = document.createElement('canvas'),
    ctx = canvasRef.getContext('2d')!;

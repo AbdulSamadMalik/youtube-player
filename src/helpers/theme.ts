@@ -1,5 +1,5 @@
 import { registerHotkey } from './hotkeys';
-import { conditionalAttribute, prefersDarkTheme, parseBool } from './utils';
+import { conditionalAttribute, prefersDarkTheme, parseBool } from '../utils';
 
 const IS_DARK_THEME = 'IS_DARK_THEME';
 

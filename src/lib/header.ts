@@ -1,7 +1,8 @@
-import { chooseFiles } from '../dialogs/filePicker';
-import { registerHotkey } from '../../hotkeys';
-import { preventAnchorReload } from '../../utils/common';
-import { $, $$, addAttribute, removeAttribute } from '../../utils/dom';
+import { chooseFiles } from './choose';
+import { registerHotkey } from '../helpers/hotkeys';
+import { preventAnchorReload } from '../utils/common';
+import { $, $$ } from '../utils/dom';
+import '../styles/header.scss';
 
 // Refs
 const header = $('header.header'),
@@ -19,12 +20,12 @@ const DEFAULT_COUNTRY_CODE = 'IN';
 // Methods
 const focusSearchBar = () => {
    searchInput.focus();
-   addAttribute(searchContainer, 'has-focus');
+   searchContainer.setAttribute('has-focus', '');
 };
 
 const blurSearchBar = () => {
    searchInput.blur();
-   removeAttribute(searchContainer, 'has-focus');
+   searchContainer.removeAttribute('has-focus');
 };
 
 const handleSearchFormSubmit = (event: Event) => {
@@ -41,7 +42,7 @@ const getCountryCode = async (): Promise<string> => {
    try {
       const storedCountryCode = localStorage.getItem(COUNTRY_CODE_STORE);
 
-      if (storedCountryCode != null) return storedCountryCode;
+      if (storedCountryCode !== null) return storedCountryCode;
 
       const res = await fetch('https://ipinfo.io/?token=e7f553952c3125');
 
@@ -54,6 +55,7 @@ const getCountryCode = async (): Promise<string> => {
       localStorage.setItem(COUNTRY_CODE_STORE, data.country);
       return data.country;
    } catch (error) {
+      localStorage.setItem(COUNTRY_CODE_STORE, DEFAULT_COUNTRY_CODE);
       return DEFAULT_COUNTRY_CODE;
    }
 };

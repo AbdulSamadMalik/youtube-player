@@ -1,9 +1,9 @@
-import { createObjectURL, generateFileId } from '../../utils';
-import { $, addAttribute, removeAttribute } from '../../utils/dom';
-import { formatFileName, formatTime, megabyte, str } from '../../utils/format';
-import { chooseFiles } from '../dialogs/filePicker';
-import { initializePlayer, setVideoSource } from '../player';
-import { newVideoDoc } from './canvas';
+import { $ } from '../utils/dom';
+import { createObjectURL, generateFileId } from '../utils';
+import { formatFileName, formatTime, megabyte, str } from '../utils/format';
+import { chooseFiles } from './choose';
+import { initializePlayer, setVideoSource } from './player';
+import { newVideoDoc } from '../helpers/canvas';
 import {
    getVideoDoc,
    getVideoTime,
@@ -12,6 +12,7 @@ import {
    saveVideoTime,
    updateVideoViews,
 } from './storage';
+import '../styles/playlist.scss';
 
 let playerInitialized: boolean,
    viewUpdateHandle: number,
@@ -47,12 +48,12 @@ const changeVideo = async (videoDoc: VideoDoc, playListItemElement: HTMLElement)
    currentVideoFileId = videoDoc.fileId;
 
    viewUpdateHandle && clearTimeout(viewUpdateHandle);
-   currentListItem && removeAttribute(currentListItem, 'active');
+   currentListItem && currentListItem.removeAttribute('active');
 
    if (playListItemElement) {
       const currentIdx = videoDocs.findIndex((doc) => doc.fileId === videoDoc.fileId);
       currentListItemIndex.innerHTML = str(currentIdx + 1);
-      addAttribute(playListItemElement, 'active');
+      playListItemElement.setAttribute('active', 'true');
       currentListItem = playListItemElement;
    }
 

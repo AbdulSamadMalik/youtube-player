@@ -1,50 +1,40 @@
 import { Observable } from 'rxjs';
-import { isBoolean, isNil, isString } from 'lodash-es';
+import logger from '../helpers/logger';
 
 export const $ = <T extends HTMLElement>(selector: string): T => {
    return document.querySelector<T>(selector)!;
 };
 
 export const $$ = <T extends HTMLElement>(selector: string): T[] => {
-   return Array.from(document.querySelectorAll<T>(selector)!);
-};
-
-export const addAttribute = (element: HTMLElement, attrName: string, attrVal: string = '') => {
-   if (!(element instanceof HTMLElement) || !isString(attrName)) return;
-   element.setAttribute(attrName, attrVal);
-};
-
-export const removeAttribute = (element: HTMLElement, attrName: string) => {
-   if (!(element instanceof HTMLElement) || !isString(attrName)) return;
-   element.removeAttribute(attrName);
+   return Array.from(document.querySelectorAll(selector));
 };
 
 export const conditionalAttribute = (
    element: HTMLElement,
    condition: boolean,
-   attrName: string,
-   attrValue = ''
+   name: string,
+   value = ''
 ) => {
-   if (!(element instanceof HTMLElement) || isNil(attrName) || !isBoolean(condition)) {
-      throw new Error(JSON.stringify({ element, attrName, condition }));
-   }
-
-   if (condition === true) {
-      element.setAttribute(attrName, attrValue);
-   } else if (condition === false) {
-      element.removeAttribute(attrName);
+   try {
+      if (element && element.setAttribute && condition === true) {
+         element.setAttribute(name, value);
+      } else if (element && element.removeAttribute && condition === false) {
+         element.removeAttribute(name);
+      }
+   } catch (error) {
+      logger.error(error);
    }
 };
 
 export const conditionalClass = (element: HTMLElement, condition: boolean, className: string) => {
-   if (!(element instanceof HTMLElement) || isNil(className) || !isBoolean(condition)) {
-      throw new Error(JSON.stringify({ element, className, condition }));
-   }
-
-   if (condition === true) {
-      element.classList.add(className);
-   } else if (condition === false) {
-      element.classList.remove(className);
+   try {
+      if (condition === true) {
+         element.classList.add(className);
+      } else if (condition === false) {
+         element.classList.remove(className);
+      }
+   } catch (error) {
+      logger.error(error);
    }
 };
 

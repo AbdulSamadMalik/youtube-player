@@ -1,10 +1,10 @@
 import clamp from 'lodash-es/clamp';
 import { asyncScheduler, fromEvent, merge, of, Subject } from 'rxjs';
 import { debounceTime, delay, mapTo, switchMap, tap, throttleTime } from 'rxjs/operators';
-import { registerHotkey } from '../../hotkeys';
-import { formatTime, toRangeInput } from '../../utils';
-import { $, conditionalAttribute, conditionalClass, removeAttribute } from '../../utils/dom';
-import { header } from '../header';
+import { registerHotkey } from '../helpers/hotkeys';
+import { formatTime, toRangeInput } from '../utils';
+import { $, conditionalAttribute, conditionalClass } from '../utils/dom';
+import { header } from './header';
 import {
    toggleCinemaMode,
    toggleFullScreenMode,
@@ -14,7 +14,8 @@ import {
    videoPreview,
    videoState,
    volumeState,
-} from '../player';
+} from './player';
+import '../styles/controls.scss';
 
 const videoControls = $('#video-controls.video-controls'),
    seekbarContainer = $('.progress-bar-container'),
@@ -275,7 +276,7 @@ const storeVolumeToStorage = (volume: any) => {
 
 export const initializeControls = () => {
    // Video playback state
-   removeAttribute(videoControls, 'hidden');
+   videoControls.removeAttribute('hidden');
    videoState.subscribe(onVideoStateChange);
    volumeState.subscribe(onVolumeStateChange);
 
