@@ -52,8 +52,12 @@ export const setVideoSource = ({
          videoTitle.innerHTML = title;
 
          videoDate.innerHTML = formatDate(lastModified || Date.now());
-         videoNode.currentTime = startAt || 0;
          videoViewCount.innerHTML = formatVideoViews(views || 0);
+
+         videoNode.onloadedmetadata = function () {
+            videoNode.currentTime =
+               typeof startAt === 'function' ? startAt(videoNode.duration) : startAt || 0;
+         };
       };
 
       if (source instanceof File || source instanceof Blob) {
@@ -77,8 +81,10 @@ const toggleFullScreenMode = () => {
 };
 
 const onFullScreenChange = () => {
-   const isFullScreen = Boolean(document.fullscreenElement ?? document.fullscreen);
+   const isFullScreen = Boolean(document.fullscreenElement || document.fullscreen);
 
+   window.scrollTo(0, 0);
+   document.body.scrollTo(0, 0);
    conditionalAttribute(scrollButton, isFullScreen, 'show');
    conditionalAttribute(header, isFullScreen, 'hide');
    conditionalAttribute(watchPage, isFullScreen, 'fullscreen');

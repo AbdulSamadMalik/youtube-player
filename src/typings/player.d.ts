@@ -6,5 +6,5 @@ declare interface VideoInput {
    title: string;
    lastModified?: number;
    views?: number;
-   startAt?: number;
+   startAt?: number | ((duration: number) => number);
 }

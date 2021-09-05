@@ -63,14 +63,19 @@ const changeVideo = async (videoDoc: VideoDoc, playListItemElement: HTMLElement)
    await setVideoSource({
       views: storedViews,
       title: videoDoc.fileName,
-      startAt: storedTime,
       source: videoDoc.blobURL,
       lastModified: videoDoc.date,
+      startAt: (duration) => {
+         console.log(storedTime, duration, storedTime <= duration * 0.95);
+         return storedTime <= duration * 0.95 ? storedTime : 0;
+      },
    });
 
    videoNode.autoplay = true;
-   window.scrollTo(0, 0);
    switchingVideo = false;
+
+   window.scrollTo(0, 0);
+   document.body.scrollTo(0, 0);
 
    // Wait 10s before updating video views
    viewUpdateHandle = setTimeout(updateVideoViews, 10000, videoDoc.fileId);
@@ -87,7 +92,7 @@ const newVideoTile = (videoDoc: VideoDoc) => {
    thumbnail.src = videoDoc.thumbnail.dataURL;
 
    const duration = container.querySelector('#duration')!;
-   duration.innerHTML = formatTime(videoDoc.duration, 2, 2);
+   duration.innerHTML = formatTime(videoDoc.duration, 1, 2);
 
    const title = container.querySelector('#video-title')!;
    title.innerHTML = formatFileName(videoDoc.fileName);
@@ -131,8 +136,9 @@ const addVideoToPlaylist = async (file: File) => {
 
       setInterval(() => {
          if (!currentVideoFileId || !videoNode) return;
-         // Don't save time if current time is greater than 98% video length
-         if (videoNode.currentTime >= videoNode.duration * 0.98) return;
+         let currentTime = videoNode.currentTime;
+         // Don't save time if current time is greater than 95% video length
+         if (currentTime >= videoNode.duration * 0.95) currentTime = 0;
 
          if (!videoNode.ended && !videoNode.paused) {
             saveVideoTime(currentVideoFileId, videoNode.currentTime);

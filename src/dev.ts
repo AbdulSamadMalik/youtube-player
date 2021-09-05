@@ -3,7 +3,7 @@ import { initializePlayer } from './lib/player';
 
 const dev = async () => {
    const videoNode = initializePlayer();
-   const res = await fetch('/local/videos/2.mp4');
+   const res = await fetch('/local/videos/4.mp4');
    const blob = await res.blob();
 
    // Global access

@@ -21,10 +21,14 @@ export const formatTime = (seconds: number, minPad = 2, secPad = 2) => {
       mins = Math.floor((seconds - hours * 3600) / 60),
       secs = Math.floor(seconds - hours * 3600 - mins * 60);
 
-   let formattedTime;
-   formattedTime = `${str(mins).padStart(minPad, '0')}:${str(secs).padStart(secPad, '0')}`;
+   const fsecs = str(secs).padStart(secPad, '0'),
+      fmins = str(mins).padStart(minPad, '0');
 
-   hours >= 1 && (formattedTime = `${hours}:${formattedTime}`);
+   let formattedTime = `${fmins}:${fsecs}`;
+
+   if (hours >= 1) {
+      formattedTime = `${hours}:${fmins.length > 1 ? formattedTime : `0${formattedTime}`}`;
+   }
 
    return formattedTime;
 };
